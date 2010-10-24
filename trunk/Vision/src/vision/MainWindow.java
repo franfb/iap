@@ -44,6 +44,7 @@ public class MainWindow {
 
 	private void initialize() {
 		frame = new JFrame();
+		frame.setTitle("Visión por ordenador.  Curso 2010 / 2011.");
 		frame.setBounds(100, 100, 450, 300);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
@@ -67,7 +68,7 @@ public class MainWindow {
 						e.printStackTrace();
 					}
 					if (img != null) {
-						new ImageWindow(img);
+						new ImageWindow(img, file.getAbsolutePath());
 					}
 				}
 			}
