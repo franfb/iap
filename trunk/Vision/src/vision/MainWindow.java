@@ -12,6 +12,7 @@ import ij.ImagePlus;
 
 import java.awt.Cursor;
 import java.awt.EventQueue;
+import java.awt.Point;
 
 import javax.imageio.ImageIO;
 import javax.swing.JFileChooser;
@@ -48,12 +49,13 @@ import java.awt.Canvas;
 import javax.swing.JToolBar;
 import javax.swing.JLabel;
 
-public class MainWindow implements MouseListener, MouseMotionListener {
+public class MainWindow {
 
 	private JFrame frame;
 	private JFileChooser chooser = null;
-	JTabbedPane tabbedPane;
+	public JTabbedPane tabbedPane;
 	public JLabel infoLabel;
+	private MyMouseListener listener;
 
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
@@ -90,6 +92,8 @@ public class MainWindow implements MouseListener, MouseMotionListener {
 		frame.setBounds(100, 100, 635, 449);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
+		listener = new MyMouseListener(this);
+		
 		tabbedPane = new JTabbedPane(JTabbedPane.TOP);
 		
 		infoLabel = new JLabel("");
@@ -123,7 +127,7 @@ public class MainWindow implements MouseListener, MouseMotionListener {
 								if (returnValue == JFileChooser.APPROVE_OPTION) {
 									File file = getFileChooser().getSelectedFile();
 									Image img = Image.getImage(new ImagePlus(file.getAbsolutePath()));
-									insertImage(img);
+									insertAndListenImage(img, false);
 								}
 							}
 						});
@@ -171,7 +175,8 @@ public class MainWindow implements MouseListener, MouseMotionListener {
 			result = partitionable.newImageRGB();
 		}
 		result.setTitle(partitionable.getTitle() + " - simplified");
-		insertImage(result);
+		result.panel.setPartition(p);
+		insertImage(result, true);
 		final Image r = result;
 		p.addNewRegionEventListener(new NewRegionListener() {
 			public void newRegionCreated(NewRegionEvent evt) {
@@ -183,18 +188,44 @@ public class MainWindow implements MouseListener, MouseMotionListener {
 			public void run() {
 				// TODO Auto-generated method stub
 				p.makeRegions();
-				
+				listenImage(r, true);
 			}
 		}).start();
 	}
 	
-	private void insertImage(Image img){
+	private void insertAndListenImage(Image img, boolean simplified){
 		JScrollPane scrollPane = new JScrollPane();
 		tabbedPane.insertTab(img.getTitle(), null, scrollPane, null, 0);
 		scrollPane.setViewportView(img.panel);
 		tabbedPane.setSelectedIndex(0);
-		img.panel.addMouseListener(MainWindow.this);
-		img.panel.addMouseMotionListener(MainWindow.this);
+		if (simplified){
+			MyMouseListenerForSimplified listener = new MyMouseListenerForSimplified(this, img.panel);
+			img.panel.addMouseListener(listener);
+			img.panel.addMouseMotionListener(listener);
+		}
+		else{
+			img.panel.addMouseListener(listener);
+			img.panel.addMouseMotionListener(listener);
+		}
+	}
+	
+	private void insertImage(Image img, boolean simplified){
+		JScrollPane scrollPane = new JScrollPane();
+		tabbedPane.insertTab(img.getTitle(), null, scrollPane, null, 0);
+		scrollPane.setViewportView(img.panel);
+		tabbedPane.setSelectedIndex(0);
+	}
+	
+	private void listenImage(Image img, boolean simplified){
+		if (simplified){
+			MyMouseListenerForSimplified listener = new MyMouseListenerForSimplified(this, img.panel);
+			img.panel.addMouseListener(listener);
+			img.panel.addMouseMotionListener(listener);
+		}
+		else{
+			img.panel.addMouseListener(listener);
+			img.panel.addMouseMotionListener(listener);
+		}
 	}
 	
 	private Image getImage(int tabIndex){
@@ -212,50 +243,5 @@ public class MainWindow implements MouseListener, MouseMotionListener {
 //			System.out.println("TRES");
 //		}
 		return ((ImagePanel)((JScrollPane)tabbedPane.getComponentAt(tabIndex)).getViewport().getView()).img;
-	}
-	
-	@Override
-	public void mouseClicked(MouseEvent e) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void mouseEntered(MouseEvent e) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void mouseExited(MouseEvent e) {
-		infoLabel.setText("");
-	}
-
-	@Override
-	public void mousePressed(MouseEvent e) {
-		// TODO Auto-generated method stub
-	}
-
-	@Override
-	public void mouseReleased(MouseEvent e) {
-		// TODO Auto-generated method stub
-	}
-
-	@Override
-	public void mouseDragged(MouseEvent e) {
-		// TODO Auto-generated method stub
-	}
-
-	@Override
-	public void mouseMoved(MouseEvent e) {
-		if (!(e.getComponent() instanceof ImagePanel)){
-			return;
-		}
-		ImagePanel panel = (ImagePanel) e.getComponent();
-		if (e.getX() >= panel.img.getWidth() || e.getY() >= panel.img.getHeight()){
-			infoLabel.setText("");
-			return;
-		}
-		infoLabel.setText("Pixel: (x=" + e.getX() + ", y=" + e.getY()+ "),  Value: " + panel.img.getPixelValue(e.getX(), e.getY()).getString());
 	}
 }
