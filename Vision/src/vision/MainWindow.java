@@ -253,6 +253,7 @@ public class MainWindow implements MouseListener, MouseMotionListener {
 		}
 		ImagePanel panel = (ImagePanel) e.getComponent();
 		if (e.getX() >= panel.img.getWidth() || e.getY() >= panel.img.getHeight()){
+			infoLabel.setText("");
 			return;
 		}
 		infoLabel.setText("Pixel: (x=" + e.getX() + ", y=" + e.getY()+ "),  Value: " + panel.img.getPixelValue(e.getX(), e.getY()).getString());
