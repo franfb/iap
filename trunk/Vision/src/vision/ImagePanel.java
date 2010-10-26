@@ -13,11 +13,11 @@ import javax.swing.JPanel;
 public class ImagePanel extends JPanel {
 	private static final long serialVersionUID = 1L;
 	Image img;
-	
+	Dimension size;
 	
 	public ImagePanel(Image img) {
 		this.img = img;
-		Dimension size = new Dimension(img.getAwtImage().getWidth(this),
+		size = new Dimension(img.getAwtImage().getWidth(this),
 				img.getAwtImage().getHeight(this));
 		setPreferredSize(size);
 		setMinimumSize(size);
@@ -26,6 +26,7 @@ public class ImagePanel extends JPanel {
 	}
 
 	public void paint(Graphics g) {
+		g.clearRect(0, 0, getSize().width, getSize().height);
 		g.drawImage(img.getAwtImage(), 0, 0, null);
 	}
 }
