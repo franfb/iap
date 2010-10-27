@@ -117,10 +117,10 @@ public class MainWindow {
 		JMenuBar menuBar_1 = new JMenuBar();
 		frame.setJMenuBar(menuBar_1);
 		
-				JMenu mnFile = new JMenu("File");
+				JMenu mnFile = new JMenu("Archivo");
 				menuBar_1.add(mnFile);
 				
-						JMenuItem mntmOpenImageFrom = new JMenuItem("Open image from file");
+						JMenuItem mntmOpenImageFrom = new JMenuItem("Abrir desde un archivo");
 						mntmOpenImageFrom.addActionListener(new ActionListener() {
 							public void actionPerformed(ActionEvent arg0) {
 								int returnValue = getFileChooser().showOpenDialog(frame);
@@ -133,10 +133,10 @@ public class MainWindow {
 						});
 						mnFile.add(mntmOpenImageFrom);
 						
-								JMenuItem mntmOpenImageFrom_1 = new JMenuItem("Open image from URL");
+								JMenuItem mntmOpenImageFrom_1 = new JMenuItem("Abrir desde una URL");
 								mnFile.add(mntmOpenImageFrom_1);
 								
-								JMenuItem mntmExit = new JMenuItem("Exit");
+								JMenuItem mntmExit = new JMenuItem("Salir");
 								mntmExit.addActionListener(new ActionListener() {
 									public void actionPerformed(ActionEvent arg0) {
 										System.exit(0);
@@ -144,10 +144,20 @@ public class MainWindow {
 								});
 								mnFile.add(mntmExit);
 								
-								JMenu mnTools = new JMenu("Tools");
-								menuBar_1.add(mnTools);
+								JMenu mnDigitalizacin = new JMenu("Digitalizaci\u00F3n");
+								menuBar_1.add(mnDigitalizacin);
 								
-								JMenuItem mntmSimplifyImage = new JMenuItem("Simplify image");
+								JMenuItem mntmMuestrear = new JMenuItem("Muestrear");
+								mnDigitalizacin.add(mntmMuestrear);
+								
+								JMenuItem mntmCuantizar = new JMenuItem("Cuantizar");
+								mnDigitalizacin.add(mntmCuantizar);
+								
+								JMenu mnSegmentacin = new JMenu("Segmentaci\u00F3n");
+								menuBar_1.add(mnSegmentacin);
+								
+								JMenuItem mntmSimplifyImage = new JMenuItem("Segmentar mediante HIPS");
+								mnSegmentacin.add(mntmSimplifyImage);
 								mntmSimplifyImage.addActionListener(new ActionListener() {
 									public void actionPerformed(ActionEvent arg0) {
 										if (tabbedPane.getTabCount() == 0){
@@ -156,7 +166,6 @@ public class MainWindow {
 										simplifyImage(getImage(tabbedPane.getSelectedIndex()));
 									}
 								});
-								mnTools.add(mntmSimplifyImage);
 	}
 
 	private void simplifyImage(Image img){
