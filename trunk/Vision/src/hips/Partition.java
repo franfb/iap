@@ -1,6 +1,6 @@
 package hips;
 
-import hips.images.ImagePartitionable;
+import hips.images.Image;
 import hips.pixel.PixelValue;
 import hips.region.NewRegionEvent;
 import hips.region.NewRegionListener;
@@ -14,7 +14,7 @@ import javax.swing.event.EventListenerList;
  * utilizados son: el parÃ¡metro de rango local, el parÃ¡metro de rango global, y
  * el Ã­ndice de conectividad.
  */
-public abstract class Partition<Img extends ImagePartitionable, PValue extends PixelValue> {
+public abstract class Partition<Img extends Image, PValue extends PixelValue> {
 
     protected Img image;
     protected int[] references;
@@ -178,8 +178,8 @@ public abstract class Partition<Img extends ImagePartitionable, PValue extends P
         return false;
     }
 
-    private ImagePartitionable getWorkingImage(ImagePartitionable img, float[] transforming) {
-        ImagePartitionable working = (ImagePartitionable) img.newImage();
+    private Image getWorkingImage(Image img, float[] transforming) {
+        Image working = img.newImage();
         for (int i = 0; i < img.getSize(); i++) {
             PixelValue p = img.getPixelValue(i);
             PixelValue pf = img.newPixelValue(img.getZero());

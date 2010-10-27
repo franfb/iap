@@ -1,11 +1,12 @@
 package hips.images.gray32;
 
+import hips.images.Image;
 import hips.images.ImagePartitionable;
 import hips.region.Region;
 import ij.ImagePlus;
 import ij.process.FloatProcessor;
 
-public class ImageGray32 extends ImagePartitionable<PixelValue, Float>{
+public class ImageGray32 extends Image<PixelValue, Float>{
     private float pixels[][];
 
     public ImageGray32(ImagePlus impl){
@@ -98,8 +99,8 @@ public class ImageGray32 extends ImagePartitionable<PixelValue, Float>{
         return color;
     }
 
-    public hips.images.rgb.PixelValueRGB toRGB(PixelValue color) {
-        hips.images.rgb.PixelValueRGB p = new hips.images.rgb.PixelValueRGB(slices);
+    public hips.images.rgb.PixelValue toRGB(PixelValue color) {
+        hips.images.rgb.PixelValue p = new hips.images.rgb.PixelValue(slices);
         for (int i = 0; i < slices; i++){
             int value = (int)
                 (((color.getValueFloat(i) - getMinValue().getValueFloat(i)) * 255)
