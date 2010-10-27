@@ -1,6 +1,7 @@
 package hips.images.gray8;
 
 import vision.ImagePanel;
+import hips.images.Image;
 import hips.images.ImagePartitionable;
 import hips.images.rgb.ImageRGB;
 import hips.region.Region;
@@ -8,67 +9,38 @@ import ij.ImagePlus;
 import ij.process.ByteProcessor;
 import ij.process.ColorProcessor;
 
-public class ImageGray8 extends ImagePartitionable<PixelValue, Integer> {
+public class ImageGray8 extends Image<PixelValue, Integer> {
 
 	private byte pixels[][];
-	private int[] pixels2;
-	private Connector c;
 
 	public ImageGray8(ImagePlus impl) {
 		height = impl.getHeight();
 		width = impl.getWidth();
 		size = height * width;
-		if (impl.getType() == ImagePlus.GRAY8) {
-			slices = impl.getStackSize();
-			pixels = new byte[slices][];
-			for (int i = 0; i < slices; i++) {
-				pixels[i] = (byte[]) impl.getStack().getProcessor(i + 1)
-						.getPixels();
-			}
-			c = new ConnectorGray8(pixels);
-		} else if (impl.getType() == ImagePlus.COLOR_RGB
-				&& impl.getStackSize() == 1) {
-			slices = 3;
-			pixels2 = (int[]) impl.getProcessor().getPixels();
-			c = new ConnectorRGB(pixels2);
+		slices = impl.getStackSize();
+		pixels = new byte[slices][];
+		for (int i = 0; i < slices; i++) {
+			pixels[i] = (byte[]) impl.getStack().getProcessor(i + 1).getPixels();
 		}
 		initialize(impl);
 	}
 
-	public ImageGray8(ImageRGB img) {
-		height = img.getHeight();
-		width = img.getWidth();
-		size = height * width;
-		slices = 3;
-		pixels2 = img.pixels[0];
-		c = new ConnectorRGB(pixels2);
-		title = img.getTitle();
-        awtImage = img.getAwtImage();
-    	panel = img.panel;
-	}
-	
-	private ImageGray8(int width, int height, int n, Connector c) {
-		this(createImagePlus(width, height, n, c));
+	private ImageGray8(int width, int height, int n) {
+		this(createImagePlus(width, height, n));
 	}
 
-	private static ImagePlus createImagePlus(int width, int height, int n,
-			Connector c) {
-		if (c instanceof ConnectorGray8) {
-			ij.ImageStack stack = new ij.ImageStack(width, height);
-			for (int i = 0; i < n; i++) {
-				stack.addSlice("" + i, new ByteProcessor(width, height));
-			}
-			return new ImagePlus("", stack);
-		} else if (c instanceof ConnectorRGB) {
-			return new ImagePlus("", new ColorProcessor(width, height));
+	private static ImagePlus createImagePlus(int width, int height, int n) {
+		ij.ImageStack stack = new ij.ImageStack(width, height);
+		for (int i = 0; i < n; i++) {
+			stack.addSlice("" + i, new ByteProcessor(width, height));
 		}
-		return null;
+		return new ImagePlus("", stack);
 	}
 
 	public PixelValue getPixelValue(int index) {
 		PixelValue p = new PixelValue(slices);
 		for (int i = 0; i < slices; i++) {
-			p.setValueInt(c.getPixel(i, index), i);
+			p.setValueInt(0x0FF & pixels[i][index], i);
 		}
 		return p;
 	}
@@ -86,7 +58,7 @@ public class ImageGray8 extends ImagePartitionable<PixelValue, Integer> {
 	}
 
 	public hips.images.Image newImage() {
-		return new ImageGray8(width, height, slices, c);
+		return new ImageGray8(width, height, slices);
 	}
 
 	public hips.images.rgb.ImageRGB newImageRGB() {
@@ -111,7 +83,7 @@ public class ImageGray8 extends ImagePartitionable<PixelValue, Integer> {
 
 	public void putPixelValue(int index, PixelValue pixel) {
 		for (int i = 0; i < slices; i++) {
-			c.putPixel(i, index, pixel.getValueInt(i));
+			pixels[i][index] = (byte) pixel.getValueInt(i);
 		}
 	}
 
@@ -133,8 +105,8 @@ public class ImageGray8 extends ImagePartitionable<PixelValue, Integer> {
 		return color;
 	}
 
-	public hips.images.rgb.PixelValueRGB toRGB(PixelValue color) {
-		hips.images.rgb.PixelValueRGB pixel = new hips.images.rgb.PixelValueRGB(
+	public hips.images.rgb.PixelValue toRGB(PixelValue color) {
+		hips.images.rgb.PixelValue pixel = new hips.images.rgb.PixelValue(
 				slices);
 		for (int i = 0; i < slices; i++) {
 			pixel.setValue(i, color.getValueInt(i), color.getValueInt(i),

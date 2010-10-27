@@ -2,9 +2,7 @@ package vision;
 
 import hips.Partition;
 import hips.images.Image;
-import hips.images.ImagePartitionable;
 import hips.images.gray8.ImageGray8;
-import hips.images.rgb.Image3;
 import hips.images.rgb.ImageRGB;
 import hips.region.NewRegionEvent;
 import hips.region.NewRegionListener;
@@ -168,36 +166,21 @@ public class MainWindow {
 								});
 	}
 
-	private void simplifyImage(Image img){
-		boolean isRGB = false;
-		if (img instanceof ImageRGB){
-			isRGB = true;
-			img = new ImageGray8((ImageRGB)img);
-		}
-		final ImagePartitionable partitionable = (ImagePartitionable) img;
-		final Partition p = partitionable.newPartition();
-		Image result = null;
-		if (isRGB){
-			result = new Image3(img.getWidth(), img.getHeight(), "");
-		}
-		else{
-			result = partitionable.newImageRGB();
-		}
-		result.setTitle(partitionable.getTitle() + " - simplified");
+	private void simplifyImage(final Image img){
+		final Partition p = img.newPartition();
+		final Image result = img.newImageRGB();
+		result.setTitle(img.getTitle() + " - simplified");
 		result.panel.setPartition(p);
 		insertImage(result, true);
-		final Image r = result;
 		p.addNewRegionEventListener(new NewRegionListener() {
 			public void newRegionCreated(NewRegionEvent evt) {
-				r.paintRegion(evt.getRegion(), partitionable.toRGB(partitionable.getMeanValue(evt.getRegion())));
+				result.paintRegion(evt.getRegion(), img.toRGB(img.getMeanValue(evt.getRegion())));
 			}
 		});
 		new Thread(new Runnable() {
-			@Override
 			public void run() {
-				// TODO Auto-generated method stub
 				p.makeRegions();
-				listenImage(r, true);
+				listenImage(result, true);
 			}
 		}).start();
 	}
