@@ -17,6 +17,7 @@ public abstract class Image<PixelValue extends hips.pixel.PixelValue, C extends 
 	protected String title;
 	
     protected int slices;
+    protected int channels;
     protected int size;
     protected int height;
     protected int width;
@@ -221,6 +222,10 @@ public abstract class Image<PixelValue extends hips.pixel.PixelValue, C extends 
     public int getSlices() {
         return slices;
     }
+    
+    public int getChannels() {
+        return channels;
+    }
 
     /**
      * Devuelve una nueva instancia de la clase <i>Partition</i> mediante la
@@ -284,6 +289,7 @@ public abstract class Image<PixelValue extends hips.pixel.PixelValue, C extends 
         int n = width * height;
         Neighborhood nbh = new Neighborhood(width, height);
         maxRange = newPixelValue(getZero());
+        System.out.println("INICIAL: " + maxRange.getString());
         int q;
         for (int i = 0; i < n; i++) {
             PixelValue p = getPixelValue(i);
@@ -291,11 +297,12 @@ public abstract class Image<PixelValue extends hips.pixel.PixelValue, C extends 
             if (q != -1) {
                 maxRange.setGreater(p.range(getPixelValue(q)));
             }
-
             q = nbh.getNeighbor(i, 3);
             if (q != -1) {
                 maxRange.setGreater(p.range(getPixelValue(q)));
             }
         }
+        System.out.println("FINAL: " + maxRange.getString());
+        System.out.println("UNO: " + getPixelValue(67).getString());
     }
 };

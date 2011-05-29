@@ -21,9 +21,9 @@ public abstract class Partition<Img extends Image, PValue extends PixelValue> {
     protected int[] pixels;
     protected int[] lbl;
     protected EventListenerList listenerList;
-    private PValue alpha;
-    private PValue omega;
-    private float cindex;
+    protected PValue alpha;
+    protected PValue omega;
+    protected float cindex;
 
     /**
      * MÃ©todo que ejecuta el algoritmo de segmentaciÃ³n y crea las regiones
@@ -63,7 +63,18 @@ public abstract class Partition<Img extends Image, PValue extends PixelValue> {
         alpha = (PValue) input.getMaxRange();
         omega = (PValue) input.getMaxRange();
         alpha.div(2);
+        
+        
+        alpha = (PValue) input.newPixelValue();
+        alpha.setValueAsFloat(73, 0, 0);
+        alpha.setValueAsFloat(73, 0, 1);
+        alpha.setValueAsFloat(72, 0, 2);
+        
         omega.div(1.5f);
+
+        System.out.println("alpha: " + alpha.getString());
+        System.out.println("omega: " + omega.getString());
+        
         cindex = 0.0f;
         references = null;
         pixels = null;
@@ -178,25 +189,27 @@ public abstract class Partition<Img extends Image, PValue extends PixelValue> {
         return false;
     }
 
-    private Image getWorkingImage(Image img, float[] transforming) {
+    protected Image getWorkingImage(Image img, float[] transforming) {
         Image working = img.newImage();
         for (int i = 0; i < img.getSize(); i++) {
             PixelValue p = img.getPixelValue(i);
             PixelValue pf = img.newPixelValue(img.getZero());
             for (int j = 0; j < img.getSlices(); j++) {
-                pf.setValueAsFloat(p.getValueAsFloat(j) * transforming[j], j);
+            	for (int ch = 0; ch < image.getChannels(); ch++){
+            		pf.setValueAsFloat(p.getValueAsFloat(j, ch) * transforming[j], j, ch);
+            	}
             }
             working.putPixelValue(i, pf);
         }
         return working;
     }
 
-    /**
-     * Transforma la imagen y los parÃ¡metros parÃ¡metros alpha y
-     * omega, cuando el vector alpha no contiene los mismos valores en todos
-     * los canales.
-     * @return Devuelve los objetos transformados.
-     */
+//    /**
+//     * Transforma la imagen y los parÃ¡metros parÃ¡metros alpha y
+//     * omega, cuando el vector alpha no contiene los mismos valores en todos
+//     * los canales.
+//     * @return Devuelve los objetos transformados.
+//     */
     protected Object[] getWorkingData() {
         Object[] returned = new Object[3];
         if (alpha.maxValue().compareTo(alpha.minValue()) == 0){
@@ -205,6 +218,7 @@ public abstract class Partition<Img extends Image, PValue extends PixelValue> {
             returned[2] = omega;
             return returned;
         }
+        System.out.println("ALPHA DISTINTO");
         float workingAlpha;
         Comparable maxValue = alpha.maxValue();
         if (maxValue instanceof Integer){
@@ -214,11 +228,13 @@ public abstract class Partition<Img extends Image, PValue extends PixelValue> {
             workingAlpha = (Float)maxValue;
         }
         returned[0] = maxValue;
-        float[] transforming = new float[image.getSlices()];
+        float[] transforming = new float[image.getSlices() * image.getChannels()];
         PixelValue omg = image.newPixelValue();
         for (int i = 0; i < image.getSlices(); i++) {
-            transforming[i] = workingAlpha / getAlpha().getValueAsFloat(i);
-            omg.setValueAsFloat(getOmega().getValueAsFloat(i) * transforming[i], i);
+        	for (int ch = 0; ch < image.getChannels(); ch++){
+        		transforming[i] = workingAlpha / getAlpha().getValueAsFloat(i, ch);
+        		omg.setValueAsFloat(getOmega().getValueAsFloat(i, ch) * transforming[i], i, ch);
+        	}
         }
         Img working = (Img) getWorkingImage(image, transforming);
         returned[1] = working;
@@ -226,6 +242,15 @@ public abstract class Partition<Img extends Image, PValue extends PixelValue> {
         return returned;
     }
 
+//    /**
+//     * Transforma la imagen y los parÃ¡metros parÃ¡metros alpha y
+//     * omega, cuando el vector alpha no contiene los mismos valores en todos
+//     * los canales.
+//     * @return Devuelve los objetos transformados.
+//     */
+//    protected abstract Object[] getWorkingData();
+    
+    
     /**
      * Obtiene la imagen particionada.
      */

@@ -67,21 +67,25 @@ public abstract class PixelValue<
      * Asigna el valor <i>value</i> en el canal <i>slice</i>.
      */
     public abstract void setValue(C value, int slice);
+    public abstract void setValue(C value, int slice, int channel);
 
     /**
      * Asigna el valor flotante <i>value</i> en el canal <i>slice</i>.
      */
     public abstract void setValueAsFloat(float value, int slice);
+    public abstract void setValueAsFloat(float value, int slice, int channel);
 
     /**
      * Obtiene el valor del pÃ­xel en el canal <i>slice</i>.
      */
     public abstract C getValue(int slice);
+    public abstract C getValue(int slice, int channel);
 
     /**
      * Obtiene en un flotante el valor del pÃ­xel en el canal <i>slice</i>.
      */
     public abstract float getValueAsFloat(int slice);
+    public abstract float getValueAsFloat(int slice, int channel);
 
     /**
      * Obtiene el valor mÃ­nimo de todos los canales.
