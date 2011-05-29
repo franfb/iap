@@ -24,6 +24,8 @@ import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.awt.event.AdjustmentEvent;
 import java.awt.event.AdjustmentListener;
+import java.awt.event.ComponentEvent;
+import java.awt.event.ComponentListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
@@ -89,7 +91,7 @@ public class MainWindow {
 		frame.setTitle("Visión por ordenador.  Curso 2010 / 2011.");
 		frame.setBounds(100, 100, 635, 449);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		
+
 		listener = new MyMouseListener(this);
 		
 		tabbedPane = new JTabbedPane(JTabbedPane.TOP);
@@ -181,6 +183,7 @@ public class MainWindow {
 			public void run() {
 				p.makeRegions();
 				listenImage(result, true);
+				System.out.println("Regiones1: " + p.getRegionSize());
 			}
 		}).start();
 	}

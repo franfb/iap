@@ -2,7 +2,6 @@ package hips.images.gray8;
 
 import vision.ImagePanel;
 import hips.images.Image;
-import hips.images.ImagePartitionable;
 import hips.images.rgb.ImageRGB;
 import hips.region.Region;
 import ij.ImagePlus;
@@ -18,6 +17,7 @@ public class ImageGray8 extends Image<PixelValue, Integer> {
 		width = impl.getWidth();
 		size = height * width;
 		slices = impl.getStackSize();
+		channels = 1;
 		pixels = new byte[slices][];
 		for (int i = 0; i < slices; i++) {
 			pixels[i] = (byte[]) impl.getStack().getProcessor(i + 1).getPixels();

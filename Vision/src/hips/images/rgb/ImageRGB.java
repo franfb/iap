@@ -1,6 +1,7 @@
 package hips.images.rgb;
 
-import hips.Partition;
+import org.w3c.dom.css.RGBColor;
+
 import hips.images.Image;
 import hips.region.Region;
 import ij.ImagePlus;
@@ -14,6 +15,7 @@ public class ImageRGB extends hips.images.Image<PixelValue, Integer> {
 		width = impl.getWidth();
 		size = height * width;
 		slices = impl.getStackSize();
+		channels = 3;
 		pixels = new int[slices][];
 		for (int i = 0; i < slices; i++) {
 			pixels[i] = (int[]) impl.getStack().getProcessor(i + 1).getPixels();
@@ -31,10 +33,6 @@ public class ImageRGB extends hips.images.Image<PixelValue, Integer> {
 			stack.addSlice("" + i, new ColorProcessor(width, height));
 		}
 		return new ImagePlus("", stack);
-	}
-
-	public static int toRGB(int r, int g, int b) {
-		return (((0x0FF & r) << 16) | ((0x0FF & g) << 8) | (0x0FF & b));
 	}
 
 	public void putPixelValue(int index, PixelValue pixel) {
@@ -64,7 +62,7 @@ public class ImageRGB extends hips.images.Image<PixelValue, Integer> {
 	}
 
 	public Integer getZero() {
-		return 0;
+		return PixelValue.rgb(0, 0, 0);
 	}
 
 	public Image newImage() {
@@ -76,20 +74,26 @@ public class ImageRGB extends hips.images.Image<PixelValue, Integer> {
 	}
 
 	public PixelValue getMeanValue(Region r) {
-		long[] sum = new long[slices];
-		for (int i = 0; i < slices; i++) {
-			sum[i] = 0;
-		}
+//		long[] sum = new long[slices];
+//		for (int i = 0; i < slices; i++) {
+//			sum[i] = 0;
+//		}
+//		for (int i = 0; i < r.getSize(); i++) {
+//			PixelValue p = getPixelValue(r.getPixelPosition(i));
+//			for (int j = 0; j < slices; j++) {
+//				sum[j] += p.getValueInt(j);
+//			}
+//		}
+//		PixelValue color = newPixelValue();
+//		for (int j = 0; j < slices; j++) {
+//			color.setValueInt((int) (sum[j] / r.getSize()), j);
+//		}
+//		return color;
+		PixelValue color = new PixelValue(slices);
 		for (int i = 0; i < r.getSize(); i++) {
-			PixelValue p = getPixelValue(r.getPixelPosition(i));
-			for (int j = 0; j < slices; j++) {
-				sum[j] += p.getValueInt(j);
-			}
+			color.add(getPixelValue(r.getPixelPosition(i)));
 		}
-		PixelValue color = newPixelValue();
-		for (int j = 0; j < slices; j++) {
-			color.setValueInt((int) (sum[j] / r.getSize()), j);
-		}
+		color.div(r.getSize());
 		return color;
 	}
 
@@ -97,16 +101,11 @@ public class ImageRGB extends hips.images.Image<PixelValue, Integer> {
 		return color;
 	}
 
-	@Override
-	public Partition newPartition(PixelValue alpha, PixelValue omega,
-			float ci) {
-		// TODO Auto-generated method stub
-		return null;
+	public Partition newPartition(PixelValue alpha, PixelValue omega, float ci) {
+		return new Partition(this, alpha, omega, ci);
 	}
 
-	@Override
-	public Partition newPartition() {
-		// TODO Auto-generated method stub
-		return null;
+	public hips.Partition newPartition() {
+		return new Partition(this);
 	}
 }

@@ -1,7 +1,6 @@
 package hips.images.gray32;
 
 import hips.images.Image;
-import hips.images.ImagePartitionable;
 import hips.region.Region;
 import ij.ImagePlus;
 import ij.process.FloatProcessor;
@@ -14,6 +13,7 @@ public class ImageGray32 extends Image<PixelValue, Float>{
         width = impl.getWidth();
         size = height * width;
         slices = impl.getStackSize();
+        channels = 1;
         pixels = new float[slices][];
         for (int i = 0; i < slices; i++){
             pixels[i] = (float[])impl.getStack().getProcessor(i + 1).getPixels();

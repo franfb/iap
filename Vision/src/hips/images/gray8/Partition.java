@@ -171,4 +171,28 @@ public class Partition extends hips.Partition<ImageGray8, PixelValue> {
             references[i] = refs.getPixel(i);
         }
     }
+    
+//    protected Object[] getWorkingData() {
+//		Object[] returned = new Object[3];
+//		if (alpha.maxValue().compareTo(alpha.minValue()) == 0) {
+//			returned[0] = alpha.maxValue();
+//			returned[1] = image;
+//			returned[2] = omega;
+//			return returned;
+//		}
+//		Integer maxValue = alpha.maxValue();
+//		float workingAlpha = maxValue.floatValue();
+//		returned[0] = maxValue;
+//		float[] transforming = new float[image.getSlices()];
+//		PixelValue omg = image.newPixelValue();
+//		for (int i = 0; i < image.getSlices(); i++) {
+//			transforming[i] = workingAlpha / getAlpha().getValueAsFloat(i);
+//			omg.setValueAsFloat(
+//					getOmega().getValueAsFloat(i) * transforming[i], i);
+//		}
+//		ImageGray8 working = (ImageGray8) getWorkingImage(image, transforming);
+//		returned[1] = working;
+//		returned[2] = omg;
+//		return returned;
+//	}
 }

@@ -169,4 +169,20 @@ public class PixelValue extends hips.pixel.PixelValue<PixelValue, Float> {
     public Float getValue(int slice) {
         return getValueFloat(slice);
     }
+    
+    public void setValue(Float value, int slice, int channel) {
+		setValue(value, slice);
+	}
+
+	public void setValueAsFloat(float value, int slice, int channel) {
+		setValueAsFloat(value, slice);
+	}
+
+	public Float getValue(int slice, int channel) {
+		return getValue(slice);
+	}
+
+	public float getValueAsFloat(int slice, int channel) {
+		return getValueAsFloat(slice);
+	}
 }
