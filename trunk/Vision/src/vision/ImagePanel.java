@@ -49,7 +49,7 @@ public class ImagePanel extends JComponent implements MouseMotionListener, Mouse
 			g.setColor(new Color(0x66000000, true));
 			g.fillRect(topLeft.x + 1, topLeft.y + 1, bottomRight.x - topLeft.x - 1, bottomRight.y - topLeft.y - 1);
 		}
-		
+		MainWindow.showInfo();
 	}
 	
 	public Point getCoordinate(int x, int y){
