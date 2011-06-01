@@ -27,6 +27,8 @@ public class ZoomDialog extends JDialog {
 	public JButton cancelButton;
 	public JRadioButton dimensiones;
 	public JRadioButton porcentaje;
+	public JSpinner dimensionesX;
+	public JSpinner dimensionesY;
 	
 	/**
 	 * Launch the application.
@@ -70,9 +72,8 @@ public class ZoomDialog extends JDialog {
 		JLabel label = new JLabel("Ancho (p\u00EDxels): ");
 		label.setFont(new Font("Segoe UI", Font.PLAIN, 14));
 		
-		JSpinner dimensionesX = new JSpinner();
-		
-		JSpinner dimensionesY = new JSpinner();
+		dimensionesX = new JSpinner();
+		dimensionesY = new JSpinner();
 		
 		JLabel label_1 = new JLabel("Alto (p\u00EDxels): ");
 		label_1.setFont(new Font("Segoe UI", Font.PLAIN, 14));

@@ -9,8 +9,10 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 import javax.imageio.ImageIO;
+import javax.swing.ButtonGroup;
 import javax.swing.JComponent;
 import javax.swing.JFileChooser;
+import javax.swing.JRadioButton;
 import javax.swing.SpinnerNumberModel;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
@@ -216,28 +218,78 @@ public class Menu {
 	}
 	
 	public static void escalar(){
-		/*final Image image = MainWindow.getImage();
+		final Image image = MainWindow.getImage();
 		final ZoomDialog dialog = new ZoomDialog();
-		dialog.porcentaje.setSelected(true);
+		dialog.porcentaje.setSelected(false);
 		dialog.dimensiones.setSelected(false);
-		ChangeListener change = new ChangeListener() {
+		
+		ButtonGroup group = new ButtonGroup();
+		group.add(dialog.porcentaje); 
+		group.add(dialog.dimensiones); 
+		
+		final ChangeListener changePorcentaje = new ChangeListener() {
 			public void stateChanged(ChangeEvent arg0) {
-				int anchoMuestreo = (Integer) dialog.anchoSpinner.getValue();
-				int altoMuestreo = (Integer) dialog.altoSpinner.getValue();
-				int ancho = (int) Math.ceil(image.widthRoi() / (float)anchoMuestreo);
-				int alto = (int) Math.ceil(image.heightRoi() / (float)altoMuestreo);
-				dialog.muestras.setText("Dimensiones del muestreo:  " + ancho + " x " + alto);
+				float porcentajeX = (Integer) dialog.porcentajeX.getValue() / 100.0f;
+				float porcentajeY = (Integer) dialog.porcentajeY.getValue() / 100.0f;
+				dialog.dimensionesX.setValue((int)(porcentajeX * image.widthRoi()));
+				dialog.dimensionesY.setValue((int)(porcentajeY * image.heightRoi()));
 			}
 		};
-		int altoMuestreo = image.heightRoi() / 20 + 4;
-		int anchoMuestreo = image.widthRoi() / 20 + 4;
-		int ancho = (int) Math.ceil(image.widthRoi() / (float)anchoMuestreo);
-		int alto = (int) Math.ceil(image.heightRoi() / (float)altoMuestreo);
-		dialog.muestras.setText("Dimensiones del muestreo:  " + ancho + " x " + alto);
-		dialog.altoSpinner.setModel(new SpinnerNumberModel(altoMuestreo, 1, image.heightRoi(), 1));
-		dialog.anchoSpinner.setModel(new SpinnerNumberModel(anchoMuestreo, 1, image.widthRoi(), 1));
-		dialog.altoSpinner.addChangeListener(change);
-		dialog.anchoSpinner.addChangeListener(change);
+		final ChangeListener changeDimensiones = new ChangeListener() {
+			public void stateChanged(ChangeEvent e) {
+				int dimensionesX = (Integer) dialog.dimensionesX.getValue();
+				int dimensionesY = (Integer) dialog.dimensionesY.getValue();
+				int porcentajeX = (int) ((dimensionesX / (float)image.widthRoi()) * 100.0);
+				int porcentajeY = (int) ((dimensionesY / (float)image.heightRoi()) * 100.0);
+				dialog.porcentajeX.setValue(porcentajeX);
+				dialog.porcentajeY.setValue(porcentajeY);
+			}
+		};
+		
+		ChangeListener changeButtons = new ChangeListener() {
+			JRadioButton selected = null;
+			public void stateChanged(ChangeEvent e) {
+				
+				if (dialog.porcentaje.isSelected() && (selected == null || selected != dialog.porcentaje)){
+					selected = dialog.porcentaje;
+					dialog.dimensionesX.removeChangeListener(changeDimensiones);
+					dialog.dimensionesY.removeChangeListener(changeDimensiones);
+					dialog.porcentajeX.setEnabled(true);
+					dialog.porcentajeY.setEnabled(true);
+					dialog.dimensionesX.setEnabled(false);
+					dialog.dimensionesY.setEnabled(false);
+					dialog.porcentajeX.addChangeListener(changePorcentaje);
+					dialog.porcentajeY.addChangeListener(changePorcentaje);
+				}
+				else if(dialog.dimensiones.isSelected() && (selected == null || selected != dialog.dimensiones)){
+					selected = dialog.dimensiones;
+					dialog.porcentajeX.removeChangeListener(changePorcentaje);
+					dialog.porcentajeY.removeChangeListener(changePorcentaje);
+					dialog.porcentajeX.setEnabled(false);
+					dialog.porcentajeY.setEnabled(false);
+					dialog.dimensionesX.setEnabled(true);
+					dialog.dimensionesY.setEnabled(true);
+					dialog.dimensionesX.addChangeListener(changeDimensiones);
+					dialog.dimensionesY.addChangeListener(changeDimensiones);
+				}
+			}
+		};
+		
+		dialog.porcentajeX.setModel(new SpinnerNumberModel(200, 1, 10000, 30));
+		dialog.porcentajeY.setModel(new SpinnerNumberModel(200, 1, 10000, 30));
+		
+		int dimensionesX = image.widthRoi() * 2;
+		int dimensionesY = image.heightRoi() * 2;
+		
+		dialog.dimensionesX.setModel(new SpinnerNumberModel(dimensionesX, 1, 1000000000, 100));
+		dialog.dimensionesY.setModel(new SpinnerNumberModel(dimensionesY, 1, 1000000000, 100));
+		
+		dialog.dimensionesX.setEnabled(false);
+		dialog.dimensionesY.setEnabled(false);
+		
+		dialog.porcentaje.addChangeListener(changeButtons);
+		dialog.dimensiones.addChangeListener(changeButtons);
+		dialog.porcentaje.setSelected(true);
 		
 		dialog.cancelButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
@@ -247,53 +299,24 @@ public class Menu {
 		dialog.okButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				dialog.setVisible(false);
-
-				File newFile = new File(image.file.getParent(), "Muestreo de " + image.file.getName());
-				Image newImage = Image.crearImagen(image.widthRoi(), image.heightRoi(), newFile);
-				
-				int anchoMuestreo = (Integer) dialog.anchoSpinner.getValue();
-				int altoMuestreo = (Integer) dialog.altoSpinner.getValue();
-				
+				File newFile = new File(image.file.getParent(), "Escalado de " + image.file.getName());
+				int width = (Integer) dialog.dimensionesX.getValue();
+				int height = (Integer) dialog.dimensionesY.getValue();
+				float escalaX = (width - 1) / ((float)image.widthRoi() - 1);
+				float escalaY = (height - 1) / ((float)image.heightRoi() - 1);
+				Image newImage = Image.crearImagen(width, height, newFile);
 				Point src = image.topLeftRoi();
-				int x = 0;
-				while (x < image.widthRoi()){
-					int y = 0;
-					while (y < image.heightRoi()){
-						int red = 0;
-						int green = 0;
-						int blue = 0;
-						int pixels = 0;
-						for (int x2 = 0; x2 < anchoMuestreo; x2++){
-							for (int y2 = 0; y2 < altoMuestreo; y2++){
-								if (x + x2 < image.widthRoi() && y + y2 < image.heightRoi()){
-									pixels++;
-									int pixelColor = image.img.getRGB(src.x + x + x2, src.y + y + y2);
-									red += Image.red(pixelColor);
-									green += Image.green(pixelColor);
-									blue += Image.blue(pixelColor);
-								}
-							}
-						}
-						red = Math.round(red /(float)pixels);
-						green = Math.round(green /(float)pixels);
-						blue = Math.round(blue /(float)pixels);
-						int colorMuestra = Image.rgb(red, green, blue);
-						for (int x2 = 0; x2 < anchoMuestreo; x2++){
-							for (int y2 = 0; y2 < altoMuestreo; y2++){
-								if (x + x2 < image.widthRoi() && y + y2 < image.heightRoi()){
-									newImage.img.setRGB(x + x2, y + y2, colorMuestra);
-								}
-							}
-						}
-						y += altoMuestreo;
+				for (int x = 0; x < newImage.widthRoi(); x++){
+					for (int y = 0; y < newImage.heightRoi(); y++){
+						int masProximoX = Math.round(x / escalaX);
+						int masProximoY = Math.round(y / escalaY);
+						newImage.img.setRGB(x, y, image.img.getRGB(src.x + masProximoX, src.y + masProximoY));
 					}
-					x += anchoMuestreo;
 				}
 				MainWindow.insertAndListenImage(newImage);
 			}
 		});
-		dialog.setVisible(true);*/
-		
+		dialog.setVisible(true);
 	}
 	
 	public static void copiar(){

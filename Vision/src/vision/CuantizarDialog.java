@@ -8,6 +8,7 @@ import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
+import javax.swing.border.TitledBorder;
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.JLabel;
@@ -87,6 +88,11 @@ public class CuantizarDialog extends JDialog {
 		setBounds(100, 100, 425, 494);
 		getContentPane().setLayout(new BorderLayout());
 		contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
+		
+		/*TitledBorder border = javax.swing.BorderFactory.createTitledBorder("Hola gente");
+		border.setTitleFont(new Font("Segoe UI", Font.PLAIN, 34));
+		contentPanel.setBorder(border);*/
+		
 		getContentPane().add(contentPanel, BorderLayout.CENTER);
 		
 		JLabel lblNiveles = new JLabel("Niveles de cuantizaci\u00F3n:");
