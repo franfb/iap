@@ -2,6 +2,9 @@ package vision;
 
 import java.awt.Dimension;
 import java.awt.EventQueue;
+import java.awt.GraphicsEnvironment;
+import java.awt.Rectangle;
+import java.awt.Toolkit;
 
 import javax.swing.JFrame;
 import javax.swing.JMenuBar;
@@ -22,6 +25,9 @@ import javax.swing.JScrollPane;
 import javax.swing.JLabel;
 
 import org.xnap.commons.gui.CloseableTabbedPane;
+import javax.swing.JPanel;
+import javax.swing.border.TitledBorder;
+import java.awt.Color;
 
 public class MainWindow {
 
@@ -31,6 +37,20 @@ public class MainWindow {
 	
 	public static JLabel infoLabel;
 	private static MyMouseListener listener;
+
+	public static JLabel labelRDR;
+
+	public static JLabel labelRDG;
+
+	public static JLabel labelRDB;
+
+	public static JLabel labelBrillo;
+
+	public static JLabel labelContraste;
+
+	public static JLabel labelEntropia;
+
+	public static JLabel labelFormato;
 	
 
 	public static void main(String[] args) {
@@ -71,17 +91,144 @@ public class MainWindow {
 				}
 				if (tabbedPane.getTabCount() > 0){
 					changeSize();
+					//showInfo();
 				}
 			}
 		});
 
 		infoLabel = new JLabel("");
 		infoLabel.setHorizontalAlignment(SwingConstants.CENTER);
+		
+		JPanel panel = new JPanel();
+		panel.setBorder(new TitledBorder(UIManager.getBorder("TitledBorder.border"), "Informaci\u00F3n de la imagen", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(0, 0, 0)));
 
 		GroupLayout groupLayout = new GroupLayout(frame.getContentPane());
-		groupLayout.setHorizontalGroup(groupLayout.createParallelGroup(Alignment.LEADING).addComponent(tabbedPane, GroupLayout.DEFAULT_SIZE, 619, Short.MAX_VALUE).addComponent(infoLabel, GroupLayout.DEFAULT_SIZE, 619, Short.MAX_VALUE));
-		groupLayout.setVerticalGroup(groupLayout.createParallelGroup(Alignment.TRAILING).addGroup(Alignment.LEADING,
-				groupLayout.createSequentialGroup().addComponent(infoLabel, GroupLayout.PREFERRED_SIZE, 14, GroupLayout.PREFERRED_SIZE).addPreferredGap(ComponentPlacement.RELATED).addComponent(tabbedPane, GroupLayout.DEFAULT_SIZE, 370, Short.MAX_VALUE)));
+		groupLayout.setHorizontalGroup(
+			groupLayout.createParallelGroup(Alignment.LEADING)
+				.addComponent(infoLabel, GroupLayout.DEFAULT_SIZE, 626, Short.MAX_VALUE)
+				.addGroup(Alignment.TRAILING, groupLayout.createSequentialGroup()
+					.addComponent(tabbedPane, GroupLayout.DEFAULT_SIZE, 414, Short.MAX_VALUE)
+					.addPreferredGap(ComponentPlacement.RELATED)
+					.addComponent(panel, GroupLayout.PREFERRED_SIZE, 206, GroupLayout.PREFERRED_SIZE))
+		);
+		groupLayout.setVerticalGroup(
+			groupLayout.createParallelGroup(Alignment.LEADING)
+				.addGroup(groupLayout.createSequentialGroup()
+					.addComponent(infoLabel, GroupLayout.PREFERRED_SIZE, 14, GroupLayout.PREFERRED_SIZE)
+					.addPreferredGap(ComponentPlacement.RELATED)
+					.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
+						.addComponent(tabbedPane, GroupLayout.DEFAULT_SIZE, 370, Short.MAX_VALUE)
+						.addComponent(panel, GroupLayout.DEFAULT_SIZE, 370, Short.MAX_VALUE)))
+		);
+		
+		JLabel lblRangoDinamico = new JLabel("Rango Din\u00E1mico");
+		
+		JLabel lblR = new JLabel("R");
+		
+		JLabel lblG = new JLabel("G");
+		
+		JLabel lblB = new JLabel("B");
+		
+		labelRDR = new JLabel("");
+		
+		labelRDG = new JLabel("");
+		
+		labelRDB = new JLabel("");
+		
+		JLabel lblBrillo = new JLabel("Brillo");
+		
+		labelBrillo = new JLabel("");
+		
+		JLabel lblContraste = new JLabel("Contraste");
+		
+		labelContraste = new JLabel("");
+		
+		JLabel lblEntropa = new JLabel("Entrop\u00EDa");
+		
+		labelEntropia = new JLabel("");
+		
+		JLabel lblFormato = new JLabel("Formato");
+		
+		labelFormato = new JLabel("");
+		GroupLayout gl_panel = new GroupLayout(panel);
+		gl_panel.setHorizontalGroup(
+			gl_panel.createParallelGroup(Alignment.LEADING)
+				.addGroup(gl_panel.createSequentialGroup()
+					.addContainerGap()
+					.addGroup(gl_panel.createParallelGroup(Alignment.LEADING)
+						.addGroup(gl_panel.createSequentialGroup()
+							.addGroup(gl_panel.createParallelGroup(Alignment.LEADING)
+								.addComponent(lblRangoDinamico)
+								.addGroup(gl_panel.createSequentialGroup()
+									.addGap(10)
+									.addGroup(gl_panel.createParallelGroup(Alignment.LEADING)
+										.addGroup(gl_panel.createSequentialGroup()
+											.addComponent(lblG)
+											.addPreferredGap(ComponentPlacement.RELATED)
+											.addComponent(labelRDG, GroupLayout.PREFERRED_SIZE, 128, GroupLayout.PREFERRED_SIZE))
+										.addGroup(gl_panel.createSequentialGroup()
+											.addComponent(lblR)
+											.addPreferredGap(ComponentPlacement.RELATED)
+											.addComponent(labelRDR, GroupLayout.PREFERRED_SIZE, 128, GroupLayout.PREFERRED_SIZE))
+										.addGroup(gl_panel.createSequentialGroup()
+											.addComponent(lblB)
+											.addPreferredGap(ComponentPlacement.RELATED)
+											.addComponent(labelRDB, GroupLayout.PREFERRED_SIZE, 128, GroupLayout.PREFERRED_SIZE))))
+								.addGroup(gl_panel.createSequentialGroup()
+									.addComponent(lblBrillo)
+									.addPreferredGap(ComponentPlacement.RELATED)
+									.addComponent(labelBrillo, GroupLayout.PREFERRED_SIZE, 128, GroupLayout.PREFERRED_SIZE))
+								.addGroup(gl_panel.createSequentialGroup()
+									.addComponent(lblContraste)
+									.addPreferredGap(ComponentPlacement.RELATED)
+									.addComponent(labelContraste, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+							.addContainerGap(36, Short.MAX_VALUE))
+						.addGroup(gl_panel.createSequentialGroup()
+							.addComponent(lblEntropa)
+							.addPreferredGap(ComponentPlacement.RELATED)
+							.addComponent(labelEntropia, GroupLayout.PREFERRED_SIZE, 128, GroupLayout.PREFERRED_SIZE)
+							.addContainerGap())
+						.addGroup(gl_panel.createSequentialGroup()
+							.addComponent(lblFormato)
+							.addPreferredGap(ComponentPlacement.RELATED)
+							.addComponent(labelFormato, GroupLayout.PREFERRED_SIZE, 128, GroupLayout.PREFERRED_SIZE)
+							.addContainerGap())))
+		);
+		gl_panel.setVerticalGroup(
+			gl_panel.createParallelGroup(Alignment.LEADING)
+				.addGroup(gl_panel.createSequentialGroup()
+					.addComponent(lblRangoDinamico)
+					.addPreferredGap(ComponentPlacement.RELATED)
+					.addGroup(gl_panel.createParallelGroup(Alignment.LEADING)
+						.addComponent(lblR)
+						.addComponent(labelRDR, GroupLayout.PREFERRED_SIZE, 14, GroupLayout.PREFERRED_SIZE))
+					.addPreferredGap(ComponentPlacement.RELATED)
+					.addGroup(gl_panel.createParallelGroup(Alignment.BASELINE)
+						.addComponent(lblG)
+						.addComponent(labelRDG, GroupLayout.PREFERRED_SIZE, 14, GroupLayout.PREFERRED_SIZE))
+					.addPreferredGap(ComponentPlacement.RELATED)
+					.addGroup(gl_panel.createParallelGroup(Alignment.BASELINE)
+						.addComponent(lblB)
+						.addComponent(labelRDB, GroupLayout.PREFERRED_SIZE, 14, GroupLayout.PREFERRED_SIZE))
+					.addPreferredGap(ComponentPlacement.UNRELATED)
+					.addGroup(gl_panel.createParallelGroup(Alignment.LEADING)
+						.addComponent(lblBrillo)
+						.addComponent(labelBrillo, GroupLayout.PREFERRED_SIZE, 14, GroupLayout.PREFERRED_SIZE))
+					.addPreferredGap(ComponentPlacement.RELATED)
+					.addGroup(gl_panel.createParallelGroup(Alignment.LEADING)
+						.addComponent(lblContraste)
+						.addComponent(labelContraste, GroupLayout.PREFERRED_SIZE, 14, GroupLayout.PREFERRED_SIZE))
+					.addPreferredGap(ComponentPlacement.UNRELATED)
+					.addGroup(gl_panel.createParallelGroup(Alignment.BASELINE)
+						.addComponent(lblEntropa)
+						.addComponent(labelEntropia, GroupLayout.PREFERRED_SIZE, 14, GroupLayout.PREFERRED_SIZE))
+					.addPreferredGap(ComponentPlacement.UNRELATED)
+					.addGroup(gl_panel.createParallelGroup(Alignment.BASELINE)
+						.addComponent(lblFormato)
+						.addComponent(labelFormato, GroupLayout.PREFERRED_SIZE, 14, GroupLayout.PREFERRED_SIZE))
+					.addContainerGap(174, Short.MAX_VALUE))
+		);
+		panel.setLayout(gl_panel);
 		frame.getContentPane().setLayout(groupLayout);
 
 		JMenuBar menuBar_1 = new JMenuBar();
@@ -186,12 +333,40 @@ public class MainWindow {
 	
 	public static void changeSize(){
 		Image image = getImage();
+		/*
 		if (frame.getWidth() < image.widthRoi() + 200){
 			frame.setSize(new Dimension(image.widthRoi() + 200, frame.getHeight()));
 		}
 		if (frame.getHeight() < image.heightRoi() + 200){
 			frame.setSize(new Dimension(frame.getWidth(), image.heightRoi() + 200));
+		}*/
+		//frame.setExtendedState(frame.getExtendedState() | frame.MAXIMIZED_BOTH);
+		GraphicsEnvironment env = GraphicsEnvironment.getLocalGraphicsEnvironment();
+		Rectangle maxSize = env.getMaximumWindowBounds();
+		if ((maxSize.getWidth() < image.widthRoi() + 200) || (maxSize.getHeight() < image.heightRoi() + 200)) {
+			frame.setMaximizedBounds(maxSize);
+			frame.setExtendedState(frame.getExtendedState() | frame.MAXIMIZED_BOTH);
 		}
+		else {
+			if (tabbedPane.getWidth() < image.widthRoi() + 200){
+				frame.setSize(new Dimension(image.widthRoi() + 200 + (frame.getWidth() - tabbedPane.getWidth()), frame.getHeight()));
+			}
+			if (tabbedPane.getHeight() < image.heightRoi() + 200){
+				frame.setSize(new Dimension(frame.getWidth(), image.heightRoi() + 200 + (frame.getHeight() - tabbedPane.getHeight())));
+			}
+		}
+	}
+	
+	public static void showInfo() {
+		Image image = getImage();
+		ImageInfo info = image.getInfo();
+		labelRDR.setText("[" + info.minR + ", " + info.maxR + "]");
+		labelRDG.setText("[" + info.minG + ", " + info.maxG + "]");
+		labelRDB.setText("[" + info.minB + ", " + info.maxB + "]");
+		labelBrillo.setText("" + info.brillo);
+		labelContraste.setText("" + info.contraste);
+		labelEntropia.setText("" + info.entropia);
+		labelFormato.setText("" + image.format);
 	}
 	
 	public static Image getImage() {
