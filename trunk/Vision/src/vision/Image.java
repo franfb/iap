@@ -15,8 +15,6 @@ public class Image {
 	private ImageInfo info;
 
 	public Image(File file, BufferedImage img, boolean saved) {
-		Integer g;
-
 		this.file = file;
 		this.img = img;
 		this.format = ImageFilter.getExtension(file);
