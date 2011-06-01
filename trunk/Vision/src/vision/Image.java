@@ -20,7 +20,7 @@ public class Image {
 		this.format = ImageFilter.getExtension(file);
 		this.saved = saved;
 		panel = new ImagePanel(this);
-		this.info = getInfo();
+		//this.info = getInfo();
 	}
 
 	public ImageInfo getInfo() {
@@ -68,6 +68,8 @@ public class Image {
 	        }
 	        inf.contraste = Math.round((float)Math.sqrt((1/(double)(widthRoi() * heightRoi())) * inf.contraste));
 			
+	        if (info == null) info = inf;
+	        
 			return inf;
 		}
 		else {
