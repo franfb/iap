@@ -333,6 +333,14 @@ public class MainWindow {
 			}
 		});
 		Menu.opcionesMenu.add(mntmEspejoHorizontal);
+		
+		JMenuItem mntmRotar = new JMenuItem("Rotar");
+		mntmRotar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				Rotar.run();
+			}
+		});
+		mnTransformacion.add(mntmRotar);
 
 	}
 
