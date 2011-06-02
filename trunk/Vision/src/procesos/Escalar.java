@@ -142,10 +142,11 @@ public class Escalar {
 			                }
 			                newImage.img.setRGB(x, y, Image.array2rgb(nivel));
 						}
-						else{							
-							int masProximoX = Math.round(x / escalaX);
+						else{
+							Interpolacion.vmp(image, newImage, x / escalaX, y / escalaY, x, y);
+							/*int masProximoX = Math.round(x / escalaX);
 							int masProximoY = Math.round(y / escalaY);
-							newImage.img.setRGB(x, y, image.img.getRGB(src.x + masProximoX, src.y + masProximoY));
+							newImage.img.setRGB(x, y, image.img.getRGB(src.x + masProximoX, src.y + masProximoY));*/
 						}
 					}
 				}

@@ -45,7 +45,8 @@ public class MyMouseListener implements MouseListener, MouseMotionListener {
 			return;
 		}
 		ImagePanel panel = (ImagePanel) e.getComponent();
-		Point p = panel.getCoordinate(e.getX(), e.getY());
+		Point src = panel.image.topLeftRoi();
+		Point p = panel.getCoordinate(e.getX() - src.x, e.getY() - src.y);
 		if (p == null){
 			MainWindow.lblPixelPos.setText("");
 			MainWindow.lblPixelValue.setText("");
