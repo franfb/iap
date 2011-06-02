@@ -15,12 +15,14 @@ public class Image {
 	private ImageInfo info;
 
 	public Image(File file, BufferedImage img, boolean saved) {
+		Integer g;
+
 		this.file = file;
 		this.img = img;
 		this.format = ImageFilter.getExtension(file);
 		this.saved = saved;
 		panel = new ImagePanel(this);
-		//this.info = getInfo();
+		this.info = getInfo();
 	}
 
 	public ImageInfo getInfo() {
@@ -139,6 +141,22 @@ public class Image {
 
 	public static int rgb(int grey) {
 		return (((0x0FF & grey) << 16) | ((0x0FF & grey) << 8) | (0x0FF & grey));
+	}
+	
+	public static int[] rgb2array(int value){
+		int[] values = new int[3];
+		values[0] = red(value);
+		values[1] = green(value);
+		values[2] = blue(value);
+		return values;
+	}
+	
+	public static int array2rgb(int[] values){
+		return rgb(values[0], values[1], values[2]);
+	}
+	
+	public static int array2rgb(float[] values){
+		return rgb(Math.round(values[0]), Math.round(values[1]), Math.round(values[2]));
 	}
 
 }

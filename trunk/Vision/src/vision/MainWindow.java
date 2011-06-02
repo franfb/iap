@@ -4,6 +4,7 @@ import java.awt.Dimension;
 import java.awt.EventQueue;
 import java.awt.GraphicsEnvironment;
 import java.awt.Rectangle;
+import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JMenuBar;
 import javax.swing.JMenu;
@@ -23,6 +24,9 @@ import javax.swing.JScrollPane;
 import javax.swing.JLabel;
 
 import org.xnap.commons.gui.CloseableTabbedPane;
+
+import procesos.*;
+
 import javax.swing.JPanel;
 import javax.swing.border.TitledBorder;
 import java.awt.Color;
@@ -32,24 +36,30 @@ public class MainWindow {
 	public static JFrame frame;
 
 	public static CloseableTabbedPane tabbedPane;
-	
+
 	public static JLabel infoLabel;
 	private static MyMouseListener listener;
-
-	public static JLabel labelRDR;
-
-	public static JLabel labelRDG;
-
-	public static JLabel labelRDB;
-
-	public static JLabel labelBrillo;
-
-	public static JLabel labelContraste;
-
-	public static JLabel labelEntropia;
-
-	public static JLabel labelFormato;
 	
+	public static JFileChooser chooser;
+	
+
+	public static JLabel lblRangoDinamico;
+	public static JLabel lblR;
+	public static JLabel lblG;
+	public static JLabel lblB;
+	public static JLabel lblContraste;
+	public static JLabel lblEntropa;
+
+
+	/*public static void setUIFont(javax.swing.plaf.FontUIResource f) {
+		java.util.Enumeration keys = UIManager.getDefaults().keys();
+		while (keys.hasMoreElements()) {
+			Object key = keys.nextElement();
+			Object value = UIManager.get(key);
+			if (value instanceof javax.swing.plaf.FontUIResource)
+				UIManager.put(key, f);
+		}
+	}*/
 
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
@@ -57,6 +67,7 @@ public class MainWindow {
 				try {
 					try {
 						UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+						/*setUIFont (new javax.swing.plaf.FontUIResource("Segoe UI",Font.PLAIN, 14));*/
 					} catch (Exception ex) {
 					}
 					initialize();
@@ -71,6 +82,7 @@ public class MainWindow {
 	}
 
 	private static void initialize() {
+		chooser =  new JFileChooser();
 		frame = new JFrame();
 		frame.setTitle("Visión por ordenador.  Curso 2010 / 2011.");
 		frame.setBounds(100, 100, 635, 449);
@@ -81,150 +93,90 @@ public class MainWindow {
 		tabbedPane = new CloseableTabbedPane();
 		tabbedPane.addChangeListener(new ChangeListener() {
 			public void stateChanged(ChangeEvent arg0) {
-				if (tabbedPane.getTabCount() == 1){
+				if (tabbedPane.getTabCount() == 1) {
 					Menu.activaOpcionesMenu();
-				}
-				else if (tabbedPane.getTabCount() == 0){
+				} else if (tabbedPane.getTabCount() == 0) {
 					Menu.desactivaOpcionesMenu();
 				}
-				if (tabbedPane.getTabCount() > 0){
+				if (tabbedPane.getTabCount() > 0) {
 					changeSize();
-					//showInfo();
+					// showInfo();
 				}
 			}
 		});
 
 		infoLabel = new JLabel("");
 		infoLabel.setHorizontalAlignment(SwingConstants.CENTER);
-		
+
 		JPanel panel = new JPanel();
 		panel.setBorder(new TitledBorder(UIManager.getBorder("TitledBorder.border"), "Informaci\u00F3n de la imagen", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(0, 0, 0)));
 
 		GroupLayout groupLayout = new GroupLayout(frame.getContentPane());
-		groupLayout.setHorizontalGroup(
-			groupLayout.createParallelGroup(Alignment.LEADING)
-				.addComponent(infoLabel, GroupLayout.DEFAULT_SIZE, 626, Short.MAX_VALUE)
-				.addGroup(Alignment.TRAILING, groupLayout.createSequentialGroup()
-					.addComponent(tabbedPane, GroupLayout.DEFAULT_SIZE, 414, Short.MAX_VALUE)
-					.addPreferredGap(ComponentPlacement.RELATED)
-					.addComponent(panel, GroupLayout.PREFERRED_SIZE, 206, GroupLayout.PREFERRED_SIZE))
-		);
-		groupLayout.setVerticalGroup(
-			groupLayout.createParallelGroup(Alignment.LEADING)
-				.addGroup(groupLayout.createSequentialGroup()
-					.addComponent(infoLabel, GroupLayout.PREFERRED_SIZE, 14, GroupLayout.PREFERRED_SIZE)
-					.addPreferredGap(ComponentPlacement.RELATED)
-					.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
-						.addComponent(tabbedPane, GroupLayout.DEFAULT_SIZE, 370, Short.MAX_VALUE)
-						.addComponent(panel, GroupLayout.DEFAULT_SIZE, 370, Short.MAX_VALUE)))
-		);
-		
+		groupLayout
+				.setHorizontalGroup(groupLayout
+						.createParallelGroup(Alignment.LEADING)
+						.addComponent(infoLabel, GroupLayout.DEFAULT_SIZE, 626, Short.MAX_VALUE)
+						.addGroup(Alignment.TRAILING,
+								groupLayout.createSequentialGroup().addComponent(tabbedPane, GroupLayout.DEFAULT_SIZE, 414, Short.MAX_VALUE).addPreferredGap(ComponentPlacement.RELATED).addComponent(panel, GroupLayout.PREFERRED_SIZE, 206, GroupLayout.PREFERRED_SIZE)));
+		groupLayout.setVerticalGroup(groupLayout.createParallelGroup(Alignment.LEADING).addGroup(
+				groupLayout.createSequentialGroup().addComponent(infoLabel, GroupLayout.PREFERRED_SIZE, 14, GroupLayout.PREFERRED_SIZE).addPreferredGap(ComponentPlacement.RELATED)
+						.addGroup(groupLayout.createParallelGroup(Alignment.LEADING).addComponent(tabbedPane, GroupLayout.DEFAULT_SIZE, 370, Short.MAX_VALUE).addComponent(panel, GroupLayout.DEFAULT_SIZE, 370, Short.MAX_VALUE))));
+
 		JLabel lblRangoDinamico = new JLabel("Rango Din\u00E1mico");
-		
-		JLabel lblR = new JLabel("R");
-		
-		JLabel lblG = new JLabel("G");
-		
-		JLabel lblB = new JLabel("B");
-		
-		labelRDR = new JLabel("");
-		
-		labelRDG = new JLabel("");
-		
-		labelRDB = new JLabel("");
-		
-		JLabel lblBrillo = new JLabel("Brillo");
-		
-		labelBrillo = new JLabel("");
-		
-		JLabel lblContraste = new JLabel("Contraste");
-		
-		labelContraste = new JLabel("");
-		
-		JLabel lblEntropa = new JLabel("Entrop\u00EDa");
-		
-		labelEntropia = new JLabel("");
-		
-		JLabel lblFormato = new JLabel("Formato");
-		
-		labelFormato = new JLabel("");
+
+		lblR = new JLabel("R");
+
+		lblG = new JLabel("G");
+
+		lblB = new JLabel("B");
+
+		lblBrillo = new JLabel("Brillo");
+
+		lblContraste = new JLabel("Contraste");
+
+		lblEntropa = new JLabel("Entrop\u00EDa");
+
+		lblFormato = new JLabel("Formato");
 		GroupLayout gl_panel = new GroupLayout(panel);
 		gl_panel.setHorizontalGroup(
 			gl_panel.createParallelGroup(Alignment.LEADING)
 				.addGroup(gl_panel.createSequentialGroup()
 					.addContainerGap()
 					.addGroup(gl_panel.createParallelGroup(Alignment.LEADING)
-						.addGroup(gl_panel.createSequentialGroup()
-							.addGroup(gl_panel.createParallelGroup(Alignment.LEADING)
-								.addComponent(lblRangoDinamico)
-								.addGroup(gl_panel.createSequentialGroup()
-									.addGap(10)
-									.addGroup(gl_panel.createParallelGroup(Alignment.LEADING)
-										.addGroup(gl_panel.createSequentialGroup()
-											.addComponent(lblG)
-											.addPreferredGap(ComponentPlacement.RELATED)
-											.addComponent(labelRDG, GroupLayout.PREFERRED_SIZE, 128, GroupLayout.PREFERRED_SIZE))
-										.addGroup(gl_panel.createSequentialGroup()
-											.addComponent(lblR)
-											.addPreferredGap(ComponentPlacement.RELATED)
-											.addComponent(labelRDR, GroupLayout.PREFERRED_SIZE, 128, GroupLayout.PREFERRED_SIZE))
-										.addGroup(gl_panel.createSequentialGroup()
-											.addComponent(lblB)
-											.addPreferredGap(ComponentPlacement.RELATED)
-											.addComponent(labelRDB, GroupLayout.PREFERRED_SIZE, 128, GroupLayout.PREFERRED_SIZE))))
-								.addGroup(gl_panel.createSequentialGroup()
-									.addComponent(lblBrillo)
-									.addPreferredGap(ComponentPlacement.RELATED)
-									.addComponent(labelBrillo, GroupLayout.PREFERRED_SIZE, 128, GroupLayout.PREFERRED_SIZE))
-								.addGroup(gl_panel.createSequentialGroup()
-									.addComponent(lblContraste)
-									.addPreferredGap(ComponentPlacement.RELATED)
-									.addComponent(labelContraste, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-							.addContainerGap(36, Short.MAX_VALUE))
-						.addGroup(gl_panel.createSequentialGroup()
-							.addComponent(lblEntropa)
-							.addPreferredGap(ComponentPlacement.RELATED)
-							.addComponent(labelEntropia, GroupLayout.PREFERRED_SIZE, 128, GroupLayout.PREFERRED_SIZE)
-							.addContainerGap())
-						.addGroup(gl_panel.createSequentialGroup()
-							.addComponent(lblFormato)
-							.addPreferredGap(ComponentPlacement.RELATED)
-							.addComponent(labelFormato, GroupLayout.PREFERRED_SIZE, 128, GroupLayout.PREFERRED_SIZE)
-							.addContainerGap())))
+						.addGroup(gl_panel.createParallelGroup(Alignment.LEADING)
+							.addComponent(lblRangoDinamico)
+							.addGroup(gl_panel.createSequentialGroup()
+								.addGap(10)
+								.addGroup(gl_panel.createParallelGroup(Alignment.LEADING)
+									.addComponent(lblG)
+									.addComponent(lblR)
+									.addComponent(lblB))
+								.addGap(134))
+							.addComponent(lblBrillo)
+							.addComponent(lblContraste))
+						.addComponent(lblEntropa)
+						.addComponent(lblFormato))
+					.addContainerGap(108, Short.MAX_VALUE))
 		);
 		gl_panel.setVerticalGroup(
 			gl_panel.createParallelGroup(Alignment.LEADING)
 				.addGroup(gl_panel.createSequentialGroup()
 					.addComponent(lblRangoDinamico)
 					.addPreferredGap(ComponentPlacement.RELATED)
-					.addGroup(gl_panel.createParallelGroup(Alignment.LEADING)
-						.addComponent(lblR)
-						.addComponent(labelRDR, GroupLayout.PREFERRED_SIZE, 14, GroupLayout.PREFERRED_SIZE))
+					.addComponent(lblR)
 					.addPreferredGap(ComponentPlacement.RELATED)
-					.addGroup(gl_panel.createParallelGroup(Alignment.BASELINE)
-						.addComponent(lblG)
-						.addComponent(labelRDG, GroupLayout.PREFERRED_SIZE, 14, GroupLayout.PREFERRED_SIZE))
+					.addComponent(lblG)
 					.addPreferredGap(ComponentPlacement.RELATED)
-					.addGroup(gl_panel.createParallelGroup(Alignment.BASELINE)
-						.addComponent(lblB)
-						.addComponent(labelRDB, GroupLayout.PREFERRED_SIZE, 14, GroupLayout.PREFERRED_SIZE))
+					.addComponent(lblB)
 					.addPreferredGap(ComponentPlacement.UNRELATED)
-					.addGroup(gl_panel.createParallelGroup(Alignment.LEADING)
-						.addComponent(lblBrillo)
-						.addComponent(labelBrillo, GroupLayout.PREFERRED_SIZE, 14, GroupLayout.PREFERRED_SIZE))
+					.addComponent(lblBrillo)
 					.addPreferredGap(ComponentPlacement.RELATED)
-					.addGroup(gl_panel.createParallelGroup(Alignment.LEADING)
-						.addComponent(lblContraste)
-						.addComponent(labelContraste, GroupLayout.PREFERRED_SIZE, 14, GroupLayout.PREFERRED_SIZE))
+					.addComponent(lblContraste)
 					.addPreferredGap(ComponentPlacement.UNRELATED)
-					.addGroup(gl_panel.createParallelGroup(Alignment.BASELINE)
-						.addComponent(lblEntropa)
-						.addComponent(labelEntropia, GroupLayout.PREFERRED_SIZE, 14, GroupLayout.PREFERRED_SIZE))
+					.addComponent(lblEntropa)
 					.addPreferredGap(ComponentPlacement.UNRELATED)
-					.addGroup(gl_panel.createParallelGroup(Alignment.BASELINE)
-						.addComponent(lblFormato)
-						.addComponent(labelFormato, GroupLayout.PREFERRED_SIZE, 14, GroupLayout.PREFERRED_SIZE))
-					.addContainerGap(174, Short.MAX_VALUE))
+					.addComponent(lblFormato)
+					.addContainerGap(166, Short.MAX_VALUE))
 		);
 		panel.setLayout(gl_panel);
 		frame.getContentPane().setLayout(groupLayout);
@@ -238,7 +190,7 @@ public class MainWindow {
 		JMenuItem mntmOpenImageFrom = new JMenuItem("Abrir");
 		mntmOpenImageFrom.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				Menu.abrirDesdeArchivo();
+				Abrir.run();
 			}
 		});
 		mnFile.add(mntmOpenImageFrom);
@@ -246,7 +198,7 @@ public class MainWindow {
 		JMenuItem mntmGuardar = new JMenuItem("Guardar");
 		mntmGuardar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				Menu.guardar();
+				Guardar.run();
 			}
 		});
 		mnFile.add(mntmGuardar);
@@ -255,20 +207,20 @@ public class MainWindow {
 		JMenuItem mntmGuardarComo = new JMenuItem("Guardar como");
 		mntmGuardarComo.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				Menu.guardarComo();
+				GuardarComo.run();
 			}
 		});
 		mnFile.add(mntmGuardarComo);
 		Menu.opcionesMenu.add(mntmGuardarComo);
-		
-				JMenuItem mntmExit = new JMenuItem("Salir");
-				mntmExit.addActionListener(new ActionListener() {
-					public void actionPerformed(ActionEvent arg0) {
-						System.exit(0);
-					}
-				});
-				mnFile.add(mntmExit);
-		
+
+		JMenuItem mntmExit = new JMenuItem("Salir");
+		mntmExit.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				System.exit(0);
+			}
+		});
+		mnFile.add(mntmExit);
+
 		JMenu mnEditar = new JMenu("Editar");
 		Menu.opcionesMenu.add(mnEditar);
 		menuBar_1.add(mnEditar);
@@ -276,12 +228,11 @@ public class MainWindow {
 		JMenuItem mntmCopiar = new JMenuItem("Copiar");
 		mntmCopiar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				Menu.copiar();
+				Copiar.run();
 			}
 		});
 		mnEditar.add(mntmCopiar);
 		Menu.opcionesMenu.add(mntmCopiar);
-
 
 		JMenu mnDigitalizacin = new JMenu("Digitalizaci\u00F3n");
 		Menu.opcionesMenu.add(mnDigitalizacin);
@@ -290,7 +241,7 @@ public class MainWindow {
 		JMenuItem mntmMuestrear = new JMenuItem("Muestrear");
 		mntmMuestrear.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				Menu.muestrear();
+				Muestrear.run();
 			}
 		});
 		mnDigitalizacin.add(mntmMuestrear);
@@ -299,13 +250,13 @@ public class MainWindow {
 		JMenuItem mntmCuantizar = new JMenuItem("Cuantizar");
 		mntmCuantizar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				Menu.cuantizar();
+				Cuantizar.run();
 			}
 		});
 		mnDigitalizacin.add(mntmCuantizar);
 		Menu.opcionesMenu.add(mntmCuantizar);
 
-		JMenu mnTransformacion = new JMenu("Transformaci\u00F3n");
+		JMenu mnTransformacion = new JMenu("Geometr\u00EDa");
 		Menu.opcionesMenu.add(mnTransformacion);
 		menuBar_1.add(mnTransformacion);
 
@@ -313,11 +264,38 @@ public class MainWindow {
 		mnTransformacion.add(mntmEscalado);
 		mntmEscalado.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				Menu.escalar();
+				Escalar.run();
 			}
 		});
 		Menu.opcionesMenu.add(mntmEscalado);
 		
+		JMenuItem mntmTraspuesta = new JMenuItem("Trasponer");
+		mnTransformacion.add(mntmTraspuesta);
+		mntmTraspuesta.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				Traspuesta.run();
+			}
+		});
+		Menu.opcionesMenu.add(mntmTraspuesta);
+		
+		JMenuItem mntmEspejoVertical = new JMenuItem("Espejo vertical");
+		mnTransformacion.add(mntmEspejoVertical);
+		mntmEspejoVertical.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				EspejoVertical.run();
+			}
+		});
+		Menu.opcionesMenu.add(mntmEspejoVertical);
+		
+		JMenuItem mntmEspejoHorizontal = new JMenuItem("Espejo horizontal");
+		mnTransformacion.add(mntmEspejoHorizontal);
+		mntmEspejoHorizontal.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				EspejoHorizontal.run();
+			}
+		});
+		Menu.opcionesMenu.add(mntmEspejoHorizontal);
+
 	}
 
 	public static void insertAndListenImage(Image image) {
@@ -328,57 +306,59 @@ public class MainWindow {
 		image.panel.addMouseMotionListener(listener);
 		changeImageTitle(image);
 	}
-	
-	public static void changeSize(){
+
+	public static void changeSize() {
 		Image image = getImage();
 		/*
-		if (frame.getWidth() < image.widthRoi() + 200){
-			frame.setSize(new Dimension(image.widthRoi() + 200, frame.getHeight()));
-		}
-		if (frame.getHeight() < image.heightRoi() + 200){
-			frame.setSize(new Dimension(frame.getWidth(), image.heightRoi() + 200));
-		}*/
-		//frame.setExtendedState(frame.getExtendedState() | frame.MAXIMIZED_BOTH);
+		 * if (frame.getWidth() < image.widthRoi() + 200){ frame.setSize(new
+		 * Dimension(image.widthRoi() + 200, frame.getHeight())); } if
+		 * (frame.getHeight() < image.heightRoi() + 200){ frame.setSize(new
+		 * Dimension(frame.getWidth(), image.heightRoi() + 200)); }
+		 */
+		// frame.setExtendedState(frame.getExtendedState() |
+		// frame.MAXIMIZED_BOTH);
 		GraphicsEnvironment env = GraphicsEnvironment.getLocalGraphicsEnvironment();
 		Rectangle maxSize = env.getMaximumWindowBounds();
 		if ((maxSize.getWidth() < image.widthRoi() + 200) || (maxSize.getHeight() < image.heightRoi() + 200)) {
 			frame.setMaximizedBounds(maxSize);
 			frame.setExtendedState(frame.getExtendedState() | frame.MAXIMIZED_BOTH);
-		}
-		else {
-			if (tabbedPane.getWidth() < image.widthRoi() + 200){
+		} else {
+			if (tabbedPane.getWidth() < image.widthRoi() + 200) {
 				frame.setSize(new Dimension(image.widthRoi() + 200 + (frame.getWidth() - tabbedPane.getWidth()), frame.getHeight()));
 			}
-			if (tabbedPane.getHeight() < image.heightRoi() + 200){
+			if (tabbedPane.getHeight() < image.heightRoi() + 200) {
 				frame.setSize(new Dimension(frame.getWidth(), image.heightRoi() + 200 + (frame.getHeight() - tabbedPane.getHeight())));
 			}
 		}
 	}
+
+	static JLabel lblBrillo;
+	static JLabel lblFormato;
 	
 	public static void showInfo() {
 		Image image = getImage();
 		ImageInfo info = image.getInfo();
-		labelRDR.setText("[" + info.minR + ", " + info.maxR + "]");
-		labelRDG.setText("[" + info.minG + ", " + info.maxG + "]");
-		labelRDB.setText("[" + info.minB + ", " + info.maxB + "]");
-		labelBrillo.setText("" + info.brillo);
-		labelContraste.setText("" + info.contraste);
-		labelEntropia.setText("" + info.entropia);
-		labelFormato.setText("" + image.format);
+		lblR.setText("R: [" + info.minR + ", " + info.maxR + "]");
+		lblG.setText("G: [" + info.minG + ", " + info.maxG + "]");
+		lblB.setText("B: [" + info.minB + ", " + info.maxB + "]");
+		lblBrillo.setText("Brillo: " + info.brillo);
+		lblContraste.setText("Contraste: " + info.contraste);
+		lblEntropa.setText("Entrop\u00EDa: " + info.entropia);
+		lblFormato.setText("Formato: " + image.format);
 	}
-	
+
 	public static Image getImage() {
 		return getImage(tabbedPane.getSelectedIndex());
 	}
-	
+
 	public static void changeImageTitle(Image image) {
 		String title = image.file.getName();
-		if (!image.saved){
+		if (!image.saved) {
 			title = "* " + title;
 		}
 		tabbedPane.setTitleAt(tabbedPane.getSelectedIndex(), title);
 	}
-	
+
 	private static Image getImage(int tabIndex) {
 		return ((ImagePanel) ((JScrollPane) tabbedPane.getComponentAt(tabIndex)).getViewport().getView()).image;
 	}
