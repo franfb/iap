@@ -10,7 +10,6 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.JLabel;
-import java.awt.Font;
 import javax.swing.JSpinner;
 
 public class MuestrearDialog extends JDialog {
@@ -49,20 +48,16 @@ public class MuestrearDialog extends JDialog {
 		getContentPane().add(contentPanel, BorderLayout.CENTER);
 		
 		JLabel lblSeleccionaLasDimensiones = new JLabel("Selecciona el tama\u00F1o de cada muestra:");
-		lblSeleccionaLasDimensiones.setFont(new Font("Segoe UI", Font.PLAIN, 14));
 		
 		anchoSpinner = new JSpinner();
 		
 		JLabel lblAncho = new JLabel("Ancho (p\u00EDxels): ");
-		lblAncho.setFont(new Font("Segoe UI", Font.PLAIN, 14));
 		
 		JLabel lblAltopxels = new JLabel("Alto (p\u00EDxels): ");
-		lblAltopxels.setFont(new Font("Segoe UI", Font.PLAIN, 14));
 		
 		altoSpinner = new JSpinner();
 		
 		muestras = new JLabel("Cantidad de muestras:");
-		muestras.setFont(new Font("Segoe UI", Font.PLAIN, 14));
 		GroupLayout gl_contentPanel = new GroupLayout(contentPanel);
 		gl_contentPanel.setHorizontalGroup(
 			gl_contentPanel.createParallelGroup(Alignment.LEADING)
@@ -110,14 +105,12 @@ public class MuestrearDialog extends JDialog {
 			getContentPane().add(buttonPane, BorderLayout.SOUTH);
 			{
 				okButton = new JButton("OK");
-				okButton.setFont(new Font("Segoe UI", Font.PLAIN, 14));
 				okButton.setActionCommand("OK");
 				buttonPane.add(okButton);
 				getRootPane().setDefaultButton(okButton);
 			}
 			{
 				cancelButton = new JButton("Cancelar");
-				cancelButton.setFont(new Font("Segoe UI", Font.PLAIN, 14));
 				cancelButton.setActionCommand("Cancel");
 				buttonPane.add(cancelButton);
 			}
