@@ -5,6 +5,10 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
 
+import javax.swing.ButtonGroup;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
+
 import vision.Image;
 import vision.MainWindow;
 import vision.RotateDialog;
@@ -18,7 +22,41 @@ public class Rotar {
 		dialog.rbRotar90.setSelected(false);
 		dialog.rbRotar180.setSelected(false);
 		dialog.rbRotar270.setSelected(false);
-				
+		
+		ButtonGroup groupMultiplos = new ButtonGroup();
+		groupMultiplos.add(dialog.rbRotar90);
+		groupMultiplos.add(dialog.rbRotar180);
+		groupMultiplos.add(dialog.rbRotar270);
+		
+		final ChangeListener changeAngulo = new ChangeListener() {
+			
+			@Override
+			public void stateChanged(ChangeEvent e) {
+				comprobarAngulo(dialog);
+			}
+		};
+		
+		final ChangeListener changeMultiplo = new ChangeListener() {
+			
+			@Override
+			public void stateChanged(ChangeEvent e) {
+				if (dialog.rbRotar90.isSelected()){
+					dialog.spRotarAngulo.setValue(90);
+				}
+				else if (dialog.rbRotar180.isSelected()){
+					dialog.spRotarAngulo.setValue(180);
+				}
+				else if (dialog.rbRotar270.isSelected()){
+					dialog.spRotarAngulo.setValue(270);
+				}
+			}
+		};
+		
+		dialog.spRotarAngulo.addChangeListener(changeAngulo);
+		//dialog.rbRotar90.addChangeListener(changeMultiplo);
+		//dialog.rbRotar180.addChangeListener(changeMultiplo);
+		//dialog.rbRotar270.addChangeListener(changeMultiplo);
+		
 		dialog.cancelButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				dialog.setVisible(false);
@@ -26,6 +64,7 @@ public class Rotar {
 		});
 		dialog.okButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
+				comprobarAngulo(dialog);
 				dialog.setVisible(false);
 				// Cálculo de las dimensiones de la nueva imagen
 				Image newImage;
@@ -41,7 +80,7 @@ public class Rotar {
 				}
 				else{
 					angulo = (Integer) dialog.spRotarAngulo.getValue();
-					newImage = rotar(image, angulo, false);
+					newImage = rotar(image, angulo, true);
 				}
 				
 				MainWindow.insertAndListenImage(newImage);
@@ -50,21 +89,73 @@ public class Rotar {
 		dialog.setVisible(true);
 	}
 	
+	private static void comprobarAngulo(RotateDialog dialog) {
+		if ((Integer)dialog.spRotarAngulo.getValue() == 90) {
+			dialog.rbRotar90.setSelected(true);
+		}
+		else if ((Integer)dialog.spRotarAngulo.getValue() == 180) {
+			dialog.rbRotar180.setSelected(true);
+		}
+		else if ((Integer)dialog.spRotarAngulo.getValue() == 270) {
+			dialog.rbRotar270.setSelected(true);
+		}
+		else {
+			dialog.rbRotar90.setSelected(false);
+			dialog.rbRotar180.setSelected(false);
+			dialog.rbRotar270.setSelected(false);
+		}
+	}
+	
 	public static Image rotar90(Image im) {
-		return im;
+		int width = im.heightRoi();
+		int height = im.widthRoi();
+		File newFile = new File(im.file.getParent(), "Rotación de " + im.file.getName());
+        Image newIm = Image.crearImagen(width, height, newFile);
+        Point src = im.topLeftRoi();
+        for (int x = 0; x < width; x++) {
+        	for (int y = 0; y < height; y++) {
+        		newIm.img.setRGB(x, y, im.img.getRGB(src.x + y, src.y + im.heightRoi() - x - 1));
+        	}
+        }
+        
+		return newIm;
 	}
 	
 	public static Image rotar180(Image im) {
-		return im;
+		int width = im.widthRoi();
+		int height = im.heightRoi();
+		File newFile = new File(im.file.getParent(), "Rotación de " + im.file.getName());
+        Image newIm = Image.crearImagen(width, height, newFile);
+        Point src = im.topLeftRoi();
+        for (int x = 0; x < width; x++) {
+        	for (int y = 0; y < height; y++) {
+        		newIm.img.setRGB(x, y, im.img.getRGB(src.x + im.widthRoi() - x - 1, src.y + im.heightRoi() - y - 1));
+        	}
+        }
+        
+		return newIm;
 	}
 	
 	public static Image rotar270(Image im) {
-		return im;
+		int width = im.heightRoi();
+		int height = im.widthRoi();
+		File newFile = new File(im.file.getParent(), "Rotación de " + im.file.getName());
+        Image newIm = Image.crearImagen(width, height, newFile);
+        Point src = im.topLeftRoi();
+        for (int x = 0; x < width; x++) {
+        	for (int y = 0; y < height; y++) {
+        		newIm.img.setRGB(x, y, im.img.getRGB(src.x + im.widthRoi() - y - 1, src.y + x));
+        	}
+        }
+        
+		return newIm;
 	}
 	
 	public static Image rotar(Image im, int grados, boolean bilineal) {
 		// Calculamos las nuevas dimensiones de la imagen
 		grados = grados % 360;
+		if (grados < 0)
+			grados = 360 + grados;
         double radianes = Math.toRadians((double)grados);
         int width = (int)(Math.ceil(im.widthRoi() * Math.abs(Math.cos(radianes))) + Math.ceil(im.heightRoi() * Math.abs(Math.sin(radianes))));
         int height  = (int)(Math.ceil(im.widthRoi() * Math.abs(Math.sin(radianes))) + Math.ceil(im.heightRoi() * Math.abs(Math.cos(radianes))));
