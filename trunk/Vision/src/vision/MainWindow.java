@@ -30,6 +30,9 @@ import procesos.*;
 import javax.swing.JPanel;
 import javax.swing.border.TitledBorder;
 import java.awt.Color;
+import javax.swing.KeyStroke;
+import java.awt.event.KeyEvent;
+import java.awt.event.InputEvent;
 
 public class MainWindow {
 
@@ -37,7 +40,7 @@ public class MainWindow {
 
 	public static CloseableTabbedPane tabbedPane;
 
-	public static JLabel infoLabel;
+	public static JLabel lblPixelPos;
 	private static MyMouseListener listener;
 	
 	public static JFileChooser chooser;
@@ -72,6 +75,7 @@ public class MainWindow {
 					}
 					initialize();
 					Menu.desactivaOpcionesMenu();
+					InfoLabels.desactivaEtiquetas();
 					ComponentLocation.setLocationTopLeftCorner(0.02f, 0.02f, frame);
 					MainWindow.frame.setVisible(true);
 				} catch (Exception e) {
@@ -95,8 +99,10 @@ public class MainWindow {
 			public void stateChanged(ChangeEvent arg0) {
 				if (tabbedPane.getTabCount() == 1) {
 					Menu.activaOpcionesMenu();
+					InfoLabels.activaEtiquetas();
 				} else if (tabbedPane.getTabCount() == 0) {
 					Menu.desactivaOpcionesMenu();
+					InfoLabels.desactivaEtiquetas();
 				}
 				if (tabbedPane.getTabCount() > 0) {
 					changeSize();
@@ -105,58 +111,80 @@ public class MainWindow {
 			}
 		});
 
-		infoLabel = new JLabel("");
-		infoLabel.setHorizontalAlignment(SwingConstants.CENTER);
-
 		JPanel panel = new JPanel();
 		panel.setBorder(new TitledBorder(UIManager.getBorder("TitledBorder.border"), "Informaci\u00F3n de la imagen", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(0, 0, 0)));
 
 		GroupLayout groupLayout = new GroupLayout(frame.getContentPane());
-		groupLayout
-				.setHorizontalGroup(groupLayout
-						.createParallelGroup(Alignment.LEADING)
-						.addComponent(infoLabel, GroupLayout.DEFAULT_SIZE, 626, Short.MAX_VALUE)
-						.addGroup(Alignment.TRAILING,
-								groupLayout.createSequentialGroup().addComponent(tabbedPane, GroupLayout.DEFAULT_SIZE, 414, Short.MAX_VALUE).addPreferredGap(ComponentPlacement.RELATED).addComponent(panel, GroupLayout.PREFERRED_SIZE, 206, GroupLayout.PREFERRED_SIZE)));
-		groupLayout.setVerticalGroup(groupLayout.createParallelGroup(Alignment.LEADING).addGroup(
-				groupLayout.createSequentialGroup().addComponent(infoLabel, GroupLayout.PREFERRED_SIZE, 14, GroupLayout.PREFERRED_SIZE).addPreferredGap(ComponentPlacement.RELATED)
-						.addGroup(groupLayout.createParallelGroup(Alignment.LEADING).addComponent(tabbedPane, GroupLayout.DEFAULT_SIZE, 370, Short.MAX_VALUE).addComponent(panel, GroupLayout.DEFAULT_SIZE, 370, Short.MAX_VALUE))));
+		groupLayout.setHorizontalGroup(
+			groupLayout.createParallelGroup(Alignment.TRAILING)
+				.addGroup(groupLayout.createSequentialGroup()
+					.addComponent(tabbedPane, GroupLayout.DEFAULT_SIZE, 405, Short.MAX_VALUE)
+					.addPreferredGap(ComponentPlacement.RELATED)
+					.addComponent(panel, GroupLayout.PREFERRED_SIZE, 206, GroupLayout.PREFERRED_SIZE))
+		);
+		groupLayout.setVerticalGroup(
+			groupLayout.createParallelGroup(Alignment.LEADING)
+				.addComponent(tabbedPane, Alignment.TRAILING, GroupLayout.DEFAULT_SIZE, 382, Short.MAX_VALUE)
+				.addComponent(panel, Alignment.TRAILING, GroupLayout.DEFAULT_SIZE, 382, Short.MAX_VALUE)
+		);
 
 		JLabel lblRangoDinamico = new JLabel("Rango Din\u00E1mico");
+		InfoLabels.listaEtiquetas.add(lblRangoDinamico);
 
 		lblR = new JLabel("R");
+		InfoLabels.listaEtiquetas.add(lblR);
 
 		lblG = new JLabel("G");
+		InfoLabels.listaEtiquetas.add(lblG);
 
 		lblB = new JLabel("B");
+		InfoLabels.listaEtiquetas.add(lblB);
 
 		lblBrillo = new JLabel("Brillo");
+		InfoLabels.listaEtiquetas.add(lblBrillo);
 
 		lblContraste = new JLabel("Contraste");
+		InfoLabels.listaEtiquetas.add(lblContraste);
 
 		lblEntropa = new JLabel("Entrop\u00EDa");
+		InfoLabels.listaEtiquetas.add(lblEntropa);
 
 		lblFormato = new JLabel("Formato");
+		InfoLabels.listaEtiquetas.add(lblFormato);
+		
+		lblPixelPos = new JLabel("");
+		lblPixelPos.setHorizontalAlignment(SwingConstants.CENTER);
+		InfoLabels.listaEtiquetas.add(lblPixelPos);
+		
+		lblPixelValue = new JLabel("");
+		lblPixelValue.setHorizontalAlignment(SwingConstants.CENTER);
+		InfoLabels.listaEtiquetas.add(lblPixelValue);
+		
+		lblDimensiones = new JLabel("");
+		InfoLabels.listaEtiquetas.add(lblDimensiones);
+		
+		
 		GroupLayout gl_panel = new GroupLayout(panel);
 		gl_panel.setHorizontalGroup(
 			gl_panel.createParallelGroup(Alignment.LEADING)
 				.addGroup(gl_panel.createSequentialGroup()
 					.addContainerGap()
 					.addGroup(gl_panel.createParallelGroup(Alignment.LEADING)
-						.addGroup(gl_panel.createParallelGroup(Alignment.LEADING)
-							.addComponent(lblRangoDinamico)
-							.addGroup(gl_panel.createSequentialGroup()
-								.addGap(10)
-								.addGroup(gl_panel.createParallelGroup(Alignment.LEADING)
-									.addComponent(lblG)
-									.addComponent(lblR)
-									.addComponent(lblB))
-								.addGap(134))
-							.addComponent(lblBrillo)
-							.addComponent(lblContraste))
+						.addComponent(lblRangoDinamico)
+						.addGroup(gl_panel.createSequentialGroup()
+							.addGap(10)
+							.addGroup(gl_panel.createParallelGroup(Alignment.LEADING)
+								.addComponent(lblG)
+								.addComponent(lblR)
+								.addComponent(lblB)))
+						.addComponent(lblBrillo)
+						.addComponent(lblContraste)
 						.addComponent(lblEntropa)
-						.addComponent(lblFormato))
-					.addContainerGap(108, Short.MAX_VALUE))
+						.addComponent(lblFormato)
+						.addComponent(lblDimensiones, GroupLayout.PREFERRED_SIZE, 174, GroupLayout.PREFERRED_SIZE)
+						.addComponent(lblPixelPos, GroupLayout.PREFERRED_SIZE, 174, GroupLayout.PREFERRED_SIZE)
+						.addComponent(lblPixelValue, GroupLayout.PREFERRED_SIZE, 174, GroupLayout.PREFERRED_SIZE))
+					.addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
 		);
 		gl_panel.setVerticalGroup(
 			gl_panel.createParallelGroup(Alignment.LEADING)
@@ -168,15 +196,21 @@ public class MainWindow {
 					.addComponent(lblG)
 					.addPreferredGap(ComponentPlacement.RELATED)
 					.addComponent(lblB)
-					.addPreferredGap(ComponentPlacement.UNRELATED)
+					.addPreferredGap(ComponentPlacement.RELATED)
 					.addComponent(lblBrillo)
 					.addPreferredGap(ComponentPlacement.RELATED)
 					.addComponent(lblContraste)
-					.addPreferredGap(ComponentPlacement.UNRELATED)
+					.addPreferredGap(ComponentPlacement.RELATED)
 					.addComponent(lblEntropa)
-					.addPreferredGap(ComponentPlacement.UNRELATED)
+					.addPreferredGap(ComponentPlacement.RELATED)
 					.addComponent(lblFormato)
-					.addContainerGap(166, Short.MAX_VALUE))
+					.addPreferredGap(ComponentPlacement.RELATED)
+					.addComponent(lblDimensiones, GroupLayout.PREFERRED_SIZE, 17, GroupLayout.PREFERRED_SIZE)
+					.addPreferredGap(ComponentPlacement.RELATED)
+					.addComponent(lblPixelPos, GroupLayout.PREFERRED_SIZE, 17, GroupLayout.PREFERRED_SIZE)
+					.addPreferredGap(ComponentPlacement.RELATED)
+					.addComponent(lblPixelValue, GroupLayout.PREFERRED_SIZE, 17, GroupLayout.PREFERRED_SIZE)
+					.addContainerGap(132, Short.MAX_VALUE))
 		);
 		panel.setLayout(gl_panel);
 		frame.getContentPane().setLayout(groupLayout);
@@ -188,6 +222,7 @@ public class MainWindow {
 		menuBar_1.add(mnFile);
 
 		JMenuItem mntmOpenImageFrom = new JMenuItem("Abrir");
+		mntmOpenImageFrom.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_O, InputEvent.CTRL_MASK));
 		mntmOpenImageFrom.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				Abrir.run();
@@ -196,6 +231,7 @@ public class MainWindow {
 		mnFile.add(mntmOpenImageFrom);
 
 		JMenuItem mntmGuardar = new JMenuItem("Guardar");
+		mntmGuardar.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S, InputEvent.CTRL_MASK));
 		mntmGuardar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				Guardar.run();
@@ -205,6 +241,7 @@ public class MainWindow {
 		Menu.opcionesMenu.add(mntmGuardar);
 
 		JMenuItem mntmGuardarComo = new JMenuItem("Guardar como");
+		mntmGuardarComo.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S, InputEvent.CTRL_MASK | InputEvent.SHIFT_MASK));
 		mntmGuardarComo.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				GuardarComo.run();
@@ -214,6 +251,7 @@ public class MainWindow {
 		Menu.opcionesMenu.add(mntmGuardarComo);
 
 		JMenuItem mntmExit = new JMenuItem("Salir");
+		mntmExit.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_Q, InputEvent.CTRL_MASK));
 		mntmExit.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				System.exit(0);
@@ -309,14 +347,6 @@ public class MainWindow {
 
 	public static void changeSize() {
 		Image image = getImage();
-		/*
-		 * if (frame.getWidth() < image.widthRoi() + 200){ frame.setSize(new
-		 * Dimension(image.widthRoi() + 200, frame.getHeight())); } if
-		 * (frame.getHeight() < image.heightRoi() + 200){ frame.setSize(new
-		 * Dimension(frame.getWidth(), image.heightRoi() + 200)); }
-		 */
-		// frame.setExtendedState(frame.getExtendedState() |
-		// frame.MAXIMIZED_BOTH);
 		GraphicsEnvironment env = GraphicsEnvironment.getLocalGraphicsEnvironment();
 		Rectangle maxSize = env.getMaximumWindowBounds();
 		if ((maxSize.getWidth() < image.widthRoi() + 200) || (maxSize.getHeight() < image.heightRoi() + 200)) {
@@ -334,6 +364,10 @@ public class MainWindow {
 
 	static JLabel lblBrillo;
 	static JLabel lblFormato;
+
+	public static JLabel lblPixelValue;
+
+	public static JLabel lblDimensiones;
 	
 	public static void showInfo() {
 		Image image = getImage();
@@ -343,8 +377,9 @@ public class MainWindow {
 		lblB.setText("B: [" + info.minB + ", " + info.maxB + "]");
 		lblBrillo.setText("Brillo: " + info.brillo);
 		lblContraste.setText("Contraste: " + info.contraste);
-		lblEntropa.setText("Entrop\u00EDa: " + info.entropia);
+		lblEntropa.setText("Entrop\u00EDa: " + Math.rint(info.entropia * 1000) / 1000);
 		lblFormato.setText("Formato: " + image.format);
+		lblDimensiones.setText("Ancho=" + image.widthRoi() + ", Alto=" + image.heightRoi());
 	}
 
 	public static Image getImage() {

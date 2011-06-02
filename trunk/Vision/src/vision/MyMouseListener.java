@@ -21,7 +21,7 @@ public class MyMouseListener implements MouseListener, MouseMotionListener {
 
 	@Override
 	public void mouseExited(MouseEvent e) {
-		MainWindow.infoLabel.setText("");
+		MainWindow.lblPixelPos.setText("");
 	}
 
 	@Override
@@ -47,9 +47,11 @@ public class MyMouseListener implements MouseListener, MouseMotionListener {
 		ImagePanel panel = (ImagePanel) e.getComponent();
 		Point p = panel.getCoordinate(e.getX(), e.getY());
 		if (p == null){
-			MainWindow.infoLabel.setText("");
+			MainWindow.lblPixelPos.setText("");
+			MainWindow.lblPixelValue.setText("");
 			return;
 		}
-		MainWindow.infoLabel.setText("Pixel: (x=" + p.x + ", y=" + p.y + "),  Value: " + vision.Image.getString(panel.img.getRGB(p.x, p.y)));
+		MainWindow.lblPixelPos.setText("Pixel: (x=" + p.x + ", y=" + p.y + ")");
+		MainWindow.lblPixelValue.setText("Value: " + vision.Image.getString(panel.img.getRGB(p.x, p.y)));
 	}
 }
