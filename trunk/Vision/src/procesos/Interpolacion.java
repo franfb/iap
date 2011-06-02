@@ -12,8 +12,8 @@ public class Interpolacion {
         int x1 = src.x + (int)Math.ceil(xf);
         int y0 = src.y + (int)yf;
         int y1 = src.y + (int)Math.ceil(yf);
-        float p = xf - x0;
-        float q = yf - y0;
+        float p = (xf + src.x) - x0;
+        float q = (yf + src.y) - y0;
 		
 		int[] a = Image.rgb2array(im.img.getRGB(x0, y0));
 		int[] b = Image.rgb2array(im.img.getRGB(x1, y0));
