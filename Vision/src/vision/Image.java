@@ -22,7 +22,7 @@ public class Image {
 		this.format = ImageFilter.getExtension(file);
 		this.saved = saved;
 		panel = new ImagePanel(this);
-		this.info = getInfo();
+		//this.info = getInfo();
 	}
 
 	public ImageInfo getInfo() {
@@ -69,6 +69,16 @@ public class Image {
 	            inf.contraste += inf.hist[i] * Math.pow((double)(i - inf.brillo), 2);
 	        }
 	        inf.contraste = Math.round((float)Math.sqrt((1/(double)(widthRoi() * heightRoi())) * inf.contraste));
+	        
+	        // Calculamos la entropía de la imagen a partir del histograma
+	        inf.entropia = 0;
+	        for(int i = 0; i < inf.hist.length; i++) {
+	            if (inf.hist[i] > 0) {
+	                double prob = ((double)inf.hist[i] / (double)(widthRoi() * heightRoi()));
+	                double logProb = Math.log10(prob)/Math.log10(2);
+	                inf.entropia = inf.entropia - (prob*logProb);
+	            }
+	        }
 			
 	        if (info == null) info = inf;
 	        
@@ -77,6 +87,11 @@ public class Image {
 		else {
 			return info;
 		}
+	}
+	
+	public void resetInfo() {
+		this.info = null;
+		this.getInfo();
 	}
 
 	public void cambiarFile(File file) {

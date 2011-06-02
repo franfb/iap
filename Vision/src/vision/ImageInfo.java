@@ -5,7 +5,7 @@ public class ImageInfo {
 	public int[] histAc, histAcR, histAcG, histAcB;
 	public int minR, maxR, minG, maxG, minB, maxB;
 	public int brillo, contraste;
-	public int entropia;
+	public double entropia;
 	
 	public static final int NIVELES = 256;
 	
