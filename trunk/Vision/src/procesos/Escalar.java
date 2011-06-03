@@ -3,7 +3,6 @@ package procesos;
 import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.File;
 
 import javax.swing.ButtonGroup;
 import javax.swing.JRadioButton;
@@ -11,14 +10,15 @@ import javax.swing.SpinnerNumberModel;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
+import dialogs.ZoomDialog;
+
 import vision.Image;
 import vision.MainWindow;
-import vision.ZoomDialog;
 
 public class Escalar {
 	
 	public static void run(){
-		final Image image = MainWindow.getImage();
+		final Image image = MainWindow.getCurrentImage();
 		final ZoomDialog dialog = new ZoomDialog();
 		dialog.porcentaje.setSelected(false);
 		dialog.dimensiones.setSelected(false);
@@ -104,7 +104,6 @@ public class Escalar {
 		dialog.okButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				dialog.setVisible(false);
-				File newFile = new File(image.file.getParent(), "Escalado de " + image.file.getName());
 				int width = (Integer) dialog.dimensionesX.getValue();
 				int height = (Integer) dialog.dimensionesY.getValue();
 				
@@ -112,7 +111,7 @@ public class Escalar {
 				
 				float escalaX = (width - 1) / ((float)image.widthRoi() - 1);
 				float escalaY = (height - 1) / ((float)image.heightRoi() - 1);
-				Image newImage = Image.crearImagen(width, height, newFile);
+				Image newImage = Image.crearImagen(width, height, image, "Escalado de ");
 				Point src = image.topLeftRoi();
 				for (int x = 0; x < newImage.widthRoi(); x++){
 					for (int y = 0; y < newImage.heightRoi(); y++){

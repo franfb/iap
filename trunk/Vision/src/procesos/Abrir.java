@@ -23,7 +23,7 @@ public class Abrir {
 			File file = MainWindow.chooser.getSelectedFile();
 			try {
 				BufferedImage img = ImageIO.read(file);
-				Image image = new Image(file, img, true);
+				Image image = new Image(file, "", img, true);
 				MainWindow.insertAndListenImage(image);
 			} catch (IOException e) {
 				e.printStackTrace();

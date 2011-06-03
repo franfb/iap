@@ -3,16 +3,16 @@ package procesos;
 import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.File;
 
-import vision.CuantizarDialog;
+import dialogs.CuantizarDialog;
+
 import vision.Image;
 import vision.MainWindow;
 
 public class Cuantizar {
 	
 	public static void run(){
-		final Image image = MainWindow.getImage();
+		final Image image = MainWindow.getCurrentImage();
 		final CuantizarDialog dialog = new CuantizarDialog();
 		
 		dialog.cancelButton.addActionListener(new ActionListener() {
@@ -27,8 +27,7 @@ public class Cuantizar {
 				int niveles = dialog.getNiveles();
 				boolean rgb = dialog.isRGB();
 				
-				File newFile = new File(image.file.getParent(), "Cuantizacion de " + image.file.getName());
-				Image newImage = Image.crearImagen(image.widthRoi(), image.heightRoi(), newFile);
+				Image newImage = Image.crearImagen(image.widthRoi(), image.heightRoi(), image, "Cuantizacion de ");
 				
 				Point src = image.topLeftRoi();
 				for (int x = 0; x < image.widthRoi(); x++){

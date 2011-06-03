@@ -1,7 +1,6 @@
 package procesos;
 
 import java.awt.Point;
-import java.io.File;
 
 import vision.Image;
 import vision.MainWindow;
@@ -9,9 +8,8 @@ import vision.MainWindow;
 public class Traspuesta {
 	
 	public static void run(){
-		final Image image = MainWindow.getImage();
-		File newFile = new File(image.file.getParent(), "Traspuesta de " + image.file.getName());
-		Image newImage = Image.crearImagen(image.heightRoi(), image.widthRoi(), newFile);
+		final Image image = MainWindow.getCurrentImage();
+		Image newImage = Image.crearImagen(image.heightRoi(), image.widthRoi(), image, "Traspuesta de ");
 		Point src = image.topLeftRoi();
 		for (int x = 0; x < newImage.widthRoi(); x++){
 			for (int y = 0; y < newImage.heightRoi(); y++){

@@ -11,13 +11,13 @@ import vision.MainWindow;
 public class GuardarComo {
 	
 	public static void run(){
-		Image image = MainWindow.getImage();
-		MainWindow.chooser.setSelectedFile(image.file);
+		Image image = MainWindow.getCurrentImage();
+		MainWindow.chooser.setSelectedFile(image.getFileCompleto());
 		int returnValue = MainWindow.chooser.showSaveDialog(MainWindow.frame);
 		if (returnValue == JFileChooser.APPROVE_OPTION) {
 			image.cambiarFile(MainWindow.chooser.getSelectedFile());
 			try {
-				ImageIO.write(image.img, image.format, image.file);
+				ImageIO.write(image.img, image.format, image.getFileCompleto());
 				image.saved = true;
 				MainWindow.changeImageTitle(image);
 			} catch (IOException e) {

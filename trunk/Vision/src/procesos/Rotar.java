@@ -3,20 +3,20 @@ package procesos;
 import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.File;
 
 import javax.swing.ButtonGroup;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
+import dialogs.RotateDialog;
+
 import vision.Image;
 import vision.MainWindow;
-import vision.RotateDialog;
 
 public class Rotar {
 	
 	public static void run(){
-		final Image image = MainWindow.getImage();
+		final Image image = MainWindow.getCurrentImage();
 		final RotateDialog dialog = new RotateDialog();
 
 		dialog.rbRotar90.setSelected(false);
@@ -109,8 +109,7 @@ public class Rotar {
 	public static Image rotar90(Image im) {
 		int width = im.heightRoi();
 		int height = im.widthRoi();
-		File newFile = new File(im.file.getParent(), "Rotación de " + im.file.getName());
-        Image newIm = Image.crearImagen(width, height, newFile);
+        Image newIm = Image.crearImagen(width, height, im, "Rotación de ");
         Point src = im.topLeftRoi();
         for (int x = 0; x < width; x++) {
         	for (int y = 0; y < height; y++) {
@@ -124,8 +123,7 @@ public class Rotar {
 	public static Image rotar180(Image im) {
 		int width = im.widthRoi();
 		int height = im.heightRoi();
-		File newFile = new File(im.file.getParent(), "Rotación de " + im.file.getName());
-        Image newIm = Image.crearImagen(width, height, newFile);
+		Image newIm = Image.crearImagen(width, height, im, "Rotación de ");
         Point src = im.topLeftRoi();
         for (int x = 0; x < width; x++) {
         	for (int y = 0; y < height; y++) {
@@ -139,8 +137,7 @@ public class Rotar {
 	public static Image rotar270(Image im) {
 		int width = im.heightRoi();
 		int height = im.widthRoi();
-		File newFile = new File(im.file.getParent(), "Rotación de " + im.file.getName());
-        Image newIm = Image.crearImagen(width, height, newFile);
+		Image newIm = Image.crearImagen(width, height, im, "Rotación de ");
         Point src = im.topLeftRoi();
         for (int x = 0; x < width; x++) {
         	for (int y = 0; y < height; y++) {
@@ -159,8 +156,7 @@ public class Rotar {
         double radianes = Math.toRadians((double)grados);
         int width = (int)(Math.ceil(im.widthRoi() * Math.abs(Math.cos(radianes))) + Math.ceil(im.heightRoi() * Math.abs(Math.sin(radianes))));
         int height  = (int)(Math.ceil(im.widthRoi() * Math.abs(Math.sin(radianes))) + Math.ceil(im.heightRoi() * Math.abs(Math.cos(radianes))));
-        File newFile = new File(im.file.getParent(), "Rotación de " + im.file.getName());
-        Image newIm = Image.crearImagen(width, height, newFile);
+        Image newIm = Image.crearImagen(width, height, im, "Rotación de ");
         
         
         double offX, offY;

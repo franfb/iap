@@ -10,9 +10,9 @@ import vision.MainWindow;
 public class Guardar {
 	
 	public static void run() {
-		Image image = MainWindow.getImage();
+		Image image = MainWindow.getCurrentImage();
 		try {
-			ImageIO.write(image.img, image.format, image.file);
+			ImageIO.write(image.img, image.format, image.getFileCompleto());
 			image.saved = true;
 			MainWindow.changeImageTitle(image);
 		} catch (IOException e) {
