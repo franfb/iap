@@ -3,20 +3,20 @@ package procesos;
 import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.File;
 
 import javax.swing.SpinnerNumberModel;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
+import dialogs.MuestrearDialog;
+
 import vision.Image;
 import vision.MainWindow;
-import vision.MuestrearDialog;
 
 public class Muestrear {
 	
 	public static void run(){
-		final Image image = MainWindow.getImage();
+		final Image image = MainWindow.getCurrentImage();
 		final MuestrearDialog dialog = new MuestrearDialog();
 		ChangeListener change = new ChangeListener() {
 			public void stateChanged(ChangeEvent arg0) {
@@ -46,8 +46,7 @@ public class Muestrear {
 			public void actionPerformed(ActionEvent arg0) {
 				dialog.setVisible(false);
 
-				File newFile = new File(image.file.getParent(), "Muestreo de " + image.file.getName());
-				Image newImage = Image.crearImagen(image.widthRoi(), image.heightRoi(), newFile);
+				Image newImage = Image.crearImagen(image.widthRoi(), image.heightRoi(), image, "Muestreo de ");
 				
 				int anchoMuestreo = (Integer) dialog.anchoSpinner.getValue();
 				int altoMuestreo = (Integer) dialog.altoSpinner.getValue();

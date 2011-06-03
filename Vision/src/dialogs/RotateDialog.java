@@ -1,4 +1,4 @@
-package vision;
+package dialogs;
 
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;

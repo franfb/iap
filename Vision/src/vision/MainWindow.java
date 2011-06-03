@@ -341,6 +341,18 @@ public class MainWindow {
 			}
 		});
 		mnTransformacion.add(mntmRotar);
+		
+		JMenu mnMiscelnea = new JMenu("Miscel\u00E1nea");
+		Menu.opcionesMenu.add(mnMiscelnea);
+		menuBar_1.add(mnMiscelnea);
+		
+		JMenuItem mntmDiferencia = new JMenuItem("Diferencia");
+		mntmDiferencia.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				Diferencias.run();
+			}
+		});
+		mnMiscelnea.add(mntmDiferencia);
 
 	}
 
@@ -354,7 +366,7 @@ public class MainWindow {
 	}
 
 	public static void changeSize() {
-		Image image = getImage();
+		Image image = getCurrentImage();
 		GraphicsEnvironment env = GraphicsEnvironment.getLocalGraphicsEnvironment();
 		Rectangle maxSize = env.getMaximumWindowBounds();
 		if ((maxSize.getWidth() < image.widthRoi() + 200) || (maxSize.getHeight() < image.heightRoi() + 200)) {
@@ -378,7 +390,7 @@ public class MainWindow {
 	public static JLabel lblDimensiones;
 	
 	public static void showInfo() {
-		Image image = getImage();
+		Image image = getCurrentImage();
 		ImageInfo info = image.getInfo();
 		lblR.setText("R: [" + info.minR + ", " + info.maxR + "]");
 		lblG.setText("G: [" + info.minG + ", " + info.maxG + "]");
@@ -390,12 +402,20 @@ public class MainWindow {
 		lblDimensiones.setText("Ancho=" + image.widthRoi() + ", Alto=" + image.heightRoi());
 	}
 
-	public static Image getImage() {
+	public static Image getCurrentImage() {
 		return getImage(tabbedPane.getSelectedIndex());
 	}
 
+	public static int getImageCount(){
+		return tabbedPane.getTabCount();
+	}
+	
+	public static int getCurrentImageIndex(){
+		return tabbedPane.getSelectedIndex();
+	}
+	
 	public static void changeImageTitle(Image image) {
-		String title = image.file.getName();
+		String title = image.getFileCompleto().getName();
 		if (!image.saved) {
 			title = "* " + title;
 		}

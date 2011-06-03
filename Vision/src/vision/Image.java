@@ -6,23 +6,23 @@ import java.io.File;
 
 public class Image {
 
-	public File file;
+	private File file;
+	private String prefijo;
+	
 	public BufferedImage img;
 	public ImagePanel panel;
 	public boolean saved;
 	// Atributos para guardar la información de la imagen
 	public String format;
 	private ImageInfo info;
-
-	public Image(File file, BufferedImage img, boolean saved) {
-		Integer g;
-
+	
+	public Image(File file, String prefijo, BufferedImage img, boolean saved) {
 		this.file = file;
+		this.prefijo = prefijo;
 		this.img = img;
 		this.format = ImageFilter.getExtension(file);
 		this.saved = saved;
 		panel = new ImagePanel(this);
-		//this.info = getInfo();
 	}
 
 	public ImageInfo getInfo() {
@@ -94,8 +94,20 @@ public class Image {
 		this.getInfo();
 	}
 
+	public File getFileCompleto(){
+		return new File(file.getParent(), prefijo + file.getName());
+	}
+	
+	public File getFileOriginal(){
+		return file;
+	}
+	
 	public void cambiarFile(File file) {
+		if (file.getAbsolutePath().compareTo(getFileCompleto().getAbsolutePath()) == 0){
+			return;
+		}
 		this.file = file;
+		this.prefijo = "";
 		this.format = ImageFilter.getExtension(file);
 	}
 
@@ -123,10 +135,21 @@ public class Image {
 			return panel.getBottomRightRoi().y - panel.getTopLeftRoi().y + 1;
 		}
 	}
-
-	public static Image crearImagen(int width, int height, File filename) {
+	
+	/*public static Image crearImagen(int width, int height, File filename) {
 		return new Image(filename, new BufferedImage(width, height,
 				BufferedImage.TYPE_INT_RGB), false);
+	}*/
+	
+	public static Image crearImagen(int width, int height, Image img, String prefijo) {
+		if (img.prefijo.compareTo("") != 0){
+			return new Image(img.getFileOriginal(), "Edición de " , new BufferedImage(width, height,
+					BufferedImage.TYPE_INT_RGB), false);
+		}
+		else{
+			return new Image(img.getFileOriginal(), prefijo, new BufferedImage(width, height,
+					BufferedImage.TYPE_INT_RGB), false);
+		}
 	}
 
 	public static String getString(int value) {
