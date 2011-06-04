@@ -3,6 +3,8 @@ package procesos;
 import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 
 import javax.swing.ButtonGroup;
 import javax.swing.event.ChangeEvent;
@@ -19,43 +21,69 @@ public class Rotar {
 		final Image image = MainWindow.getCurrentImage();
 		final RotateDialog dialog = new RotateDialog();
 
-		dialog.rbRotar90.setSelected(false);
-		dialog.rbRotar180.setSelected(false);
-		dialog.rbRotar270.setSelected(false);
+//		dialog.rbRotar180.setSelected(false);
+//		dialog.rbRotar270.setSelected(false);
 		
 		ButtonGroup groupMultiplos = new ButtonGroup();
 		groupMultiplos.add(dialog.rbRotar90);
 		groupMultiplos.add(dialog.rbRotar180);
 		groupMultiplos.add(dialog.rbRotar270);
+		groupMultiplos.add(dialog.rbPersonalizarAngulo);
 		
-		final ChangeListener changeAngulo = new ChangeListener() {
+		dialog.rbRotar90.setSelected(true);
+		dialog.spRotarAngulo.setEnabled(false);
+		
+//		dialog.rbVmp.setSelected(false);
+		
+		ButtonGroup groupInterpolacion = new ButtonGroup();
+		groupInterpolacion.add(dialog.rbBilineal);
+		groupInterpolacion.add(dialog.rbVmp);
+		
+		dialog.rbBilineal.setSelected(true);
+		
+		final MouseListener changeMultiplo = new MouseListener() {
 			
 			@Override
-			public void stateChanged(ChangeEvent e) {
-				comprobarAngulo(dialog);
+			public void mouseReleased(MouseEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void mousePressed(MouseEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void mouseExited(MouseEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void mouseEntered(MouseEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void mouseClicked(MouseEvent arg0) {
+				if ((dialog.rbRotar90.isSelected()) 
+						|| (dialog.rbRotar180.isSelected()) 
+						|| (dialog.rbRotar270.isSelected())) {
+					dialog.spRotarAngulo.setEnabled(false);
+				}
+				else if (dialog.rbPersonalizarAngulo.isSelected()) {
+					dialog.spRotarAngulo.setEnabled(true);
+				}
 			}
 		};
 		
-		final ChangeListener changeMultiplo = new ChangeListener() {
-			
-			@Override
-			public void stateChanged(ChangeEvent e) {
-				if (dialog.rbRotar90.isSelected()){
-					dialog.spRotarAngulo.setValue(90);
-				}
-				else if (dialog.rbRotar180.isSelected()){
-					dialog.spRotarAngulo.setValue(180);
-				}
-				else if (dialog.rbRotar270.isSelected()){
-					dialog.spRotarAngulo.setValue(270);
-				}
-			}
-		};
-		
-		dialog.spRotarAngulo.addChangeListener(changeAngulo);
-		//dialog.rbRotar90.addChangeListener(changeMultiplo);
-		//dialog.rbRotar180.addChangeListener(changeMultiplo);
-		//dialog.rbRotar270.addChangeListener(changeMultiplo);
+		dialog.rbRotar90.addMouseListener(changeMultiplo);
+		dialog.rbRotar180.addMouseListener(changeMultiplo);
+		dialog.rbRotar270.addMouseListener(changeMultiplo);
+		dialog.rbPersonalizarAngulo.addMouseListener(changeMultiplo);
 		
 		dialog.cancelButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
@@ -64,32 +92,31 @@ public class Rotar {
 		});
 		dialog.okButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				comprobarAngulo(dialog);
+//				comprobarAngulo(dialog);
 				dialog.setVisible(false);
 				// Cálculo de las dimensiones de la nueva imagen
-				Image newImage;
-				int angulo = 0;
-				if (dialog.rbRotar90.isSelected()){
+				Image newImage = null;
+				int angulo = (Integer) dialog.spRotarAngulo.getValue();
+				if ((dialog.rbRotar90.isSelected()) || (angulo == 90)){
 					newImage = rotar90(image);
 				}
-				else if (dialog.rbRotar180.isSelected()){
+				else if ((dialog.rbRotar180.isSelected()) || (angulo == 180)) {
 					newImage = rotar180(image);
 				}
-				else if (dialog.rbRotar270.isSelected()){
+				else if ((dialog.rbRotar270.isSelected()) || (angulo == 270)) {
 					newImage = rotar270(image);
 				}
-				else{
-					angulo = (Integer) dialog.spRotarAngulo.getValue();
-					newImage = rotar(image, angulo, true);
+				else if (angulo != 0){
+					newImage = rotar(image, angulo, dialog.rbBilineal.isSelected());
 				}
-				
-				MainWindow.insertAndListenImage(newImage);
+				if (newImage != null)
+					MainWindow.insertAndListenImage(newImage);
 			}
 		});
 		dialog.setVisible(true);
 	}
 	
-	private static void comprobarAngulo(RotateDialog dialog) {
+	/*private static void comprobarAngulo(RotateDialog dialog) {
 		if ((Integer)dialog.spRotarAngulo.getValue() == 90) {
 			dialog.rbRotar90.setSelected(true);
 		}
@@ -100,11 +127,9 @@ public class Rotar {
 			dialog.rbRotar270.setSelected(true);
 		}
 		else {
-			dialog.rbRotar90.setSelected(false);
-			dialog.rbRotar180.setSelected(false);
-			dialog.rbRotar270.setSelected(false);
+			dialog.rbPersonalizarAngulo.setSelected(true);
 		}
-	}
+	}*/
 	
 	public static Image rotar90(Image im) {
 		int width = im.heightRoi();
@@ -176,8 +201,19 @@ public class Rotar {
         
         long pixelsOut = 0;
         
+        //MainWindow.startOperation(newIm.widthRoi() * newIm.heightRoi());
+        MainWindow.startOperation(100);
+//        int paso = newIm.widthRoi() * newIm.heightRoi() / 100;
+//        int i = 0;
         for (int x = 0; x < newIm.widthRoi(); x++) {
             for (int y = 0; y < newIm.heightRoi(); y++) {
+//            	i++;
+//            	if (i == paso) {
+//            		i = 0;
+//            	MainWindow.incProgressBar();
+//            	MainWindow.progressBar.repaint();
+//            	}
+            	
                 double i0 = x + offX;
                 double j0 = y + offY;
                 
@@ -200,7 +236,7 @@ public class Rotar {
             }
         }
         //calculaInfoRotaciones(newIm, pixelsOut);
-        
+        MainWindow.endOperation();
         
         return newIm;
 	}
