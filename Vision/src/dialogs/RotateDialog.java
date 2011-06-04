@@ -27,6 +27,9 @@ public class RotateDialog extends JDialog {
 	public JRadioButton rbRotar270;
 	public JButton okButton;
 	public JButton cancelButton;
+	public JRadioButton rbBilineal;
+	public JRadioButton rbVmp;
+	public JRadioButton rbPersonalizarAngulo;
 
 	/**
 	 * Launch the application.
@@ -47,7 +50,7 @@ public class RotateDialog extends JDialog {
 	public RotateDialog() {
 		setTitle("Rotar Imagen");
 		setModal(true);
-		setBounds(100, 100, 220, 219);
+		setBounds(100, 100, 220, 241);
 		getContentPane().setLayout(new BorderLayout());
 		contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
 		getContentPane().add(contentPanel, BorderLayout.CENTER);
@@ -55,68 +58,78 @@ public class RotateDialog extends JDialog {
 		JPanel panel = new JPanel();
 		panel.setBorder(new TitledBorder(UIManager.getBorder("TitledBorder.border"), "M\u00FAltiplos de 90", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(0, 0, 0)));
 		
-		JPanel panel_1 = new JPanel();
-		panel_1.setBorder(new TitledBorder(null, "\u00C1ngulo Arbitrario", TitledBorder.LEADING, TitledBorder.TOP, null, null));
+		JPanel panel_2 = new JPanel();
+		panel_2.setBorder(new TitledBorder(null, "Interpolaci\u00F3n", TitledBorder.LEADING, TitledBorder.TOP, null, null));
 		GroupLayout gl_contentPanel = new GroupLayout(contentPanel);
 		gl_contentPanel.setHorizontalGroup(
 			gl_contentPanel.createParallelGroup(Alignment.TRAILING)
 				.addGroup(gl_contentPanel.createSequentialGroup()
 					.addContainerGap()
-					.addGroup(gl_contentPanel.createParallelGroup(Alignment.LEADING)
-						.addComponent(panel_1, GroupLayout.DEFAULT_SIZE, 201, Short.MAX_VALUE)
-						.addComponent(panel, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+					.addGroup(gl_contentPanel.createParallelGroup(Alignment.TRAILING)
+						.addComponent(panel_2, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 172, Short.MAX_VALUE)
+						.addComponent(panel, Alignment.LEADING, GroupLayout.PREFERRED_SIZE, 172, Short.MAX_VALUE))
 					.addContainerGap())
 		);
 		gl_contentPanel.setVerticalGroup(
 			gl_contentPanel.createParallelGroup(Alignment.LEADING)
 				.addGroup(gl_contentPanel.createSequentialGroup()
 					.addContainerGap()
-					.addComponent(panel, GroupLayout.PREFERRED_SIZE, 55, GroupLayout.PREFERRED_SIZE)
+					.addComponent(panel, GroupLayout.PREFERRED_SIZE, 84, GroupLayout.PREFERRED_SIZE)
 					.addPreferredGap(ComponentPlacement.RELATED)
-					.addComponent(panel_1, GroupLayout.PREFERRED_SIZE, 57, Short.MAX_VALUE)
+					.addComponent(panel_2, GroupLayout.PREFERRED_SIZE, 55, Short.MAX_VALUE)
 					.addContainerGap())
 		);
 		
-		spRotarAngulo = new JSpinner();
-		spRotarAngulo.setModel(new SpinnerNumberModel(0, -359, 359, 1));
+		rbBilineal = new JRadioButton("Bilineal");
 		
-		JLabel lblGrados = new JLabel("Grados");
-		GroupLayout gl_panel_1 = new GroupLayout(panel_1);
-		gl_panel_1.setHorizontalGroup(
-			gl_panel_1.createParallelGroup(Alignment.LEADING)
-				.addGroup(Alignment.TRAILING, gl_panel_1.createSequentialGroup()
+		rbVmp = new JRadioButton("VMP");
+		GroupLayout gl_panel_2 = new GroupLayout(panel_2);
+		gl_panel_2.setHorizontalGroup(
+			gl_panel_2.createParallelGroup(Alignment.LEADING)
+				.addGroup(gl_panel_2.createSequentialGroup()
 					.addContainerGap()
-					.addComponent(lblGrados)
-					.addPreferredGap(ComponentPlacement.RELATED, 19, Short.MAX_VALUE)
-					.addComponent(spRotarAngulo, GroupLayout.PREFERRED_SIZE, 70, GroupLayout.PREFERRED_SIZE)
-					.addContainerGap())
+					.addComponent(rbBilineal)
+					.addGap(18)
+					.addComponent(rbVmp)
+					.addContainerGap(34, Short.MAX_VALUE))
 		);
-		gl_panel_1.setVerticalGroup(
-			gl_panel_1.createParallelGroup(Alignment.LEADING)
-				.addGroup(gl_panel_1.createSequentialGroup()
-					.addGroup(gl_panel_1.createParallelGroup(Alignment.BASELINE)
-						.addComponent(spRotarAngulo, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-						.addComponent(lblGrados))
-					.addContainerGap(16, Short.MAX_VALUE))
+		gl_panel_2.setVerticalGroup(
+			gl_panel_2.createParallelGroup(Alignment.LEADING)
+				.addGroup(gl_panel_2.createSequentialGroup()
+					.addGroup(gl_panel_2.createParallelGroup(Alignment.BASELINE)
+						.addComponent(rbBilineal)
+						.addComponent(rbVmp))
+					.addContainerGap(46, Short.MAX_VALUE))
 		);
-		panel_1.setLayout(gl_panel_1);
+		panel_2.setLayout(gl_panel_2);
 		
 		rbRotar90 = new JRadioButton("90\u00BA");
 		
 		rbRotar180 = new JRadioButton("180\u00BA");
 		
 		rbRotar270 = new JRadioButton("270\u00BA");
+		
+		rbPersonalizarAngulo = new JRadioButton("Personalizar");
+		
+		spRotarAngulo = new JSpinner();
+		spRotarAngulo.setModel(new SpinnerNumberModel(0, -359, 359, 1));
 		GroupLayout gl_panel = new GroupLayout(panel);
 		gl_panel.setHorizontalGroup(
 			gl_panel.createParallelGroup(Alignment.LEADING)
 				.addGroup(gl_panel.createSequentialGroup()
 					.addContainerGap()
-					.addComponent(rbRotar90)
-					.addPreferredGap(ComponentPlacement.UNRELATED)
-					.addComponent(rbRotar180)
-					.addPreferredGap(ComponentPlacement.UNRELATED)
-					.addComponent(rbRotar270)
-					.addContainerGap(7, Short.MAX_VALUE))
+					.addGroup(gl_panel.createParallelGroup(Alignment.LEADING)
+						.addGroup(gl_panel.createSequentialGroup()
+							.addComponent(rbRotar90)
+							.addPreferredGap(ComponentPlacement.UNRELATED)
+							.addComponent(rbRotar180)
+							.addPreferredGap(ComponentPlacement.UNRELATED)
+							.addComponent(rbRotar270))
+						.addGroup(gl_panel.createSequentialGroup()
+							.addComponent(rbPersonalizarAngulo)
+							.addPreferredGap(ComponentPlacement.UNRELATED)
+							.addComponent(spRotarAngulo, GroupLayout.DEFAULT_SIZE, 70, Short.MAX_VALUE)))
+					.addContainerGap())
 		);
 		gl_panel.setVerticalGroup(
 			gl_panel.createParallelGroup(Alignment.LEADING)
@@ -125,7 +138,11 @@ public class RotateDialog extends JDialog {
 						.addComponent(rbRotar90)
 						.addComponent(rbRotar180)
 						.addComponent(rbRotar270))
-					.addContainerGap(26, Short.MAX_VALUE))
+					.addPreferredGap(ComponentPlacement.UNRELATED)
+					.addGroup(gl_panel.createParallelGroup(Alignment.BASELINE)
+						.addComponent(rbPersonalizarAngulo)
+						.addComponent(spRotarAngulo, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+					.addContainerGap(13, Short.MAX_VALUE))
 		);
 		panel.setLayout(gl_panel);
 		contentPanel.setLayout(gl_contentPanel);

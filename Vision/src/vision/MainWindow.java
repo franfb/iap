@@ -33,6 +33,7 @@ import java.awt.Color;
 import javax.swing.KeyStroke;
 import java.awt.event.KeyEvent;
 import java.awt.event.InputEvent;
+import javax.swing.JProgressBar;
 
 public class MainWindow {
 
@@ -89,7 +90,7 @@ public class MainWindow {
 		chooser =  new JFileChooser();
 		frame = new JFrame();
 		frame.setTitle("Visión por ordenador.  Curso 2010 / 2011.");
-		frame.setBounds(100, 100, 635, 449);
+		frame.setBounds(100, 100, 820, 639);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
 		listener = new MyMouseListener();
@@ -118,14 +119,14 @@ public class MainWindow {
 		groupLayout.setHorizontalGroup(
 			groupLayout.createParallelGroup(Alignment.TRAILING)
 				.addGroup(groupLayout.createSequentialGroup()
-					.addComponent(tabbedPane, GroupLayout.DEFAULT_SIZE, 405, Short.MAX_VALUE)
+					.addComponent(tabbedPane, GroupLayout.DEFAULT_SIZE, 502, Short.MAX_VALUE)
 					.addPreferredGap(ComponentPlacement.RELATED)
-					.addComponent(panel, GroupLayout.PREFERRED_SIZE, 206, GroupLayout.PREFERRED_SIZE))
+					.addComponent(panel, GroupLayout.PREFERRED_SIZE, 445, GroupLayout.PREFERRED_SIZE))
 		);
 		groupLayout.setVerticalGroup(
 			groupLayout.createParallelGroup(Alignment.LEADING)
-				.addComponent(tabbedPane, Alignment.TRAILING, GroupLayout.DEFAULT_SIZE, 382, Short.MAX_VALUE)
-				.addComponent(panel, Alignment.TRAILING, GroupLayout.DEFAULT_SIZE, 382, Short.MAX_VALUE)
+				.addComponent(tabbedPane, Alignment.TRAILING, GroupLayout.DEFAULT_SIZE, 521, Short.MAX_VALUE)
+				.addComponent(panel, Alignment.TRAILING, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
 		);
 
 		JLabel lblRangoDinamico = new JLabel("Rango Din\u00E1mico");
@@ -163,28 +164,36 @@ public class MainWindow {
 		lblDimensiones = new JLabel("");
 		InfoLabels.listaEtiquetas.add(lblDimensiones);
 		
+		progressBar = new JProgressBar();
+		progressBar.setVisible(false);
+		
+		panelHistograma = new JPanel();
+		
 		
 		GroupLayout gl_panel = new GroupLayout(panel);
 		gl_panel.setHorizontalGroup(
 			gl_panel.createParallelGroup(Alignment.LEADING)
-				.addGroup(gl_panel.createSequentialGroup()
+				.addGroup(Alignment.TRAILING, gl_panel.createSequentialGroup()
 					.addContainerGap()
-					.addGroup(gl_panel.createParallelGroup(Alignment.LEADING)
-						.addComponent(lblRangoDinamico)
-						.addGroup(gl_panel.createSequentialGroup()
-							.addGap(10)
-							.addGroup(gl_panel.createParallelGroup(Alignment.LEADING)
-								.addComponent(lblG)
-								.addComponent(lblR)
-								.addComponent(lblB)))
-						.addComponent(lblBrillo)
-						.addComponent(lblContraste)
-						.addComponent(lblEntropa)
-						.addComponent(lblFormato)
-						.addComponent(lblDimensiones, GroupLayout.PREFERRED_SIZE, 174, GroupLayout.PREFERRED_SIZE)
-						.addComponent(lblPixelPos, GroupLayout.PREFERRED_SIZE, 174, GroupLayout.PREFERRED_SIZE)
-						.addComponent(lblPixelValue, GroupLayout.PREFERRED_SIZE, 174, GroupLayout.PREFERRED_SIZE))
-					.addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+					.addGroup(gl_panel.createParallelGroup(Alignment.TRAILING)
+						.addComponent(panelHistograma, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 262, Short.MAX_VALUE)
+						.addGroup(Alignment.LEADING, gl_panel.createParallelGroup(Alignment.LEADING, false)
+							.addComponent(lblRangoDinamico)
+							.addGroup(gl_panel.createSequentialGroup()
+								.addGap(10)
+								.addGroup(gl_panel.createParallelGroup(Alignment.LEADING)
+									.addComponent(lblG)
+									.addComponent(lblR)
+									.addComponent(lblB)))
+							.addComponent(lblBrillo)
+							.addComponent(lblContraste)
+							.addComponent(lblEntropa)
+							.addComponent(lblFormato)
+							.addComponent(lblDimensiones, GroupLayout.DEFAULT_SIZE, 174, Short.MAX_VALUE)
+							.addComponent(lblPixelPos, GroupLayout.DEFAULT_SIZE, 174, Short.MAX_VALUE)
+							.addComponent(lblPixelValue, GroupLayout.DEFAULT_SIZE, 174, Short.MAX_VALUE))
+						.addComponent(progressBar, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 174, Short.MAX_VALUE))
+					.addContainerGap())
 		);
 		gl_panel.setVerticalGroup(
 			gl_panel.createParallelGroup(Alignment.LEADING)
@@ -210,8 +219,21 @@ public class MainWindow {
 					.addComponent(lblPixelPos, GroupLayout.PREFERRED_SIZE, 17, GroupLayout.PREFERRED_SIZE)
 					.addPreferredGap(ComponentPlacement.RELATED)
 					.addComponent(lblPixelValue, GroupLayout.PREFERRED_SIZE, 17, GroupLayout.PREFERRED_SIZE)
-					.addContainerGap(132, Short.MAX_VALUE))
+					.addPreferredGap(ComponentPlacement.UNRELATED)
+					.addComponent(panelHistograma, GroupLayout.DEFAULT_SIZE, 235, Short.MAX_VALUE)
+					.addPreferredGap(ComponentPlacement.UNRELATED)
+					.addComponent(progressBar, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
 		);
+		GroupLayout gl_panelHistograma = new GroupLayout(panelHistograma);
+		gl_panelHistograma.setHorizontalGroup(
+			gl_panelHistograma.createParallelGroup(Alignment.LEADING)
+				.addGap(0, 262, Short.MAX_VALUE)
+		);
+		gl_panelHistograma.setVerticalGroup(
+			gl_panelHistograma.createParallelGroup(Alignment.LEADING)
+				.addGap(0, 235, Short.MAX_VALUE)
+		);
+		panelHistograma.setLayout(gl_panelHistograma);
 		panel.setLayout(gl_panel);
 		frame.getContentPane().setLayout(groupLayout);
 
@@ -388,6 +410,25 @@ public class MainWindow {
 	public static JLabel lblPixelValue;
 
 	public static JLabel lblDimensiones;
+
+	public static JProgressBar progressBar;
+
+	public static JPanel panelHistograma;
+	
+	public static void startOperation(int max) {
+		progressBar.setMaximum(max);
+		progressBar.setVisible(true);
+		progressBar.repaint();
+	}
+	
+	public static void incProgressBar() {
+		progressBar.setValue(progressBar.getValue() + 1);
+	}
+	
+	public static void endOperation() {
+		progressBar.setVisible(false);
+		progressBar.setValue(0);
+	}
 	
 	public static void showInfo() {
 		Image image = getCurrentImage();
@@ -400,6 +441,9 @@ public class MainWindow {
 		lblEntropa.setText("Entrop\u00EDa: " + Math.rint(info.entropia * 1000) / 1000);
 		lblFormato.setText("Formato: " + image.format);
 		lblDimensiones.setText("Ancho=" + image.widthRoi() + ", Alto=" + image.heightRoi());
+		panelHistograma.removeAll();
+		panelHistograma.add(image.getHistogram());
+		panelHistograma.repaint();
 	}
 
 	public static Image getCurrentImage() {
