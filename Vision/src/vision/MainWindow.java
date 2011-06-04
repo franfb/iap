@@ -34,6 +34,8 @@ import javax.swing.KeyStroke;
 import java.awt.event.KeyEvent;
 import java.awt.event.InputEvent;
 import javax.swing.JProgressBar;
+import javax.swing.JButton;
+import java.awt.GridLayout;
 
 public class MainWindow {
 
@@ -224,16 +226,7 @@ public class MainWindow {
 					.addPreferredGap(ComponentPlacement.UNRELATED)
 					.addComponent(progressBar, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
 		);
-		GroupLayout gl_panelHistograma = new GroupLayout(panelHistograma);
-		gl_panelHistograma.setHorizontalGroup(
-			gl_panelHistograma.createParallelGroup(Alignment.LEADING)
-				.addGap(0, 262, Short.MAX_VALUE)
-		);
-		gl_panelHistograma.setVerticalGroup(
-			gl_panelHistograma.createParallelGroup(Alignment.LEADING)
-				.addGap(0, 235, Short.MAX_VALUE)
-		);
-		panelHistograma.setLayout(gl_panelHistograma);
+		panelHistograma.setLayout(new GridLayout(1, 0, 0, 0));
 		panel.setLayout(gl_panel);
 		frame.getContentPane().setLayout(groupLayout);
 

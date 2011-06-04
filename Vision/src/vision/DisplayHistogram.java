@@ -167,7 +167,8 @@ public class DisplayHistogram extends JComponent implements MouseMotionListener 
     /**
      * This method will paint the component.
      */
-    protected void paintComponent(Graphics g) {
+//    protected void paintComponent(Graphics g) {
+    public void paint(Graphics g) {
         Graphics2D g2d = (Graphics2D)g;
         scale();
         // Draw the background.

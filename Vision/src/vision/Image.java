@@ -16,6 +16,7 @@ public class Image {
 	public String format;
 	private ImageInfo info;
 	private DisplayHistogram histograma;
+	private int pixelsOut;
 	
 	public Image(File file, String prefijo, BufferedImage img, boolean saved) {
 		this.file = file;
@@ -24,6 +25,7 @@ public class Image {
 		this.format = ImageFilter.getExtension(file);
 		this.saved = saved;
 		panel = new ImagePanel(this);
+		this.pixelsOut = 0;
 	}
 
 	public ImageInfo getInfo() {
