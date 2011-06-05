@@ -235,6 +235,7 @@ public class Rotar {
                 }
             }
         }
+        newIm.setPixelsOut(pixelsOut);
         //calculaInfoRotaciones(newIm, pixelsOut);
         MainWindow.endOperation();
         

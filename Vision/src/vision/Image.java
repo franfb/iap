@@ -15,8 +15,7 @@ public class Image {
 	// Atributos para guardar la información de la imagen
 	public String format;
 	private ImageInfo info;
-//	private DisplayHistogram histograma;
-	private int pixelsOut;
+	private long pixelsOut;
 	
 	public Image(File file, String prefijo, BufferedImage img, boolean saved) {
 		this.file = file;
@@ -32,6 +31,11 @@ public class Image {
 		if ((info == null) || (panel.validRoi())) {
 			ImageInfo inf = new ImageInfo();
 
+			long numPixels = widthRoi() * heightRoi();
+			if (!panel.validRoi()) {
+				numPixels -= pixelsOut; 
+			}
+			
 			Point src = topLeftRoi();
 			for (int x = 0; x < widthRoi(); x++) {
 				for (int y = 0; y < heightRoi(); y++) {
@@ -54,30 +58,51 @@ public class Image {
 					inf.histR[r]++;
 					inf.histG[g]++;
 					inf.histB[b]++;
-					inf.histAc[greyLevel]++;
-					inf.histAcR[r]++;
-					inf.histAcG[g]++;
-					inf.histAcB[b]++;
+//					inf.histAc[greyLevel]++;
+//					inf.histAcR[r]++;
+//					inf.histAcG[g]++;
+//					inf.histAcB[b]++;
 					// Brillo
 					inf.brillo += greyLevel;
 					// Contraste
 					// Entropía
 				}
 			}
+			inf.hist[0] -= pixelsOut;
+			inf.histR[0] -= pixelsOut;
+			inf.histG[0] -= pixelsOut;
+			inf.histB[0] -= pixelsOut;
+			
+			// Hallamos los histogramas acumulados
+			for (int i = 0; i < inf.hist.length - 1; i++) {
+				inf.histAc[i] += inf.hist[i];
+				inf.histAc[i+1] += inf.histAc[i];
+				inf.histAcR[i] += inf.histR[i];
+				inf.histAcR[i+1] += inf.histAcR[i];
+				inf.histAcG[i] += inf.histG[i];
+				inf.histAcG[i+1] += inf.histAcG[i];
+				inf.histAcB[i] += inf.histB[i];
+				inf.histAcB[i+1] += inf.histAcB[i];
+			}
+			inf.histAc[255] += inf.hist[255];
+			inf.histAcR[255] += inf.histR[255];
+			inf.histAcG[255] += inf.histG[255];
+			inf.histAcB[255] += inf.histB[255];
+			
 			// Hallamos la media de los valores de gris (brillo)
-			inf.brillo /= widthRoi() * heightRoi();
+			inf.brillo /= numPixels;
 
 			// Hallamos la desviación típica de la imagen (contraste) a partir del histograma
 	        for (int i = 0; i < inf.hist.length; i++) {
 	            inf.contraste += inf.hist[i] * Math.pow((double)(i - inf.brillo), 2);
 	        }
-	        inf.contraste = Math.round((float)Math.sqrt((1/(double)(widthRoi() * heightRoi())) * inf.contraste));
+	        inf.contraste = Math.round((float)Math.sqrt((1/(double)numPixels) * inf.contraste));
 	        
 	        // Calculamos la entropía de la imagen a partir del histograma
 	        inf.entropia = 0;
 	        for(int i = 0; i < inf.hist.length; i++) {
 	            if (inf.hist[i] > 0) {
-	                double prob = ((double)inf.hist[i] / (double)(widthRoi() * heightRoi()));
+	                double prob = ((double)inf.hist[i] / (double)numPixels);
 	                double logProb = Math.log10(prob)/Math.log10(2);
 	                inf.entropia = inf.entropia - (prob*logProb);
 	            }
@@ -85,15 +110,9 @@ public class Image {
 			
 	        if (info == null) info = inf;
 	        
-//	        if (histograma == null)
-//	        	histograma = new DisplayHistogram(inf.hist, "Histograma");
-//	        else
-//	        	histograma.setHistogram(inf.hist);
-	        
 			return inf;
 		}
 		else {
-//			histograma.setHistogram(info.hist);
 			return info;
 		}
 	}
@@ -102,10 +121,6 @@ public class Image {
 		this.info = null;
 		this.getInfo();
 	}
-	
-//	public DisplayHistogram getHistogram() {
-//		return histograma;
-//	}
 
 	public File getFileCompleto(){
 		return new File(file.getParent(), prefijo + file.getName());
@@ -151,6 +166,10 @@ public class Image {
 		} else {
 			return panel.getBottomRightRoi().y - panel.getTopLeftRoi().y + 1;
 		}
+	}
+	
+	public void setPixelsOut(long pixOut) {
+		this.pixelsOut = pixOut;
 	}
 	
 	/*public static Image crearImagen(int width, int height, File filename) {
