@@ -53,13 +53,15 @@ public class DisplayHistogram extends JComponent implements MouseMotionListener 
     private int width=250,height=100;
     // Some constants for this component.
     private int verticalTicks = 10;
-    private Insets border = new Insets(40,70,40,30);
+    private Insets border = new Insets(40,30,40,30);
     private int binWidth = 1;
-    private Color backgroundColor = new Color(236,233,216);
+//    private Color backgroundColor = new Color(236,233,216);
+    private Color backgroundColor = new Color(240,240,240);
     private Color barColor = Color.DARK_GRAY;//new Color(255,255,200);
-    private Color marksColor = Color.BLUE;//new Color(100,180,255);
+//    private Color marksColor = Color.BLUE;//new Color(100,180,255);
+    private Color marksColor = Color.BLACK;//new Color(100,180,255);
     private Font fontSmall = new Font("monospaced",0,10);
-    private Font fontLarge = new Font("default",Font.ITALIC,20);
+    private Font fontLarge = new Font("default",0,20);
     
     /**
      * The constructor for this class, which will set its fields' values and get some information
