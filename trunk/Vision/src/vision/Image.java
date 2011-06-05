@@ -43,7 +43,7 @@ public class Image {
 					int r = red(rgbLevel);
 					int g = green(rgbLevel);
 					int b = blue(rgbLevel);
-					int greyLevel = Math.round(grey(rgbLevel));
+					int greyLevel = (int)Math.round(grey(rgbLevel));
 					// Rango dinámico para R
 					if (r > inf.maxR) inf.maxR = r;
 					if (r < inf.minR) inf.minR = r;
@@ -210,9 +210,8 @@ public class Image {
 		return (0x0FF & value);
 	}
 
-	public static float grey(int value) {
-		return 0.299f * red(value) + 0.587f * green(value) + 0.114f
-				* blue(value);
+	public static double grey(int value) {
+		return (double)0.299 * red(value) + (double)0.587 * green(value) + (double)0.114 * blue(value);
 	}
 
 	public static int rgb(int r, int g, int b) {

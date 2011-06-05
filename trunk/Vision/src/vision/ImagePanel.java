@@ -13,7 +13,7 @@ import javax.swing.JComponent;
 public class ImagePanel extends JComponent implements MouseMotionListener, MouseListener{
 	private static final long serialVersionUID = 1L;
 	Image image;
-	BufferedImage img;
+	public BufferedImage img;
 	Dimension imgSize;
 	Point offset;
 	

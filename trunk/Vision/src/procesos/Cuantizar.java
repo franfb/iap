@@ -50,7 +50,7 @@ public class Cuantizar {
 							value = Image.rgb((int)red, (int)green, (int)blue);
 						}
 						else{
-							float grey = Image.grey(pixelColor);
+							double grey = Image.grey(pixelColor);
 							grey /= 256;
 							int nivel = (int) (grey * niveles);
 							value = Image.rgb((int) Math.round(nivel * 255.0 / (niveles - 1)));
