@@ -46,7 +46,7 @@ public class Muestrear {
 			public void actionPerformed(ActionEvent arg0) {
 				dialog.setVisible(false);
 
-				Image newImage = Image.crearImagen(image.widthRoi(), image.heightRoi(), image, "Muestreo de ");
+				Image newImage = Image.crearImagenConPrefijo(image.widthRoi(), image.heightRoi(), image, "Muestreo de ");
 				
 				int anchoMuestreo = (Integer) dialog.anchoSpinner.getValue();
 				int altoMuestreo = (Integer) dialog.altoSpinner.getValue();

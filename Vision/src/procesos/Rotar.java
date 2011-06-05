@@ -134,7 +134,7 @@ public class Rotar {
 	public static Image rotar90(Image im) {
 		int width = im.heightRoi();
 		int height = im.widthRoi();
-        Image newIm = Image.crearImagen(width, height, im, "Rotación de ");
+        Image newIm = Image.crearImagenConPrefijo(width, height, im, "Rotación de ");
         Point src = im.topLeftRoi();
         for (int x = 0; x < width; x++) {
         	for (int y = 0; y < height; y++) {
@@ -148,7 +148,7 @@ public class Rotar {
 	public static Image rotar180(Image im) {
 		int width = im.widthRoi();
 		int height = im.heightRoi();
-		Image newIm = Image.crearImagen(width, height, im, "Rotación de ");
+		Image newIm = Image.crearImagenConPrefijo(width, height, im, "Rotación de ");
         Point src = im.topLeftRoi();
         for (int x = 0; x < width; x++) {
         	for (int y = 0; y < height; y++) {
@@ -162,7 +162,7 @@ public class Rotar {
 	public static Image rotar270(Image im) {
 		int width = im.heightRoi();
 		int height = im.widthRoi();
-		Image newIm = Image.crearImagen(width, height, im, "Rotación de ");
+		Image newIm = Image.crearImagenConPrefijo(width, height, im, "Rotación de ");
         Point src = im.topLeftRoi();
         for (int x = 0; x < width; x++) {
         	for (int y = 0; y < height; y++) {
@@ -181,7 +181,7 @@ public class Rotar {
         double radianes = Math.toRadians((double)grados);
         int width = (int)(Math.ceil(im.widthRoi() * Math.abs(Math.cos(radianes))) + Math.ceil(im.heightRoi() * Math.abs(Math.sin(radianes))));
         int height  = (int)(Math.ceil(im.widthRoi() * Math.abs(Math.sin(radianes))) + Math.ceil(im.heightRoi() * Math.abs(Math.cos(radianes))));
-        Image newIm = Image.crearImagen(width, height, im, "Rotación de ");
+        Image newIm = Image.crearImagenConPrefijo(width, height, im, "Rotación de ");
         
         
         double offX, offY;

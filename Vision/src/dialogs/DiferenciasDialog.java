@@ -24,6 +24,8 @@ public class DiferenciasDialog extends JDialog {
 	public JButton cancelButton;
 	public JScrollBar scrollBar;
 	public JLabel nombreImagen;
+	public JLabel dimensiones;
+	public JLabel error;
 	
 	public static void main(String[] args) {
 		try {
@@ -51,22 +53,21 @@ public class DiferenciasDialog extends JDialog {
 		scrollBar.setOrientation(JScrollBar.HORIZONTAL);
 		
 		nombreImagen = new JLabel("New label");
+		
+		dimensiones = new JLabel("New label");
+		
+		error = new JLabel("New label");
 		GroupLayout gl_contentPanel = new GroupLayout(contentPanel);
 		gl_contentPanel.setHorizontalGroup(
-			gl_contentPanel.createParallelGroup(Alignment.LEADING)
+			gl_contentPanel.createParallelGroup(Alignment.TRAILING)
 				.addGroup(gl_contentPanel.createSequentialGroup()
-					.addGroup(gl_contentPanel.createParallelGroup(Alignment.LEADING)
-						.addGroup(gl_contentPanel.createSequentialGroup()
-							.addContainerGap()
-							.addComponent(titulo))
-						.addGroup(Alignment.TRAILING, gl_contentPanel.createSequentialGroup()
-							.addContainerGap(126, Short.MAX_VALUE)
-							.addComponent(scrollBar, GroupLayout.PREFERRED_SIZE, 194, GroupLayout.PREFERRED_SIZE)
-							.addPreferredGap(ComponentPlacement.RELATED)))
-					.addContainerGap(277, Short.MAX_VALUE))
-				.addGroup(Alignment.TRAILING, gl_contentPanel.createSequentialGroup()
 					.addContainerGap()
-					.addComponent(nombreImagen, GroupLayout.DEFAULT_SIZE, 402, Short.MAX_VALUE)
+					.addGroup(gl_contentPanel.createParallelGroup(Alignment.LEADING)
+						.addComponent(nombreImagen, GroupLayout.DEFAULT_SIZE, 402, Short.MAX_VALUE)
+						.addComponent(dimensiones, GroupLayout.DEFAULT_SIZE, 402, Short.MAX_VALUE)
+						.addComponent(error, GroupLayout.DEFAULT_SIZE, 402, Short.MAX_VALUE)
+						.addComponent(titulo)
+						.addComponent(scrollBar, GroupLayout.DEFAULT_SIZE, 402, Short.MAX_VALUE))
 					.addContainerGap())
 		);
 		gl_contentPanel.setVerticalGroup(
@@ -78,7 +79,11 @@ public class DiferenciasDialog extends JDialog {
 					.addComponent(scrollBar, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
 					.addGap(18)
 					.addComponent(nombreImagen)
-					.addContainerGap(84, Short.MAX_VALUE))
+					.addGap(18)
+					.addComponent(dimensiones)
+					.addGap(18)
+					.addComponent(error)
+					.addContainerGap(20, Short.MAX_VALUE))
 		);
 		contentPanel.setLayout(gl_contentPanel);
 		{
