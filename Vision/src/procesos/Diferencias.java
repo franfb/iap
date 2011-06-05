@@ -108,8 +108,8 @@ public class Diferencias {
 				for (int x = 0; x < imagenCambio.widthRoi(); x++){
 					for (int y = 0; y < imagenCambio.heightRoi(); y++){
 						int greyDif = (int) Image.grey(imagenDiferencia.img.getRGB(x, y));
-						float grey1 = Image.grey(image1.img.getRGB(src1.x + x, src1.y + y));
-						float grey2 = Image.grey(image2.img.getRGB(src2.x + x, src2.y + y));
+						double grey1 = Image.grey(image1.img.getRGB(src1.x + x, src1.y + y));
+						double grey2 = Image.grey(image2.img.getRGB(src2.x + x, src2.y + y));
 						if (greyDif > limiteSuperior){
 							if (grey1 > grey2){
 								imagenCambio.img.setRGB(x, y, Color.RED.getRGB());

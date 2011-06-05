@@ -29,6 +29,7 @@ import java.awt.Graphics2D;
 import java.awt.Insets;
 import java.awt.RenderingHints;
 import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 //import javax.media.jai.Histogram;
 import javax.swing.JComponent;
@@ -39,7 +40,7 @@ import javax.swing.JComponent;
  * The component has a tooltip which displays the bin index and bin count for the
  * bin under the mouse cursor.
  */
-public class DisplayHistogram extends JComponent implements MouseMotionListener {
+public class DisplayHistogram extends JComponent implements MouseMotionListener, MouseListener {
 	private static final long serialVersionUID = 1L;
 	// The histogram and its title.
     private int histogram[];//Histogram histogram;
@@ -62,6 +63,17 @@ public class DisplayHistogram extends JComponent implements MouseMotionListener 
     private Color marksColor = Color.BLACK;//new Color(100,180,255);
     private Font fontSmall = new Font("monospaced",0,10);
     private Font fontLarge = new Font("default",0,20);
+    // Attributes for drawing the selected bin info
+    private Color selectedColor = Color.RED;
+    private Color selectedInfoColor = Color.BLACK;
+    private Color backgroundInfoColor = Color.WHITE;
+    private Font fontInfo = new Font("default", 0, 12);
+	private int leftGap = 4;
+	private int bottomGap = 4;
+    private int binTip = 0;
+    private int xTip = 0;
+    private int yTip = 0;
+    private boolean showTip = false;
     
     /**
      * The constructor for this class, which will set its fields' values and get some information
@@ -76,6 +88,7 @@ public class DisplayHistogram extends JComponent implements MouseMotionListener 
         scale();
         
         addMouseMotionListener(this);
+        addMouseListener(this);
     }
     
     /**
@@ -193,6 +206,11 @@ public class DisplayHistogram extends JComponent implements MouseMotionListener 
                 System.out.println("hullla");
             double barEnds = Math.ceil(height*Math.abs(counts[bin])/(1.*(maxCount - minCount)));//////////
             g2d.drawRect(x,(int)barStarts,binWidth-1,(int)barEnds);
+            // Get the selected X and Y
+            if ((showTip) && (bin == binTip)) {
+            	xTip = x;
+            	yTip = (int)barStarts;
+            }
         }
         
 //        for(int bin=0;bin<histogram.length; bin++) {
@@ -235,6 +253,23 @@ public class DisplayHistogram extends JComponent implements MouseMotionListener 
         metrics = g2d.getFontMetrics();
         int textWidth = metrics.stringWidth(title);
         g2d.drawString(title,(border.left+width+border.right-textWidth)/2,28);
+        
+        // Draw the information of the selected X
+        if (showTip) {
+        	g2d.setColor(selectedColor);
+        	g2d.drawRect(xTip - 2, yTip - 2, 4, 4);
+        	g2d.setFont(fontInfo);
+        	g2d.setColor(backgroundInfoColor);
+        	metrics = g2d.getFontMetrics();
+        	int fontHeight = metrics.getHeight();
+        	String text = (indexMultiplier*binTip)+": "+counts[binTip];
+        	textWidth = metrics.stringWidth(text);
+        	g2d.fillRect(xTip - textWidth/2 - leftGap, yTip - fontHeight - 5, textWidth + (leftGap << 1), fontHeight);
+        	g2d.setColor(Color.BLACK);
+        	g2d.drawRect(xTip - textWidth/2 - leftGap, yTip - fontHeight - 5, textWidth + (leftGap << 1), fontHeight);
+        	g2d.setColor(selectedInfoColor);
+        	g2d.drawString(text, xTip - textWidth/2, yTip - 5 - bottomGap);
+        }
     }
     
     /**
@@ -250,7 +285,7 @@ public class DisplayHistogram extends JComponent implements MouseMotionListener 
     public void mouseMoved(MouseEvent e) {
         int x = e.getX(); int y = e.getY();
         // Don't show anything out of the plot region.
-        if ((x > border.left) && (x < border.left+width) && (y > border.top) && (y < border.top+height)) {
+        if ((x >= border.left) && (x < border.left+width) && (y > border.top) && (y < border.top+height)) {
             // Convert the X to an index on the histogram.
             x = (x-border.left)/binWidth;
             y = counts[x];
@@ -259,4 +294,54 @@ public class DisplayHistogram extends JComponent implements MouseMotionListener 
             setToolTipText(null);
         }
     }
+
+	@Override
+	public void mouseClicked(MouseEvent e) {
+		if (e.getClickCount() > 1) {
+			setToolTipText(null);
+			showTip = false;
+			repaint();
+		}
+		else {
+			int x = e.getX(); int y = e.getY();
+	        // Don't show anything out of the plot region.
+	        if ((x >= border.left) && (x < border.left+width) && (y > border.top) && (y < border.top+height)) {
+	            // Convert the X to an index on the histogram.
+	            x = (x-border.left)/binWidth;
+	            y = counts[x];
+	            System.out.println("dentroooo");
+//	            setToolTipText((indexMultiplier*x)+": "+y);
+	            showTip = true;
+	            binTip = x;
+	        } else {
+	            setToolTipText(null);
+	            showTip = false;
+	        }
+	        repaint();
+		}
+	}
+
+	@Override
+	public void mouseEntered(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void mouseExited(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void mousePressed(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void mouseReleased(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
 } // end class

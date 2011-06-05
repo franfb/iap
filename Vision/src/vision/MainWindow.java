@@ -348,6 +348,19 @@ public class MainWindow {
 		});
 		mnDigitalizacin.add(mntmCuantizar);
 		Menu.opcionesMenu.add(mntmCuantizar);
+		
+		JMenu mnImagen = new JMenu("Imagen");
+		Menu.opcionesMenu.add(mnImagen);
+		menuBar_1.add(mnImagen);
+		
+		JMenuItem mntmBrilloContraste = new JMenuItem("Ajuste de Brillo y Contraste");
+		mntmBrilloContraste.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				BrilloContraste.run();
+			}
+		});
+		mnImagen.add(mntmBrilloContraste);
+		Menu.opcionesMenu.add(mntmBrilloContraste);
 
 		JMenu mnTransformacion = new JMenu("Geometr\u00EDa");
 		Menu.opcionesMenu.add(mnTransformacion);
@@ -503,5 +516,9 @@ public class MainWindow {
 
 	private static Image getImage(int tabIndex) {
 		return ((ImagePanel) ((JScrollPane) tabbedPane.getComponentAt(tabIndex)).getViewport().getView()).image;
+	}
+	
+	public static void removeCurrentImage() {
+		tabbedPane.remove(tabbedPane.getSelectedIndex());
 	}
 }
