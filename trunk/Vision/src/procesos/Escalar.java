@@ -111,7 +111,7 @@ public class Escalar {
 				
 				float escalaX = (width - 1) / ((float)image.widthRoi() - 1);
 				float escalaY = (height - 1) / ((float)image.heightRoi() - 1);
-				Image newImage = Image.crearImagen(width, height, image, "Escalado de ");
+				Image newImage = Image.crearImagenConPrefijo(width, height, image, "Escalado de ");
 				Point src = image.topLeftRoi();
 				for (int x = 0; x < newImage.widthRoi(); x++){
 					for (int y = 0; y < newImage.heightRoi(); y++){

@@ -140,16 +140,15 @@ public class CuantizarDialog extends JDialog {
 							.addGroup(gl_contentPanel.createParallelGroup(Alignment.LEADING)
 								.addComponent(rdbtnNiveles1)
 								.addComponent(rdbtnNiveles2)
-								.addComponent(rdbtnNiveles3)
-								.addComponent(rdbtnNiveles5)
 								.addComponent(rdbtnNiveles6)
 								.addComponent(rdbtnNiveles7)
-								.addGroup(gl_contentPanel.createParallelGroup(Alignment.TRAILING)
-									.addGroup(gl_contentPanel.createParallelGroup(Alignment.LEADING)
-										.addComponent(rdbtnRgb, GroupLayout.PREFERRED_SIZE, 133, GroupLayout.PREFERRED_SIZE)
-										.addComponent(rdbtnEscalaDeGrises, GroupLayout.PREFERRED_SIZE, 133, GroupLayout.PREFERRED_SIZE))
-									.addComponent(rdbtnNiveles4)))))
-					.addContainerGap(243, Short.MAX_VALUE))
+								.addComponent(rdbtnRgb, GroupLayout.PREFERRED_SIZE, 133, GroupLayout.PREFERRED_SIZE)
+								.addComponent(rdbtnEscalaDeGrises, GroupLayout.PREFERRED_SIZE, 133, GroupLayout.PREFERRED_SIZE)
+								.addComponent(rdbtnNiveles3)
+								.addGroup(gl_contentPanel.createParallelGroup(Alignment.TRAILING, false)
+									.addComponent(rdbtnNiveles4, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+									.addComponent(rdbtnNiveles5, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))))
+					.addContainerGap(225, Short.MAX_VALUE))
 		);
 		gl_contentPanel.setVerticalGroup(
 			gl_contentPanel.createParallelGroup(Alignment.LEADING)
@@ -176,7 +175,7 @@ public class CuantizarDialog extends JDialog {
 					.addComponent(rdbtnEscalaDeGrises, GroupLayout.PREFERRED_SIZE, 29, GroupLayout.PREFERRED_SIZE)
 					.addPreferredGap(ComponentPlacement.UNRELATED)
 					.addComponent(rdbtnRgb, GroupLayout.PREFERRED_SIZE, 29, GroupLayout.PREFERRED_SIZE)
-					.addContainerGap(15, Short.MAX_VALUE))
+					.addContainerGap(75, Short.MAX_VALUE))
 		);
 		contentPanel.setLayout(gl_contentPanel);
 		{

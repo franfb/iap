@@ -9,7 +9,7 @@ public class EspejoVertical {
 	
 	public static void run(){
 		final Image image = MainWindow.getCurrentImage();
-		Image newImage = Image.crearImagen(image.widthRoi(), image.heightRoi(), image, "Espejo vertical de ");
+		Image newImage = Image.crearImagenConPrefijo(image.widthRoi(), image.heightRoi(), image, "Espejo vertical de ");
 		Point src = image.topLeftRoi();
 		for (int x = 0; x < newImage.widthRoi(); x++){
 			for (int y = 0; y < newImage.heightRoi(); y++){

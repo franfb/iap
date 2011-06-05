@@ -27,7 +27,7 @@ public class Cuantizar {
 				int niveles = dialog.getNiveles();
 				boolean rgb = dialog.isRGB();
 				
-				Image newImage = Image.crearImagen(image.widthRoi(), image.heightRoi(), image, "Cuantizacion de ");
+				Image newImage = Image.crearImagenConPrefijo(image.widthRoi(), image.heightRoi(), image, "Cuantizacion de ");
 				
 				Point src = image.topLeftRoi();
 				for (int x = 0; x < image.widthRoi(); x++){

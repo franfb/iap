@@ -317,6 +317,15 @@ public class MainWindow {
 		});
 		mnEditar.add(mntmCopiar);
 		Menu.opcionesMenu.add(mntmCopiar);
+		
+		JMenuItem mntmGrises = new JMenuItem("A escala de grises");
+		mnEditar.add(mntmGrises);
+		mntmGrises.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				Grises.run();
+			}
+		});
+		Menu.opcionesMenu.add(mntmGrises);
 
 		JMenu mnDigitalizacin = new JMenu("Digitalizaci\u00F3n");
 		Menu.opcionesMenu.add(mnDigitalizacin);

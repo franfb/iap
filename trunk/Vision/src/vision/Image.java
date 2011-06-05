@@ -133,6 +133,10 @@ public class Image {
 		}
 	}
 
+	public boolean validRoi(){
+		return panel.validRoi();
+	}
+	
 	public int widthRoi() {
 		if (!panel.validRoi()) {
 			return img.getWidth();
@@ -154,7 +158,7 @@ public class Image {
 				BufferedImage.TYPE_INT_RGB), false);
 	}*/
 	
-	public static Image crearImagen(int width, int height, Image img, String prefijo) {
+	public static Image crearImagenConPrefijo(int width, int height, Image img, String prefijo) {
 		if (img.prefijo.compareTo("") != 0){
 			return new Image(img.getFileOriginal(), "Edición de " , new BufferedImage(width, height,
 					BufferedImage.TYPE_INT_RGB), false);
@@ -163,6 +167,12 @@ public class Image {
 			return new Image(img.getFileOriginal(), prefijo, new BufferedImage(width, height,
 					BufferedImage.TYPE_INT_RGB), false);
 		}
+	}
+	
+	public static Image crearImagenSinPrefijo(int width, int height, Image img, String nombre) {
+		File file = new File(img.file.getParent(), nombre + "." + img.format);
+		return new Image(file, "", new BufferedImage(width, height,
+					BufferedImage.TYPE_INT_RGB), false);
 	}
 
 	public static String getString(int value) {
