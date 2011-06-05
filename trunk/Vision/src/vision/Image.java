@@ -15,7 +15,7 @@ public class Image {
 	// Atributos para guardar la información de la imagen
 	public String format;
 	private ImageInfo info;
-	private DisplayHistogram histograma;
+//	private DisplayHistogram histograma;
 	private int pixelsOut;
 	
 	public Image(File file, String prefijo, BufferedImage img, boolean saved) {
@@ -85,15 +85,15 @@ public class Image {
 			
 	        if (info == null) info = inf;
 	        
-	        if (histograma == null)
-	        	histograma = new DisplayHistogram(inf.hist, "Histograma");
-	        else
-	        	histograma.setHistogram(inf.hist);
+//	        if (histograma == null)
+//	        	histograma = new DisplayHistogram(inf.hist, "Histograma");
+//	        else
+//	        	histograma.setHistogram(inf.hist);
 	        
 			return inf;
 		}
 		else {
-			histograma.setHistogram(info.hist);
+//			histograma.setHistogram(info.hist);
 			return info;
 		}
 	}
@@ -103,9 +103,9 @@ public class Image {
 		this.getInfo();
 	}
 	
-	public DisplayHistogram getHistogram() {
-		return histograma;
-	}
+//	public DisplayHistogram getHistogram() {
+//		return histograma;
+//	}
 
 	public File getFileCompleto(){
 		return new File(file.getParent(), prefijo + file.getName());
