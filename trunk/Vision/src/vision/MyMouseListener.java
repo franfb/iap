@@ -45,14 +45,14 @@ public class MyMouseListener implements MouseListener, MouseMotionListener {
 			return;
 		}
 		ImagePanel panel = (ImagePanel) e.getComponent();
-		Point src = panel.image.topLeftRoi();
-		Point p = panel.getCoordinate(e.getX() - src.x, e.getY() - src.y);
+		Point p = panel.getCoordinate(e.getX(), e.getY());
 		if (p == null){
 			MainWindow.lblPixelPos.setText("");
 			MainWindow.lblPixelValue.setText("");
 			return;
 		}
 		MainWindow.lblPixelPos.setText("Pixel: (x=" + p.x + ", y=" + p.y + ")");
-		MainWindow.lblPixelValue.setText("Value: " + vision.Image.getString(panel.img.getRGB(p.x, p.y)));
+//		MainWindow.lblPixelValue.setText("Value: " + vision.Image.getString(panel.img.getRGB(p.x, p.y)));
+		MainWindow.lblPixelValue.setText(vision.Image.getString(panel.img.getRGB(p.x, p.y)));
 	}
 }

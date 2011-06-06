@@ -43,37 +43,37 @@ import javax.swing.JComponent;
 public class DisplayHistogram extends JComponent implements MouseMotionListener, MouseListener {
 	private static final long serialVersionUID = 1L;
 	// The histogram and its title.
-    private int histogram[];//Histogram histogram;
-    private String title;
+    protected int histogram[];//Histogram histogram;
+    protected String title;
     // Some data and hints for the histogram plot.
-    private int[] counts;
-    private double maxCount, minCount;
-    private int indexMultiplier = 1;
-    private int skipIndexes = 8;
+    protected int[] counts;
+    protected double maxCount, minCount;
+    protected int indexMultiplier = 1;
+    protected int skipIndexes = 8;
     // The components' dimensions.
-    private int width=250,height=100;
+    protected int width=250,height=100;
     // Some constants for this component.
-    private int verticalTicks = 10;
-    private Insets border = new Insets(40,50,40,30);
-    private int binWidth = 1;
+    protected int verticalTicks = 10;
+    protected Insets border = new Insets(40,50,40,30);
+    protected int binWidth = 1;
 //    private Color backgroundColor = new Color(236,233,216);
-    private Color backgroundColor = new Color(240,240,240);
-    private Color barColor = Color.DARK_GRAY;//new Color(255,255,200);
+    protected Color backgroundColor = new Color(240,240,240);
+    protected Color barColor = Color.DARK_GRAY;//new Color(255,255,200);
 //    private Color marksColor = Color.BLUE;//new Color(100,180,255);
-    private Color marksColor = Color.BLACK;//new Color(100,180,255);
-    private Font fontSmall = new Font("monospaced",0,10);
-    private Font fontLarge = new Font("default",0,20);
+    protected Color marksColor = Color.BLACK;//new Color(100,180,255);
+    protected Font fontSmall = new Font("monospaced",0,10);
+    protected Font fontLarge = new Font("default",0,20);
     // Attributes for drawing the selected bin info
-    private Color selectedColor = Color.RED;
-    private Color selectedInfoColor = Color.BLACK;
-    private Color backgroundInfoColor = Color.WHITE;
-    private Font fontInfo = new Font("default", 0, 12);
-	private int leftGap = 4;
-	private int bottomGap = 4;
-    private int binTip = 0;
-    private int xTip = 0;
-    private int yTip = 0;
-    private boolean showTip = false;
+    protected Color selectedColor = Color.RED;
+    protected Color selectedInfoColor = Color.BLACK;
+    protected Color backgroundInfoColor = Color.WHITE;
+    protected Font fontInfo = new Font("default", 0, 12);
+    protected int leftGap = 4;
+    protected int bottomGap = 4;
+    protected int binTip = 0;
+    protected int xTip = 0;
+    protected int yTip = 0;
+    protected boolean showTip = false;
     
     /**
      * The constructor for this class, which will set its fields' values and get some information
@@ -121,6 +121,10 @@ public class DisplayHistogram extends JComponent implements MouseMotionListener,
         this.histogram = histogram;
     }
     
+    public void setHistogram(int[] histogram, Color barColor) {
+        this.histogram = histogram;
+        setBarColor(barColor);
+    }    
     
     public void setBinWidth(int newWidth) {
         binWidth = newWidth;
@@ -182,7 +186,6 @@ public class DisplayHistogram extends JComponent implements MouseMotionListener,
     /**
      * This method will paint the component.
      */
-//    protected void paintComponent(Graphics g) {
     public void paint(Graphics g) {
         Graphics2D g2d = (Graphics2D)g;
         scale();
@@ -202,8 +205,8 @@ public class DisplayHistogram extends JComponent implements MouseMotionListener,
                 offset = 0;
             }
             double barStarts = border.top+height*(maxCount -Math.abs(offset))/(1.*(maxCount-minCount));////////
-            if (counts[bin] < -30) 
-                System.out.println("hullla");
+//            if (counts[bin] < -30) 
+//                System.out.println("hullla");
             double barEnds = Math.ceil(height*Math.abs(counts[bin])/(1.*(maxCount - minCount)));//////////
             g2d.drawRect(x,(int)barStarts,binWidth-1,(int)barEnds);
             // Get the selected X and Y
@@ -309,8 +312,6 @@ public class DisplayHistogram extends JComponent implements MouseMotionListener,
 	            // Convert the X to an index on the histogram.
 	            x = (x-border.left)/binWidth;
 	            y = counts[x];
-	            System.out.println("dentroooo");
-//	            setToolTipText((indexMultiplier*x)+": "+y);
 	            showTip = true;
 	            binTip = x;
 	        } else {
@@ -343,5 +344,12 @@ public class DisplayHistogram extends JComponent implements MouseMotionListener,
 	public void mouseReleased(MouseEvent e) {
 		// TODO Auto-generated method stub
 		
+	}
+
+	/**
+	 * @param barColor the barColor to set
+	 */
+	public void setBarColor(Color barColor) {
+		this.barColor = barColor;
 	}
 } // end class
