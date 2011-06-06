@@ -210,7 +210,7 @@ public class Image {
 		return (0x0FF & value);
 	}
 
-	public static double grey(int value) {
+	public static double grey(int value) { // Modelo NTSC
 		return (double)0.299 * red(value) + (double)0.587 * green(value) + (double)0.114 * blue(value);
 	}
 

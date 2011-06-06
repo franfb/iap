@@ -36,6 +36,10 @@ import java.awt.event.InputEvent;
 import javax.swing.JProgressBar;
 import javax.swing.JButton;
 import java.awt.GridLayout;
+import javax.swing.JComboBox;
+import javax.swing.DefaultComboBoxModel;
+import java.awt.event.ItemListener;
+import java.awt.event.ItemEvent;
 
 public class MainWindow {
 
@@ -69,6 +73,10 @@ public class MainWindow {
 	
 	public static DisplayHistogram hist;
 	public static DisplayHistogram histAc;
+	
+	private static int[] histCero = new int[256];
+
+	public static JComboBox cbTipoHist;
 
 
 	/*public static void setUIFont(javax.swing.plaf.FontUIResource f) {
@@ -121,6 +129,9 @@ public class MainWindow {
 				} else if (tabbedPane.getTabCount() == 0) {
 					Menu.desactivaOpcionesMenu();
 					InfoLabels.desactivaEtiquetas();
+					hist.setHistogram(histCero);
+					histAc.setHistogram(histCero);
+					panelHistograma.repaint();
 				}
 				if (tabbedPane.getTabCount() > 0) {
 					changeSize();
@@ -172,21 +183,34 @@ public class MainWindow {
 		lblFormato = new JLabel("Formato");
 		InfoLabels.listaEtiquetas.add(lblFormato);
 		
-		lblPixelPos = new JLabel("");
-		lblPixelPos.setHorizontalAlignment(SwingConstants.CENTER);
+		lblPixelPos = new JLabel("Posicion");
+//		lblPixelPos.setHorizontalAlignment(SwingConstants.CENTER);
 		InfoLabels.listaEtiquetas.add(lblPixelPos);
 		
-		lblPixelValue = new JLabel("");
-		lblPixelValue.setHorizontalAlignment(SwingConstants.CENTER);
+		lblPixelValue = new JLabel("Valor");
+//		lblPixelValue.setHorizontalAlignment(SwingConstants.CENTER);
 		InfoLabels.listaEtiquetas.add(lblPixelValue);
 		
-		lblDimensiones = new JLabel("");
+		lblDimensiones = new JLabel("Dimensiones");
 		InfoLabels.listaEtiquetas.add(lblDimensiones);
 		
 		progressBar = new JProgressBar();
 		progressBar.setVisible(false);
 		
 		panelHistograma = new JPanel();
+		
+		cbTipoHist = new JComboBox();
+		cbTipoHist.addItemListener(new ItemListener() {
+			public void itemStateChanged(ItemEvent arg0) {
+				showInfo();
+			}
+		});
+		cbTipoHist.setModel(new DefaultComboBoxModel(new String[] {"Escala de Grises", "Rojo", "Verde", "Azul"}));
+		cbTipoHist.setSelectedIndex(0);
+		InfoLabels.listaEtiquetas.add(cbTipoHist);
+		
+		JLabel lblHistogramaDe = new JLabel("Histograma de");
+		InfoLabels.listaEtiquetas.add(lblHistogramaDe);
 		
 		
 		GroupLayout gl_panel = new GroupLayout(panel);
@@ -203,25 +227,25 @@ public class MainWindow {
 									.addGroup(gl_panel.createParallelGroup(Alignment.LEADING)
 										.addComponent(lblG)
 										.addComponent(lblR)
-										.addComponent(lblB))))
+										.addComponent(lblB)))
+								.addComponent(lblHistogramaDe))
 							.addGap(18)
 							.addGroup(gl_panel.createParallelGroup(Alignment.LEADING)
-								.addComponent(lblFormato)
-								.addComponent(lblEntropa)
-								.addComponent(lblContraste)
-								.addComponent(lblBrillo))
-							.addContainerGap(230, Short.MAX_VALUE))
+								.addGroup(gl_panel.createSequentialGroup()
+									.addGroup(gl_panel.createParallelGroup(Alignment.LEADING, false)
+										.addComponent(lblFormato, GroupLayout.DEFAULT_SIZE, 88, Short.MAX_VALUE)
+										.addComponent(lblBrillo, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+										.addComponent(lblContraste, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+										.addComponent(lblEntropa, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+									.addGap(10)
+									.addGroup(gl_panel.createParallelGroup(Alignment.LEADING, false)
+										.addComponent(lblPixelValue)
+										.addComponent(lblPixelPos, GroupLayout.DEFAULT_SIZE, 124, Short.MAX_VALUE)
+										.addComponent(lblDimensiones, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+								.addComponent(cbTipoHist, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+							.addGap(5))
 						.addGroup(gl_panel.createSequentialGroup()
-							.addComponent(lblDimensiones, GroupLayout.DEFAULT_SIZE, 131, Short.MAX_VALUE)
-							.addGap(241))
-						.addGroup(gl_panel.createSequentialGroup()
-							.addComponent(lblPixelPos, GroupLayout.DEFAULT_SIZE, 121, Short.MAX_VALUE)
-							.addGap(251))
-						.addGroup(gl_panel.createSequentialGroup()
-							.addComponent(lblPixelValue, GroupLayout.DEFAULT_SIZE, 121, Short.MAX_VALUE)
-							.addGap(251))
-						.addGroup(gl_panel.createSequentialGroup()
-							.addComponent(progressBar, GroupLayout.DEFAULT_SIZE, 362, Short.MAX_VALUE)
+							.addComponent(progressBar, GroupLayout.DEFAULT_SIZE, 336, Short.MAX_VALUE)
 							.addContainerGap())
 						.addGroup(gl_panel.createSequentialGroup()
 							.addComponent(panelHistograma, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
@@ -230,32 +254,35 @@ public class MainWindow {
 		gl_panel.setVerticalGroup(
 			gl_panel.createParallelGroup(Alignment.LEADING)
 				.addGroup(gl_panel.createSequentialGroup()
+					.addGap(14)
 					.addGroup(gl_panel.createParallelGroup(Alignment.BASELINE)
 						.addComponent(lblRangoDinamico)
-						.addComponent(lblBrillo))
+						.addComponent(lblFormato)
+						.addComponent(lblDimensiones))
 					.addPreferredGap(ComponentPlacement.RELATED)
 					.addGroup(gl_panel.createParallelGroup(Alignment.BASELINE)
 						.addComponent(lblR)
-						.addComponent(lblContraste))
+						.addComponent(lblBrillo)
+						.addComponent(lblPixelPos))
 					.addPreferredGap(ComponentPlacement.RELATED)
-					.addGroup(gl_panel.createParallelGroup(Alignment.BASELINE)
-						.addComponent(lblG)
-						.addComponent(lblEntropa))
+					.addGroup(gl_panel.createParallelGroup(Alignment.LEADING, false)
+						.addComponent(lblG, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+						.addGroup(gl_panel.createParallelGroup(Alignment.BASELINE)
+							.addComponent(lblContraste, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+							.addComponent(lblPixelValue, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
 					.addPreferredGap(ComponentPlacement.RELATED)
 					.addGroup(gl_panel.createParallelGroup(Alignment.BASELINE)
 						.addComponent(lblB)
-						.addComponent(lblFormato))
-					.addPreferredGap(ComponentPlacement.RELATED)
-					.addComponent(lblDimensiones, GroupLayout.PREFERRED_SIZE, 17, GroupLayout.PREFERRED_SIZE)
-					.addPreferredGap(ComponentPlacement.RELATED)
-					.addComponent(lblPixelPos, GroupLayout.PREFERRED_SIZE, 17, GroupLayout.PREFERRED_SIZE)
-					.addPreferredGap(ComponentPlacement.RELATED)
-					.addComponent(lblPixelValue, GroupLayout.PREFERRED_SIZE, 17, GroupLayout.PREFERRED_SIZE)
+						.addComponent(lblEntropa))
 					.addPreferredGap(ComponentPlacement.UNRELATED)
+					.addGroup(gl_panel.createParallelGroup(Alignment.BASELINE)
+						.addComponent(cbTipoHist, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+						.addComponent(lblHistogramaDe))
+					.addGap(49)
 					.addComponent(panelHistograma, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
 					.addPreferredGap(ComponentPlacement.RELATED)
 					.addComponent(progressBar, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-					.addContainerGap(74, Short.MAX_VALUE))
+					.addGap(60))
 		);
 		panelHistograma.setLayout(new GridLayout(2, 1, 0, 0));
 		panel.setLayout(gl_panel);
@@ -353,7 +380,7 @@ public class MainWindow {
 		Menu.opcionesMenu.add(mnImagen);
 		menuBar_1.add(mnImagen);
 		
-		JMenuItem mntmBrilloContraste = new JMenuItem("Ajuste de Brillo y Contraste");
+		JMenuItem mntmBrilloContraste = new JMenuItem("Brillo y Contraste");
 		mntmBrilloContraste.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				BrilloContraste.run();
@@ -361,6 +388,15 @@ public class MainWindow {
 		});
 		mnImagen.add(mntmBrilloContraste);
 		Menu.opcionesMenu.add(mntmBrilloContraste);
+		
+		JMenuItem mntmTransfLinealPor = new JMenuItem("Transf. Lineal por Tramos");
+		mntmTransfLinealPor.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				LinealTramos.run();
+			}
+		});
+		mnImagen.add(mntmTransfLinealPor);
+		Menu.opcionesMenu.add(mntmTransfLinealPor);
 
 		JMenu mnTransformacion = new JMenu("Geometr\u00EDa");
 		Menu.opcionesMenu.add(mnTransformacion);
@@ -466,7 +502,6 @@ public class MainWindow {
 	}
 	
 	private static void inicializaHistogramas() {
-		int[] histCero = new int[256];
 		for (int i = 0; i < histCero.length; i++) {
 			histCero[i] = 0;
 		}
@@ -489,8 +524,22 @@ public class MainWindow {
 		lblDimensiones.setText("Ancho=" + image.widthRoi() + ", Alto=" + image.heightRoi());
 		//panelHistograma.removeAll();
 		//panelHistograma.add(image.getHistogram());
-		hist.setHistogram(info.hist);
-		histAc.setHistogram(info.histAc);
+		if (cbTipoHist.getSelectedIndex() == 0) { // Escala de grises
+			hist.setHistogram(info.hist, Color.DARK_GRAY);
+			histAc.setHistogram(info.histAc, Color.DARK_GRAY);
+		}
+		else if (cbTipoHist.getSelectedIndex() == 1) { // Rojo
+			hist.setHistogram(info.histR, new Color(192, 0, 0));
+			histAc.setHistogram(info.histAcR, new Color(192, 0, 0));
+		}
+		else if (cbTipoHist.getSelectedIndex() == 2) { // Verde
+			hist.setHistogram(info.histG, new Color(0, 192, 0));
+			histAc.setHistogram(info.histAcG, new Color(0, 192, 0));
+		}
+		else if (cbTipoHist.getSelectedIndex() == 3) { // Azul
+			hist.setHistogram(info.histB, new Color(0, 0, 192));
+			histAc.setHistogram(info.histAcB, new Color(0, 0, 192));
+		}
 		panelHistograma.repaint();
 	}
 

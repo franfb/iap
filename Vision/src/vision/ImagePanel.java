@@ -55,7 +55,6 @@ public class ImagePanel extends JComponent implements MouseMotionListener, Mouse
 	public Point getCoordinate(int x, int y){
 		Point coord = new Point(x - offset.x - border - 1, y - offset.y - border - 1);
 		if (coord.x < 0 || coord.y < 0 || coord.x >= img.getWidth() || coord.y >= img.getHeight()){
-		//if (coord.x < 0 || coord.y < 0 || coord.x >= image.widthRoi() || coord.y >= image.heightRoi()){
 			return null;
 		}
 		return coord;
