@@ -76,38 +76,18 @@ public class BrilloContraste {
 		dialog.cancelButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				dialog.setVisible(false);
-//				image.img = oldBufIm;
-//				image.panel.img = oldBufIm;
-//				image.resetInfo();
-//				image.panel.repaint();
 				MainWindow.removeCurrentImage();
 			}
 		});
 		dialog.okButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				dialog.setVisible(false);
-//				image.img = oldBufIm;
-//				image.panel.img = oldBufIm;
-//				image.resetInfo();
-//				image.panel.repaint();
-//				Image newIm = Image.crearImagenConPrefijo(image.widthRoi(), image.heightRoi(), image, "Ajuste Brillo y Contraste de ");
-//				newIm.img = newBufIm;
-//				MainWindow.insertAndListenImage(newIm);
 			}
 		});
 		dialog.setVisible(true);
 	}
 	
-	public static BufferedImage aplicarLut(BufferedImage im, BufferedImage newIm, byte[] lut) {
-		ByteLookupTable blut = new ByteLookupTable(0, lut);
-        LookupOp lop = new LookupOp(blut, null);
-        newIm = lop.filter(im, newIm);
-
-        return newIm;
-	}
-	
 	public static BufferedImage ajustarBrilloContraste(BufferedImage im, BufferedImage newIm, int brillo, int contraste, int newBrillo, int newContraste) {
-//		ImageInfo infoIm = im.getInfo();
 		double a = (double)newContraste / (double)contraste;
         double b = (double)newBrillo - (a * (double)brillo);
         byte lut[] = new byte[ImageInfo.NIVELES];
@@ -117,6 +97,6 @@ public class BrilloContraste {
             else if (nivel > ImageInfo.NIVELES - 1) nivel = ImageInfo.NIVELES - 1;
             lut[i] = (byte)Math.round(nivel);
         }
-        return aplicarLut(im, newIm, lut);
+        return Lut.aplicarLut(im, newIm, lut);
 	}
 }

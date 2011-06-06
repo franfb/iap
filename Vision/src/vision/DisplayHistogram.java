@@ -87,8 +87,8 @@ public class DisplayHistogram extends JComponent implements MouseMotionListener,
         
         scale();
         
-        addMouseMotionListener(this);
-        addMouseListener(this);
+        this.addMouseMotionListener(this);
+        this.addMouseListener(this);
     }
     
     /**

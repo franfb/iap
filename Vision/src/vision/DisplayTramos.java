@@ -3,12 +3,15 @@ package vision;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
-public class DisplayTramos extends DisplayHistogram implements MouseListener {
+public class DisplayTramos extends DisplayHistogram implements MouseListener, KeyListener {
 	private static final long serialVersionUID = 1L;
 	private boolean[] tramos;
+	private byte[] lut;
 	
 //	protected int height = 256;
 
@@ -21,10 +24,20 @@ public class DisplayTramos extends DisplayHistogram implements MouseListener {
 			tramos[i] = false;
 		}
 		tramos[0] = true;
-		tramos[10] = true;
 		tramos[tramos.length - 1] = true;
-		
-		addMouseListener(this);
+		this.removeMouseListener(this);
+		this.addMouseListener(this);
+		this.addKeyListener(this);
+	}
+	
+	public byte[] getLut() {
+		if (lut == null) {
+			lut = new byte[histogram.length];
+		}
+		for (int i = 0; i < histogram.length; i++) {
+			lut[i] = (byte)histogram[i];
+		}
+		return lut;
 	}
 	
 	public void paint(Graphics g) {
@@ -59,7 +72,7 @@ public class DisplayTramos extends DisplayHistogram implements MouseListener {
 	
 	public void mouseClicked(MouseEvent e) {
 //		super.getMouseListeners()[0].mouseClicked(e);
-		
+		super.mouseClicked(e);
 		int x = e.getX(); int y = e.getY();
         // Don't show anything out of the plot region.
         if ((x >= border.left) && (x < border.left+width) && (y > border.top) && (y < border.top+height)) {
@@ -92,6 +105,42 @@ public class DisplayTramos extends DisplayHistogram implements MouseListener {
             }
         }
         repaint();
+	}
+
+	@Override
+	public void keyPressed(KeyEvent e) {
+		
+	}
+
+	@Override
+	public void keyReleased(KeyEvent e) {
+		if (e.getKeyCode() == KeyEvent.VK_LEFT) {
+			if (binTip > 0) {
+				for (int i = binTip - 1; i >= 0; i--) {
+					if (tramos[i]) {
+						binTip = i;
+						break;
+					}
+				}
+			}
+			showTip = true;
+		}
+		else if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
+			if (binTip < 255) {
+				for (int i = binTip + 1; i < 256; i++) {
+					if (tramos[i]) {
+						binTip = i;
+						break;
+					}
+				}
+			}
+			showTip = true;
+		}
+	}
+
+	@Override
+	public void keyTyped(KeyEvent e) {
+		
 	}
 
 }

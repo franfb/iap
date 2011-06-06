@@ -15,6 +15,8 @@ import java.awt.GridLayout;
 public class LinealTramosDialog extends JDialog {
 
 	public final JPanel contentPanel = new JPanel();
+	public JButton okButton;
+	public JButton cancelButton;
 
 	/**
 	 * Launch the application.
@@ -45,13 +47,13 @@ public class LinealTramosDialog extends JDialog {
 			buttonPane.setLayout(new FlowLayout(FlowLayout.RIGHT));
 			getContentPane().add(buttonPane, BorderLayout.SOUTH);
 			{
-				JButton okButton = new JButton("OK");
+				okButton = new JButton("OK");
 				okButton.setActionCommand("OK");
 				buttonPane.add(okButton);
 				getRootPane().setDefaultButton(okButton);
 			}
 			{
-				JButton cancelButton = new JButton("Cancel");
+				cancelButton = new JButton("Cancel");
 				cancelButton.setActionCommand("Cancel");
 				buttonPane.add(cancelButton);
 			}
