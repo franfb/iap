@@ -14,7 +14,7 @@ import vision.MainWindow;
 
 public class LinealTramos {
 	public static void run() {
-		Copiar.run("Ajuste de Brillo y Contraste de ");
+		Copiar.run("Trans. Lineal por Tramos de ");
 		final Image image = MainWindow.getCurrentImage();
 //		final ImageInfo info = image.getInfo();
 		final BufferedImage oldBufIm = image.img;
