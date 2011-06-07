@@ -397,6 +397,15 @@ public class MainWindow {
 		});
 		mnImagen.add(mntmTransfLinealPor);
 		Menu.opcionesMenu.add(mntmTransfLinealPor);
+		
+		JMenuItem mntmEcualizarHistograma = new JMenuItem("Ecualizar Histograma");
+		mnImagen.add(mntmEcualizarHistograma);
+		mntmEcualizarHistograma.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				Ecualizar.run();
+			}
+		});
+		Menu.opcionesMenu.add(mntmEcualizarHistograma);
 
 		JMenu mnTransformacion = new JMenu("Geometr\u00EDa");
 		Menu.opcionesMenu.add(mnTransformacion);
