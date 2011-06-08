@@ -21,18 +21,23 @@
 package vision;
 
 import java.awt.Color;
+import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.FontMetrics;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Insets;
+import java.awt.Point;
 import java.awt.RenderingHints;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 //import javax.media.jai.Histogram;
 import javax.swing.JComponent;
+import javax.swing.JToolTip;
+import javax.swing.Popup;
+import javax.swing.PopupFactory;
 
 /**
  * This class displays a histogram (instance of Histogram) as a component.
@@ -74,6 +79,11 @@ public class DisplayHistogram extends JComponent implements MouseMotionListener,
     protected int xTip = 0;
     protected int yTip = 0;
     protected boolean showTip = false;
+    // Attributes to popup the tool tip
+    private PopupFactory popupFactory = PopupFactory.getSharedInstance();
+    private Popup popup;
+    private JToolTip toolTip = createToolTip();
+
     
     /**
      * The constructor for this class, which will set its fields' values and get some information
@@ -290,11 +300,18 @@ public class DisplayHistogram extends JComponent implements MouseMotionListener,
         // Don't show anything out of the plot region.
         if ((x >= border.left) && (x < border.left+width) && (y > border.top) && (y < border.top+height)) {
             // Convert the X to an index on the histogram.
-            x = (x-border.left)/binWidth;
-            y = counts[x];
-            setToolTipText((indexMultiplier*x)+": "+y);
+            int bin = (x-border.left)/binWidth;
+            int c = counts[bin];
+            if (popup != null)
+            	popup.hide();
+            toolTip.setTipText((indexMultiplier*bin)+": "+c);
+            Point p = this.getLocationOnScreen();
+            popup = popupFactory.getPopup(this, toolTip, p.x + x + 15, p.y + y + 25);
+            popup.show();
         } else {
-            setToolTipText(null);
+//            setToolTipText(null);
+        	if (popup != null)
+        		popup.hide();
         }
     }
 
@@ -315,7 +332,6 @@ public class DisplayHistogram extends JComponent implements MouseMotionListener,
 	            showTip = true;
 	            binTip = x;
 	        } else {
-	            setToolTipText(null);
 	            showTip = false;
 	        }
 	        repaint();
