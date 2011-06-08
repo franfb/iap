@@ -2,6 +2,8 @@ package procesos;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.awt.image.BufferedImage;
 
 import javax.swing.event.ChangeEvent;
@@ -25,6 +27,10 @@ public class LogaritmicoExponencial {
 		final LogaritmicoExponencialDialog dialog = new LogaritmicoExponencialDialog();
 		final byte[] lut = new byte[ImageInfo.NIVELES];
 		final int[] points = new int[lut.length];
+		final byte[] lutNegarImagen = new byte[lut.length];
+		for (int i = 0; i < lutNegarImagen.length; i++) {
+			lutNegarImagen[i] = (byte)(lutNegarImagen.length - 1 - i);
+		}
 		generarLut(dialog, im, info, lut, points);
 		final DisplayHistogram grafica = new DisplayHistogram(points, "Gráfica");
 		grafica.setHeight(256);
@@ -34,30 +40,44 @@ public class LogaritmicoExponencial {
 		im.resetInfo();
 		im.panel.repaint();
 		
-		ChangeListener changeTipo = new ChangeListener() {
+		ChangeListener changeK = new ChangeListener() {
 			
 			@Override
 			public void stateChanged(ChangeEvent arg0) {
-				if (dialog.rbTipo2.isSelected() || dialog.rbTipo3.isSelected()) {
-					dialog.spValorK.setEnabled(true);
-				}
-				else {
-					dialog.spValorK.setEnabled(false);
-				}
-				generarLut(dialog, im, info, lut, points);
-				grafica.setHistogram(points);
-				grafica.repaint();
-				im.img = Lut.aplicarLut(oldBufIm, newBufIm, lut);
-				im.panel.img = im.img;
-				im.resetInfo();
-				im.panel.repaint();
+				aplicarTransformacion(dialog, im, info, lut, points, grafica, oldBufIm, newBufIm, lutNegarImagen);
 			}
 		};
 		
-		dialog.rbTipo1.addChangeListener(changeTipo);
-		dialog.rbTipo2.addChangeListener(changeTipo);
-		dialog.rbTipo3.addChangeListener(changeTipo);
-		dialog.spValorK.addChangeListener(changeTipo);
+		MouseListener mouseList = new MouseListener() {
+			
+			@Override
+			public void mouseReleased(MouseEvent arg0) {
+			}
+			
+			@Override
+			public void mousePressed(MouseEvent arg0) {
+			}
+			
+			@Override
+			public void mouseExited(MouseEvent arg0) {
+			}
+			
+			@Override
+			public void mouseEntered(MouseEvent arg0) {
+			}
+			
+			@Override
+			public void mouseClicked(MouseEvent arg0) {
+				aplicarTransformacion(dialog, im, info, lut, points, grafica, oldBufIm, newBufIm, lutNegarImagen);
+			}
+		};
+		
+		dialog.rbLogaritmico.addMouseListener(mouseList);
+		dialog.rbExponencial.addMouseListener(mouseList);
+		dialog.rbTipo1.addMouseListener(mouseList);
+		dialog.rbTipo2.addMouseListener(mouseList);
+		dialog.rbTipo3.addMouseListener(mouseList);
+		dialog.spValorK.addChangeListener(changeK);
 		
 		dialog.okButton.addActionListener(new ActionListener() {
 			
@@ -77,6 +97,30 @@ public class LogaritmicoExponencial {
 		});
 		
 		dialog.setVisible(true);
+	}
+	
+	private static void aplicarTransformacion(LogaritmicoExponencialDialog dialog, Image im, ImageInfo info, byte[] lut, int[] points, DisplayHistogram grafica, BufferedImage oldBufIm, BufferedImage newBufIm, byte[] lutNegarImagen) {
+		if (dialog.rbTipo2.isSelected() || dialog.rbTipo3.isSelected()) {
+			dialog.spValorK.setEnabled(true);
+		}
+		else {
+			dialog.spValorK.setEnabled(false);
+		}
+		generarLut(dialog, im, info, lut, points);
+		grafica.setHistogram(points);
+		grafica.repaint();
+		if (dialog.rbExponencial.isSelected()) {
+			Lut.aplicarLut(oldBufIm, newBufIm, lutNegarImagen);
+			Lut.aplicarLut(newBufIm, newBufIm, lut);
+			Lut.aplicarLut(newBufIm, newBufIm, lutNegarImagen);
+		}
+		else {
+			Lut.aplicarLut(oldBufIm, newBufIm, lut);
+		}
+		im.img = newBufIm;
+		im.panel.img = im.img;
+		im.resetInfo();
+		im.panel.repaint();
 	}
 	
 	public static void generarLut(LogaritmicoExponencialDialog dialog, Image im, ImageInfo info, byte[] lut, int[] points) {
@@ -106,6 +150,14 @@ public class LogaritmicoExponencial {
 						((double)info.histAc[i] / nPix)));
 				points[i] = (int)Math.round(t);
 				lut[i] = (byte)points[i];
+			}
+		}
+		if (dialog.rbExponencial.isSelected()) {
+			int temp;
+			for (int i = 0; i < points.length / 2; i++) {
+				temp = points[i];
+				points[i] = 255 - points[255 - i];
+				points[255 - i] = 255 - temp;
 			}
 		}
 	}
