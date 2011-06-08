@@ -406,6 +406,15 @@ public class MainWindow {
 			}
 		});
 		Menu.opcionesMenu.add(mntmEcualizarHistograma);
+		
+		JMenuItem mntmTransfLogartmicaY = new JMenuItem("Transf. Logar\u00EDtmica y Exponencial");
+		mnImagen.add(mntmTransfLogartmicaY);
+		mntmTransfLogartmicaY.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				LogaritmicoExponencial.run();
+			}
+		});
+		Menu.opcionesMenu.add(mntmTransfLogartmicaY);
 
 		JMenu mnTransformacion = new JMenu("Geometr\u00EDa");
 		Menu.opcionesMenu.add(mnTransformacion);

@@ -8,11 +8,14 @@ import javax.swing.JDialog;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.TitledBorder;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 import javax.swing.ButtonGroup;
 import javax.swing.JRadioButton;
 import javax.swing.JLabel;
 import javax.swing.JSpinner;
 import javax.swing.SpinnerNumberModel;
+import java.awt.GridLayout;
 
 public class LogaritmicoExponencialDialog extends JDialog {
 	private static final long serialVersionUID = 1L;
@@ -23,6 +26,9 @@ public class LogaritmicoExponencialDialog extends JDialog {
 	public JRadioButton rbTipo2;
 	public JRadioButton rbTipo3;
 	public JSpinner spValorK;
+	public JPanel panelGrafica;
+	public JButton okButton;
+	public JButton cancelButton;
 
 	/**
 	 * Launch the application.
@@ -90,21 +96,22 @@ public class LogaritmicoExponencialDialog extends JDialog {
 		spValorK.setBounds(42, 100, 55, 20);
 		panel_1.add(spValorK);
 		
-		JPanel panel_2 = new JPanel();
-		panel_2.setBounds(127, 11, 315, 319);
-		contentPanel.add(panel_2);
+		panelGrafica = new JPanel();
+		panelGrafica.setBounds(127, 11, 315, 319);
+		contentPanel.add(panelGrafica);
+		panelGrafica.setLayout(new GridLayout(1, 1, 0, 0));
 		{
 			JPanel buttonPane = new JPanel();
 			buttonPane.setLayout(new FlowLayout(FlowLayout.RIGHT));
 			getContentPane().add(buttonPane, BorderLayout.SOUTH);
 			{
-				JButton okButton = new JButton("OK");
+				okButton = new JButton("OK");
 				okButton.setActionCommand("OK");
 				buttonPane.add(okButton);
 				getRootPane().setDefaultButton(okButton);
 			}
 			{
-				JButton cancelButton = new JButton("Cancel");
+				cancelButton = new JButton("Cancel");
 				cancelButton.setActionCommand("Cancel");
 				buttonPane.add(cancelButton);
 			}
@@ -122,6 +129,5 @@ public class LogaritmicoExponencialDialog extends JDialog {
 		groupFormula.add(rbTipo3);
 		
 		rbTipo1.setSelected(true);
-		
 	}
 }
