@@ -27,7 +27,7 @@ public class DisplayTramos extends DisplayHistogram implements MouseListener, Ke
 		tramos[tramos.length - 1] = true;
 		this.removeMouseListener(this);
 		this.addMouseListener(this);
-		this.addKeyListener(this);
+//		this.addKeyListener(this);
 	}
 	
 	public byte[] getLut() {

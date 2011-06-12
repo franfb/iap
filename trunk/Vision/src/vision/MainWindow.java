@@ -501,6 +501,15 @@ public class MainWindow {
 		menuBar_1.add(mnFiltros);
 		Menu.opcionesMenu.add(mnFiltros);
 		
+		JMenuItem mntmFiltrosDeSuavizado = new JMenuItem("Filtros de suavizado");
+		mntmFiltrosDeSuavizado.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				Filtrado.run();
+			}
+		});
+		mnFiltros.add(mntmFiltrosDeSuavizado);
+		Menu.opcionesMenu.add(mntmFiltrosDeSuavizado);
+		
 		JMenuItem mntmRuido = new JMenuItem("Ruido");
 		mnFiltros.add(mntmRuido);
 		mntmRuido.addActionListener(new ActionListener() {

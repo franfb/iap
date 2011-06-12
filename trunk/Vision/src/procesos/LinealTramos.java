@@ -28,6 +28,8 @@ public class LinealTramos {
 		final DisplayTramos display = new DisplayTramos(tramosLineal, "Tramos");
 		final LinealTramosDialog dialog = new LinealTramosDialog();
 		dialog.contentPanel.add(display);
+		// TODO arreglar el keyListener del DisplayTramos
+		dialog.addKeyListener(display);
 		
 		display.addMouseListener(new MouseListener() {
 			
