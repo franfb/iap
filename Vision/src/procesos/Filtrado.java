@@ -24,11 +24,13 @@ public class Filtrado {
 		final FiltradoDialog dialog = new FiltradoDialog();
 		
 		dialog.spTam.setModel(new SpinnerNumberModel(3, 3, 55, 2));
+		dialog.spK.setModel(new SpinnerNumberModel(4, 1, 8, 1));
 		
 		ButtonGroup groupTipo = new ButtonGroup();
 		groupTipo.add(dialog.rbMedia);
 		groupTipo.add(dialog.rbMediana);
 		groupTipo.add(dialog.rbModa);
+		groupTipo.add(dialog.rbKvecinos);
 		
 		dialog.rbMedia.setSelected(true);
 		
@@ -46,13 +48,16 @@ public class Filtrado {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				if (dialog.rbMedia.isSelected()) {
-					FiltroOp.ventanaMovil(im, newIm, new FiltroMedia(), (Integer)dialog.spTam.getValue());
+					FiltroOp.ventanaMovil(im, newIm, new FiltroMedia(), (Integer)dialog.spTam.getValue(), 0);
 				}
 				else if (dialog.rbMediana.isSelected()) {
-					FiltroOp.ventanaMovil(im, newIm, new FiltroMediana(), (Integer)dialog.spTam.getValue());
+					FiltroOp.ventanaMovil(im, newIm, new FiltroMediana(), (Integer)dialog.spTam.getValue(), 0);
 				}
 				else if (dialog.rbModa.isSelected()) {
-					FiltroOp.ventanaMovil(im, newIm, new FiltroModa(), (Integer)dialog.spTam.getValue());
+					FiltroOp.ventanaMovil(im, newIm, new FiltroModa(), (Integer)dialog.spTam.getValue(), 0);
+				}
+				else if (dialog.rbKvecinos.isSelected()) {
+					
 				}
 				newIm.resetInfo();
 				newIm.panel.repaint();

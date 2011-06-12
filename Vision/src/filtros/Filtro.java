@@ -4,5 +4,5 @@ import vision.Image;
 
 public interface Filtro {
 
-	public abstract int evaluar(Image im, int x, int y, int w, int h);
+	public abstract int evaluar(Image im, int x, int y, int w, int h, int k);
 }

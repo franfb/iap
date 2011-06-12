@@ -6,7 +6,7 @@ import vision.Image;
 
 public class FiltroOp {
 
-	public static void ventanaMovil(Image im, Image newIm, Filtro f, int tam) {
+	public static void ventanaMovil(Image im, Image newIm, Filtro f, int tam, int k) {
 		int inc = tam / 2;
 		int width;
 		int height;
@@ -31,7 +31,7 @@ public class FiltroOp {
 				if (startY + height > im.heightRoi())
 					height -= (startY + height) - im.heightRoi();
 				
-				newIm.img.setRGB(x, y, f.evaluar(im, startX, startY, width, height));
+				newIm.img.setRGB(x, y, f.evaluar(im, startX, startY, width, height, k));
 			}
 		}
 	}

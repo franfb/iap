@@ -8,7 +8,7 @@ import vision.ImageInfo;
 public class FiltroModa implements Filtro {
 
 	@Override
-	public int evaluar(Image im, int x, int y, int w, int h) {
+	public int evaluar(Image im, int x, int y, int w, int h, int k) {
 		int nPix = w * h;
 		int[] listR = new int[ImageInfo.NIVELES];
 		int[] listG = new int[ImageInfo.NIVELES];

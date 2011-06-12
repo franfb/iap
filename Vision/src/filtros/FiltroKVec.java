@@ -4,7 +4,7 @@ import java.util.Arrays;
 
 import vision.Image;
 
-public class FiltroMediana implements Filtro {
+public class FiltroKVec implements Filtro {
 
 	@Override
 	public int evaluar(Image im, int x, int y, int w, int h, int k) {
@@ -26,16 +26,8 @@ public class FiltroMediana implements Filtro {
 		Arrays.sort(listR);
 		Arrays.sort(listG);
 		Arrays.sort(listB);
-		return Image.rgb(mediana(listR), mediana(listG), mediana(listB));
+//		return Image.rgb(mediana(listR), mediana(listG), mediana(listB));
+		return 0;
 	}
 
-	public int mediana(int[] list) {
-		int centro = list.length / 2;
-		if (list.length % 2 == 0) {
-			return (int)Math.rint((double)(list[centro] + list[centro - 1]) / 2);
-		}
-		else {
-			return (list[centro]);
-		}
-	}
 }
