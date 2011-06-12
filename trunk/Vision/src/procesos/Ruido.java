@@ -170,7 +170,62 @@ public class Ruido {
 	}
 	
 	private static void gaussiano(Image image, double p, int minVal, int maxVal){
+		int n = (int) ((p / 100.0) * (image.widthRoi() * image.heightRoi()));
 		
+		int media = image.getInfo().brillo;
+		int desviacion = image.getInfo().contraste;
+		
+		double s = 0.0;
+		for (int noise = minVal; noise <= maxVal; noise++){
+			s += fx(noise, media, desviacion);
+		}
+		
+		Image ruidosa = Image.crearImagenConPrefijo(image.widthRoi(), image.heightRoi(), image, "Imagen ruidosa de ");
+		Image ruido = Image.crearImagenSinPrefijo(image.widthRoi(), image.heightRoi(), image, "Imagen de ruido");
+		
+		Point src = image.topLeftRoi();
+		for (int x = 0; x < image.widthRoi(); x++){
+			for (int y = 0; y < image.heightRoi(); y++){
+				ruidosa.img.setRGB(x, y, image.img.getRGB(src.x + x, src.y + y));
+			}
+		}
+		
+		int[] pixelValue = new int[3]; 
+		for (int noise = minVal; noise <= maxVal; noise++){
+			int f = (int) (fx(noise, media, desviacion) * n / s);
+			for (int count = 0; count < f; count++){
+				int x;
+				int y;
+				do{
+					x = (int) Math.floor(Math.random() * image.widthRoi());
+					y = (int) Math.floor(Math.random() * image.heightRoi());
+				} while (Image.red(ruido.img.getRGB(x, y)) != 0 || Image.green(ruido.img.getRGB(x, y)) != 0);
+				Image.rgb2array(image.img.getRGB(src.x + x, src.y + y), pixelValue);
+				for (int i = 0; i < 3; i++){
+					pixelValue[i] += noise;
+					if (pixelValue[i] > 255){
+						pixelValue[i] = 255;
+					}
+					if (pixelValue[i] < 0){
+						pixelValue[i] = 0;
+					}
+				}
+				ruidosa.img.setRGB(x, y, Image.array2rgb(pixelValue));
+				if (noise < 0){
+					ruido.img.setRGB(x, y, Image.rgb(-noise, 0, 0));
+				}
+				if (noise > 0){
+					ruido.img.setRGB(x, y, Image.rgb(0, noise, 0));
+				}
+			}
+		}
+		MainWindow.insertAndListenImage(ruidosa);
+		MainWindow.insertAndListenImage(ruido);
+		
+	}
+	
+	private static double fx(int x, int media, int desviacion){
+		return Math.exp(-Math.pow(x - media, 2) / Math.pow(2*desviacion, 2)) / (desviacion * Math.sqrt(2 * Math.PI));
 	}
 	
 }
