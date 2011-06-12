@@ -5,7 +5,7 @@ import vision.Image;
 public class FiltroMedia implements Filtro {
 
 	@Override
-	public int evaluar(Image im, int x, int y, int w, int h) {
+	public int evaluar(Image im, int x, int y, int w, int h, int k) {
 		double acumR = 0;
 		double acumG = 0;
 		double acumB = 0;

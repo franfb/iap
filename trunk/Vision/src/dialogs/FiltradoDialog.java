@@ -24,6 +24,9 @@ public class FiltradoDialog extends JDialog {
 	public JRadioButton rbModa;
 	public JButton okButton;
 	public JButton cancelButton;
+	public JRadioButton rbKvecinos;
+	private JLabel lblNDeVecinos;
+	public JSpinner spK;
 
 	/**
 	 * Launch the application.
@@ -55,6 +58,10 @@ public class FiltradoDialog extends JDialog {
 		JLabel lblTamaoDeLa = new JLabel("Tama\u00F1o de la ventana");
 		
 		spTam = new JSpinner();
+		
+		lblNDeVecinos = new JLabel("N\u00BA de vecinos (k)");
+		
+		spK = new JSpinner();
 		GroupLayout gl_contentPanel = new GroupLayout(contentPanel);
 		gl_contentPanel.setHorizontalGroup(
 			gl_contentPanel.createParallelGroup(Alignment.LEADING)
@@ -63,9 +70,13 @@ public class FiltradoDialog extends JDialog {
 					.addGroup(gl_contentPanel.createParallelGroup(Alignment.LEADING)
 						.addComponent(panel, GroupLayout.PREFERRED_SIZE, 202, GroupLayout.PREFERRED_SIZE)
 						.addGroup(gl_contentPanel.createSequentialGroup()
-							.addComponent(lblTamaoDeLa)
+							.addGroup(gl_contentPanel.createParallelGroup(Alignment.LEADING)
+								.addComponent(lblTamaoDeLa)
+								.addComponent(lblNDeVecinos))
 							.addPreferredGap(ComponentPlacement.RELATED)
-							.addComponent(spTam, GroupLayout.PREFERRED_SIZE, 57, GroupLayout.PREFERRED_SIZE)))
+							.addGroup(gl_contentPanel.createParallelGroup(Alignment.LEADING, false)
+								.addComponent(spK)
+								.addComponent(spTam, GroupLayout.DEFAULT_SIZE, 57, Short.MAX_VALUE))))
 					.addContainerGap(210, Short.MAX_VALUE))
 		);
 		gl_contentPanel.setVerticalGroup(
@@ -77,7 +88,11 @@ public class FiltradoDialog extends JDialog {
 					.addGroup(gl_contentPanel.createParallelGroup(Alignment.BASELINE)
 						.addComponent(lblTamaoDeLa)
 						.addComponent(spTam, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
-					.addContainerGap(205, Short.MAX_VALUE))
+					.addPreferredGap(ComponentPlacement.RELATED)
+					.addGroup(gl_contentPanel.createParallelGroup(Alignment.BASELINE)
+						.addComponent(lblNDeVecinos)
+						.addComponent(spK, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+					.addContainerGap(179, Short.MAX_VALUE))
 		);
 		
 		rbMedia = new JRadioButton("Media");
@@ -85,6 +100,8 @@ public class FiltradoDialog extends JDialog {
 		rbMediana = new JRadioButton("Mediana");
 		
 		rbModa = new JRadioButton("Moda");
+		
+		rbKvecinos = new JRadioButton("K-Vecinos");
 		GroupLayout gl_panel = new GroupLayout(panel);
 		gl_panel.setHorizontalGroup(
 			gl_panel.createParallelGroup(Alignment.LEADING)
@@ -93,7 +110,8 @@ public class FiltradoDialog extends JDialog {
 					.addGroup(gl_panel.createParallelGroup(Alignment.LEADING)
 						.addComponent(rbMedia)
 						.addComponent(rbMediana)
-						.addComponent(rbModa))
+						.addComponent(rbModa)
+						.addComponent(rbKvecinos))
 					.addContainerGap(75, Short.MAX_VALUE))
 		);
 		gl_panel.setVerticalGroup(
@@ -104,7 +122,9 @@ public class FiltradoDialog extends JDialog {
 					.addComponent(rbMediana)
 					.addPreferredGap(ComponentPlacement.RELATED)
 					.addComponent(rbModa)
-					.addContainerGap(37, Short.MAX_VALUE))
+					.addPreferredGap(ComponentPlacement.RELATED)
+					.addComponent(rbKvecinos)
+					.addContainerGap(14, Short.MAX_VALUE))
 		);
 		panel.setLayout(gl_panel);
 		contentPanel.setLayout(gl_contentPanel);
