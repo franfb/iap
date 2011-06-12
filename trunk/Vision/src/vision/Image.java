@@ -222,12 +222,11 @@ public class Image {
 		return (((0x0FF & grey) << 16) | ((0x0FF & grey) << 8) | (0x0FF & grey));
 	}
 	
-	public static int[] rgb2array(int value){
-		int[] values = new int[3];
-		values[0] = red(value);
-		values[1] = green(value);
-		values[2] = blue(value);
-		return values;
+	public static int[] rgb2array(int value, int[] array){
+		array[0] = red(value);
+		array[1] = green(value);
+		array[2] = blue(value);
+		return array;
 	}
 	
 	public static int array2rgb(int[] values){

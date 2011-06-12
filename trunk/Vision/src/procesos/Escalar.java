@@ -112,40 +112,15 @@ public class Escalar {
 				float escalaX = (width - 1) / ((float)image.widthRoi() - 1);
 				float escalaY = (height - 1) / ((float)image.heightRoi() - 1);
 				Image newImage = Image.crearImagenConPrefijo(width, height, image, "Escalado de ");
-				Point src = image.topLeftRoi();
 				for (int x = 0; x < newImage.widthRoi(); x++){
 					for (int y = 0; y < newImage.heightRoi(); y++){
+						float xf = x / escalaX;
+		                float yf = y / escalaY;
 						if (bilineal){
-							float xf = x / escalaX;
-			                float yf = y / escalaY;
-			                int x0 = src.x + (int)xf;
-			                int x1 = src.x + (int)Math.ceil(xf);
-			                int y0 = src.y + (int)yf;
-			                int y1 = src.y + (int)Math.ceil(yf);
-			                float p = xf - x0;
-			                float q = yf - y0;
-			                if (x1 >= image.widthRoi()) {
-		                    	x1 = x0;
-		                	}
-		                	if (y1 >= image.heightRoi()) {
-		                    	y1 = y0;
-		                	}
-			                int[] a = Image.rgb2array(image.img.getRGB(x0, y0));
-			                int[] b = Image.rgb2array(image.img.getRGB(x1, y0));
-			                int[] c = Image.rgb2array(image.img.getRGB(x0, y1));
-			                int[] d = Image.rgb2array(image.img.getRGB(x1, y1));
-			                
-			                float[] nivel = new float[3];
-			                for (int i = 0; i < 3; i++){
-			                	nivel[i] = a[i] + (b[i] - a[i])*p + (c[i] - a[i])*q + (a[i] + d[i] - b[i] - c[i])*p*q;
-			                }
-			                newImage.img.setRGB(x, y, Image.array2rgb(nivel));
+							Interpolacion.bilineal(image, newImage, xf, yf, x, y);
 						}
 						else{
-							Interpolacion.vmp(image, newImage, x / escalaX, y / escalaY, x, y);
-							/*int masProximoX = Math.round(x / escalaX);
-							int masProximoY = Math.round(y / escalaY);
-							newImage.img.setRGB(x, y, image.img.getRGB(src.x + masProximoX, src.y + masProximoY));*/
+							Interpolacion.vmp(image, newImage, xf, yf, x, y);
 						}
 					}
 				}
