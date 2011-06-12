@@ -99,6 +99,7 @@ public class MainWindow {
 					} catch (Exception ex) {
 					}
 					initialize();
+					ImagePanel.setRoiListener();
 					Menu.desactivaOpcionesMenu();
 					InfoLabels.desactivaEtiquetas();
 					inicializaHistogramas();
@@ -293,6 +294,8 @@ public class MainWindow {
 
 		JMenu mnFile = new JMenu("Archivo");
 		menuBar_1.add(mnFile);
+		
+		//Menu.opcionesMenu.add(mnFile);
 
 		JMenuItem mntmOpenImageFrom = new JMenuItem("Abrir");
 		mntmOpenImageFrom.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_O, InputEvent.CTRL_MASK));
@@ -484,6 +487,15 @@ public class MainWindow {
 			}
 		});
 		mnMiscelnea.add(mntmDiferencia);
+		
+		JMenuItem mntmVerPerfil = new JMenuItem("Ver perfil");
+		mnMiscelnea.add(mntmVerPerfil);
+		mntmVerPerfil.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				Perfil.run();
+			}
+		});
+		Menu.opcionesMenu.add(mntmVerPerfil);
 
 	}
 
@@ -590,7 +602,7 @@ public class MainWindow {
 		tabbedPane.setTitleAt(tabbedPane.getSelectedIndex(), title);
 	}
 
-	private static Image getImage(int tabIndex) {
+	public static Image getImage(int tabIndex) {
 		return ((ImagePanel) ((JScrollPane) tabbedPane.getComponentAt(tabIndex)).getViewport().getView()).image;
 	}
 	
