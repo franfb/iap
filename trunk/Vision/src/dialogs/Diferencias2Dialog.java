@@ -58,7 +58,7 @@ public class Diferencias2Dialog extends JDialog {
 		panel_1 = new JPanel();
 		panel_1.setBorder(new TitledBorder(UIManager.getBorder("TitledBorder.border"), "Substracci\u00F3n", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(0, 0, 0)));
 		
-		JLabel lblAncho = new JLabel("Par\u00E1metro N del umbral de desici\u00F3n:");
+		JLabel lblAncho = new JLabel("Par\u00E1metro N del umbral de decisi\u00F3n:");
 		
 		n = new JSpinner();
 		GroupLayout gl_contentPanel = new GroupLayout(contentPanel);

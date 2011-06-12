@@ -407,6 +407,15 @@ public class MainWindow {
 		});
 		Menu.opcionesMenu.add(mntmEcualizarHistograma);
 		
+		JMenuItem mntmEspecificarHistograma = new JMenuItem("Especificar Histograma");
+		mntmEspecificarHistograma.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				EspecificarHistograma.run();
+			}
+		});
+		mnImagen.add(mntmEspecificarHistograma);
+		Menu.opcionesMenu.add(mntmEspecificarHistograma);
+		
 		JMenuItem mntmTransfLogartmicaY = new JMenuItem("Transf. Logar\u00EDtmica y Exponencial");
 		mnImagen.add(mntmTransfLogartmicaY);
 		mntmTransfLogartmicaY.addActionListener(new ActionListener() {
