@@ -30,6 +30,9 @@ public class RotateDialog extends JDialog {
 	public JRadioButton rbBilineal;
 	public JRadioButton rbVmp;
 	public JRadioButton rbPersonalizarAngulo;
+	private JPanel panel_1;
+	public JRadioButton rbDirecta;
+	public JRadioButton rbInversa;
 
 	/**
 	 * Launch the application.
@@ -50,35 +53,63 @@ public class RotateDialog extends JDialog {
 	public RotateDialog() {
 		setTitle("Rotar Imagen");
 		setModal(true);
-		setBounds(100, 100, 220, 241);
+		setBounds(100, 100, 220, 305);
 		getContentPane().setLayout(new BorderLayout());
 		contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
 		getContentPane().add(contentPanel, BorderLayout.CENTER);
 		
 		JPanel panel = new JPanel();
-		panel.setBorder(new TitledBorder(UIManager.getBorder("TitledBorder.border"), "M\u00FAltiplos de 90", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(0, 0, 0)));
+		panel.setBorder(new TitledBorder(UIManager.getBorder("TitledBorder.border"), "\u00C1ngulo", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(0, 0, 0)));
 		
 		JPanel panel_2 = new JPanel();
 		panel_2.setBorder(new TitledBorder(null, "Interpolaci\u00F3n", TitledBorder.LEADING, TitledBorder.TOP, null, null));
+		
+		panel_1 = new JPanel();
+		panel_1.setBorder(new TitledBorder(null, "Transformaci\u00F3n", TitledBorder.LEADING, TitledBorder.TOP, null, null));
 		GroupLayout gl_contentPanel = new GroupLayout(contentPanel);
 		gl_contentPanel.setHorizontalGroup(
 			gl_contentPanel.createParallelGroup(Alignment.TRAILING)
 				.addGroup(gl_contentPanel.createSequentialGroup()
 					.addContainerGap()
 					.addGroup(gl_contentPanel.createParallelGroup(Alignment.TRAILING)
-						.addComponent(panel_2, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 172, Short.MAX_VALUE)
+						.addComponent(panel_1, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 172, Short.MAX_VALUE)
+						.addComponent(panel_2, GroupLayout.DEFAULT_SIZE, 172, Short.MAX_VALUE)
 						.addComponent(panel, Alignment.LEADING, GroupLayout.PREFERRED_SIZE, 172, Short.MAX_VALUE))
 					.addContainerGap())
 		);
 		gl_contentPanel.setVerticalGroup(
 			gl_contentPanel.createParallelGroup(Alignment.LEADING)
-				.addGroup(gl_contentPanel.createSequentialGroup()
-					.addContainerGap()
+				.addGroup(Alignment.TRAILING, gl_contentPanel.createSequentialGroup()
+					.addComponent(panel_1, GroupLayout.DEFAULT_SIZE, 38, Short.MAX_VALUE)
+					.addPreferredGap(ComponentPlacement.RELATED)
 					.addComponent(panel, GroupLayout.PREFERRED_SIZE, 84, GroupLayout.PREFERRED_SIZE)
 					.addPreferredGap(ComponentPlacement.RELATED)
-					.addComponent(panel_2, GroupLayout.PREFERRED_SIZE, 55, Short.MAX_VALUE)
+					.addComponent(panel_2, GroupLayout.PREFERRED_SIZE, 57, GroupLayout.PREFERRED_SIZE)
 					.addContainerGap())
 		);
+		
+		rbDirecta = new JRadioButton("Directa");
+		
+		rbInversa = new JRadioButton("Inversa");
+		GroupLayout gl_panel_1 = new GroupLayout(panel_1);
+		gl_panel_1.setHorizontalGroup(
+			gl_panel_1.createParallelGroup(Alignment.LEADING)
+				.addGroup(gl_panel_1.createSequentialGroup()
+					.addContainerGap()
+					.addComponent(rbDirecta)
+					.addGap(18)
+					.addComponent(rbInversa)
+					.addContainerGap(14, Short.MAX_VALUE))
+		);
+		gl_panel_1.setVerticalGroup(
+			gl_panel_1.createParallelGroup(Alignment.LEADING)
+				.addGroup(gl_panel_1.createSequentialGroup()
+					.addGroup(gl_panel_1.createParallelGroup(Alignment.BASELINE)
+						.addComponent(rbDirecta)
+						.addComponent(rbInversa))
+					.addContainerGap(24, Short.MAX_VALUE))
+		);
+		panel_1.setLayout(gl_panel_1);
 		
 		rbBilineal = new JRadioButton("Bilineal");
 		
