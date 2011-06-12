@@ -496,6 +496,19 @@ public class MainWindow {
 			}
 		});
 		Menu.opcionesMenu.add(mntmVerPerfil);
+		
+		JMenu mnFiltros = new JMenu("Filtros");
+		menuBar_1.add(mnFiltros);
+		Menu.opcionesMenu.add(mnFiltros);
+		
+		JMenuItem mntmRuido = new JMenuItem("Ruido");
+		mnFiltros.add(mntmRuido);
+		mntmRuido.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				Ruido.run();
+			}
+		});
+		Menu.opcionesMenu.add(mntmRuido);
 
 	}
 

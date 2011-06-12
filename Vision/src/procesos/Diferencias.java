@@ -87,11 +87,13 @@ public class Diferencias {
 				Image imagenDiferencia = Image.crearImagenSinPrefijo(image1.widthRoi(), image1.heightRoi(), image1, "Imagen diferencia");
 				Point src1 = image1.topLeftRoi();
 				Point src2 = image2.topLeftRoi();
+				int[] pixel1 = new int[3];
+				int[] pixel2 = new int[3];
+				int[] resultado = new int[3];
 				for (int x = 0; x < imagenDiferencia.widthRoi(); x++){
 					for (int y = 0; y < imagenDiferencia.heightRoi(); y++){
-						int[] pixel1 = Image.rgb2array(image1.img.getRGB(src1.x + x, src1.y + y));
-						int[] pixel2 = Image.rgb2array(image2.img.getRGB(src2.x + x, src2.y + y));
-						int[] resultado = new int[3];
+						Image.rgb2array(image1.img.getRGB(src1.x + x, src1.y + y), pixel1);
+						Image.rgb2array(image2.img.getRGB(src2.x + x, src2.y + y), pixel2);
 						for (int i = 0; i < 3; i++){
 							resultado[i] = Math.abs(pixel1[i] - pixel2[i]);
 						}
