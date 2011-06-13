@@ -2,10 +2,9 @@ package filtros;
 
 import vision.Image;
 
-public class FiltroMedia implements Filtro {
+public class FiltroMedia extends Filtro {
 
-	@Override
-	public int evaluar(Image im, int x, int y, int w, int h, int k) {
+	public int evaluar(Image im, int x, int y, int w, int h) {
 		double acumR = 0;
 		double acumG = 0;
 		double acumB = 0;
