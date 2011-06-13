@@ -7,6 +7,7 @@ import javax.swing.ButtonGroup;
 import javax.swing.SpinnerNumberModel;
 
 import dialogs.FiltradoDialog;
+import filtros.FiltroKVec;
 import filtros.FiltroMedia;
 import filtros.FiltroMediana;
 import filtros.FiltroModa;
@@ -48,16 +49,16 @@ public class Filtrado {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				if (dialog.rbMedia.isSelected()) {
-					FiltroOp.ventanaMovil(im, newIm, new FiltroMedia(), (Integer)dialog.spTam.getValue(), 0);
+					new FiltroMedia().ventanaMovil(im, newIm, (Integer)dialog.spTam.getValue());
 				}
 				else if (dialog.rbMediana.isSelected()) {
-					FiltroOp.ventanaMovil(im, newIm, new FiltroMediana(), (Integer)dialog.spTam.getValue(), 0);
+					new FiltroMediana().ventanaMovil(im, newIm, (Integer)dialog.spTam.getValue());
 				}
 				else if (dialog.rbModa.isSelected()) {
-					FiltroOp.ventanaMovil(im, newIm, new FiltroModa(), (Integer)dialog.spTam.getValue(), 0);
+					new FiltroModa().ventanaMovil(im, newIm, (Integer)dialog.spTam.getValue());
 				}
 				else if (dialog.rbKvecinos.isSelected()) {
-					
+					new FiltroKVec().ventanaMovil(im, newIm, (Integer)dialog.spTam.getValue(), (Integer)dialog.spK.getValue());
 				}
 				newIm.resetInfo();
 				newIm.panel.repaint();
