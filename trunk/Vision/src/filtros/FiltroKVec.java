@@ -1,8 +1,6 @@
 package filtros;
 
 import java.util.Arrays;
-import java.util.Hashtable;
-
 import vision.Image;
 
 public class FiltroKVec extends Filtro {
@@ -38,35 +36,35 @@ public class FiltroKVec extends Filtro {
 		return (int)Math.rint(acum / (k < list.length ? k + 1 : list.length));
 	}
 
-	public void ventanaMovil(Image im, Image newIm, int tam, int k) {
-		int inc = tam / 2;
-		int width;
-		int height;
-		int startX, startY;
-		for (int x = 0; x < im.widthRoi(); x++) {
-			for (int y = 0; y < im.heightRoi(); y++) {
-				width = tam;
-				startX = x - inc;
-				if (startX < 0) {
-					width += startX;
-					startX = 0;
-				}
-				if (startX + width > im.widthRoi())
-					width -= (startX + width) - im.widthRoi();
-				
-				height = tam;
-				startY = y - inc;
-				if (startY < 0) {
-					height += startY;
-					startY = 0;
-				}
-				if (startY + height > im.heightRoi())
-					height -= (startY + height) - im.heightRoi();
-				
-				newIm.img.setRGB(x, y, evaluar(im, startX, startY, width, height, k, im.img.getRGB(x, y)));
-			}
-		}
-	}
+//	public void ventanaMovil(Image im, Image newIm, int tam, int k) {
+//		int inc = tam / 2;
+//		int width;
+//		int height;
+//		int startX, startY;
+//		for (int x = 0; x < im.widthRoi(); x++) {
+//			for (int y = 0; y < im.heightRoi(); y++) {
+//				width = tam;
+//				startX = x - inc;
+//				if (startX < 0) {
+//					width += startX;
+//					startX = 0;
+//				}
+//				if (startX + width > im.widthRoi())
+//					width -= (startX + width) - im.widthRoi();
+//				
+//				height = tam;
+//				startY = y - inc;
+//				if (startY < 0) {
+//					height += startY;
+//					startY = 0;
+//				}
+//				if (startY + height > im.heightRoi())
+//					height -= (startY + height) - im.heightRoi();
+//				
+//				newIm.img.setRGB(x, y, evaluar(im, startX, startY, width, height, k, im.img.getRGB(x, y)));
+//			}
+//		}
+//	}
 
 	@Override
 	public int evaluar(Image im, int x, int y, int w, int h) {
