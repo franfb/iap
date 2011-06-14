@@ -507,8 +507,6 @@ public class MainWindow {
 				Filtrado.run();
 			}
 		});
-		mnFiltros.add(mntmFiltrosDeSuavizado);
-		Menu.opcionesMenu.add(mntmFiltrosDeSuavizado);
 		
 		JMenuItem mntmRuido = new JMenuItem("Ruido");
 		mnFiltros.add(mntmRuido);
@@ -518,6 +516,17 @@ public class MainWindow {
 			}
 		});
 		Menu.opcionesMenu.add(mntmRuido);
+		
+		JMenuItem mntmDefinirKernel = new JMenuItem("Definir Kernel");
+		mntmDefinirKernel.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				DefinirKernel.run();
+			}
+		});
+		mnFiltros.add(mntmDefinirKernel);
+		mnFiltros.add(mntmFiltrosDeSuavizado);
+		Menu.opcionesMenu.add(mntmDefinirKernel);
+		Menu.opcionesMenu.add(mntmFiltrosDeSuavizado);
 
 	}
 

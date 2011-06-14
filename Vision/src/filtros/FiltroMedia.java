@@ -11,7 +11,7 @@ public class FiltroMedia extends Filtro {
 		int value;
 		for (int i = x; i < x + w; i++) {
 			for (int j = y; j < y + h; j++) {
-				value = im.img.getRGB(i, j);
+				value = im.img.getRGB(src.x + i, src.y + j);
 				acumR += Image.red(value);
 				acumG += Image.green(value);
 				acumB += Image.blue(value);

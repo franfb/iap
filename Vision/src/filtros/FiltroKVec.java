@@ -15,7 +15,7 @@ public class FiltroKVec extends Filtro {
 		int count = 0;
 		for (int i = x; i < x + w; i++) {
 			for (int j = y; j < y + h; j++) {
-				value = im.img.getRGB(i, j);
+				value = im.img.getRGB(src.x + i, src.y + j);
 				listR[count] = new ValueDifPair(Image.red(value), Math.abs(Image.red(value) - Image.red(v)));
 				listG[count] = new ValueDifPair(Image.green(value), Math.abs(Image.green(value) - Image.green(v)));
 				listB[count] = new ValueDifPair(Image.blue(value), Math.abs(Image.blue(value) - Image.blue(v)));

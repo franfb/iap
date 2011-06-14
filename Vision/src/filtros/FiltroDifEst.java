@@ -1,5 +1,7 @@
 package filtros;
 
+import java.awt.Point;
+
 import vision.Image;
 
 public class FiltroDifEst extends Filtro {
@@ -19,7 +21,7 @@ public class FiltroDifEst extends Filtro {
 		// Cálculo de la media local
 		for (int i = x; i < x + w; i++) {
 			for (int j = y; j < y + h; j++) {
-				value = im.img.getRGB(i, j);
+				value = im.img.getRGB(src.x + i, src.y + j);
 				acum += Image.grey(value);
 				acumR += Image.red(value);
 				acumG += Image.green(value);
@@ -39,7 +41,7 @@ public class FiltroDifEst extends Filtro {
 		// Cálculo de la media local
 		for (int i = x; i < x + w; i++) {
 			for (int j = y; j < y + h; j++) {
-				value = im.img.getRGB(i, j);
+				value = im.img.getRGB(src.x + i, src.y + j);
 				desv += Math.pow(Image.grey(value) - acum, 2);
 				desvR += Math.pow(Image.red(value) - acumR, 2);
 				desvG += Math.pow(Image.green(value) - acumG, 2);

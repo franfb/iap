@@ -18,7 +18,7 @@ public class FiltroModa extends Filtro {
 		int value;
 		for (int i = x; i < x + w; i++) {
 			for (int j = y; j < y + h; j++) {
-				value = im.img.getRGB(i, j);
+				value = im.img.getRGB(src.x + i, src.y + j);
 				listR[Image.red(value)]++;
 				listG[Image.green(value)]++;
 				listB[Image.blue(value)]++;
