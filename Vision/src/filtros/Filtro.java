@@ -6,7 +6,13 @@ public abstract class Filtro {
 
 	public abstract int evaluar(Image im, int x, int y, int w, int h);
 	
+	public abstract int evaluar(Image im, int x, int y, int w, int h, int k, int v);
+	
 	public void ventanaMovil(Image im, Image newIm, int tam) {
+		ventanaMovil(im, newIm, tam, -1);
+	}
+	
+	public void ventanaMovil(Image im, Image newIm, int tam, int k) {
 		int inc = tam / 2;
 		int width;
 		int height;
@@ -31,7 +37,16 @@ public abstract class Filtro {
 				if (startY + height > im.heightRoi())
 					height -= (startY + height) - im.heightRoi();
 				
-				newIm.img.setRGB(x, y, evaluar(im, startX, startY, width, height));
+				if (x == 636 && y == 657) {
+					System.out.println("Aqui");
+				}
+				
+				if (k == -1) {
+					newIm.img.setRGB(x, y, evaluar(im, startX, startY, width, height));
+				}
+				else {
+					newIm.img.setRGB(x, y, evaluar(im, startX, startY, width, height, k, im.img.getRGB(x, y)));
+				}
 			}
 		}
 	}

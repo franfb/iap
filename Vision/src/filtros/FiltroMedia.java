@@ -24,4 +24,9 @@ public class FiltroMedia extends Filtro {
 		return Image.rgb((int)Math.rint(acumR), (int)Math.rint(acumG), (int)Math.rint(acumB));
 	}
 
+	@Override
+	public int evaluar(Image im, int x, int y, int w, int h, int k, int v) {
+		return 0;
+	}
+
 }

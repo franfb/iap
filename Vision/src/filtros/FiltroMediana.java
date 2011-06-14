@@ -37,4 +37,9 @@ public class FiltroMediana extends Filtro {
 			return (list[centro]);
 		}
 	}
+
+	@Override
+	public int evaluar(Image im, int x, int y, int w, int h, int k, int v) {
+		return 0;
+	}
 }

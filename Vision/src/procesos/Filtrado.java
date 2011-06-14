@@ -2,11 +2,16 @@ package procesos;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 
 import javax.swing.ButtonGroup;
 import javax.swing.SpinnerNumberModel;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 
 import dialogs.FiltradoDialog;
+import filtros.FiltroDifEst;
 import filtros.FiltroKVec;
 import filtros.FiltroMedia;
 import filtros.FiltroMediana;
@@ -25,15 +30,75 @@ public class Filtrado {
 		final FiltradoDialog dialog = new FiltradoDialog();
 		
 		dialog.spTam.setModel(new SpinnerNumberModel(3, 3, 55, 2));
-		dialog.spK.setModel(new SpinnerNumberModel(4, 1, 8, 1));
+		final SpinnerNumberModel spKModel = new SpinnerNumberModel(4, 1, 8, 1);
+		dialog.spK.setModel(spKModel);
 		
 		ButtonGroup groupTipo = new ButtonGroup();
 		groupTipo.add(dialog.rbMedia);
 		groupTipo.add(dialog.rbMediana);
 		groupTipo.add(dialog.rbModa);
 		groupTipo.add(dialog.rbKvecinos);
+		groupTipo.add(dialog.rbDifEstadstica);
 		
 		dialog.rbMedia.setSelected(true);
+		dialog.spK.setEnabled(false);
+		
+		MouseListener changeTipo = new MouseListener() {
+			
+			@Override
+			public void mouseReleased(MouseEvent e) {
+			}
+			
+			@Override
+			public void mousePressed(MouseEvent e) {
+			}
+			
+			@Override
+			public void mouseExited(MouseEvent e) {
+			}
+			
+			@Override
+			public void mouseEntered(MouseEvent e) {
+			}
+			
+			@Override
+			public void mouseClicked(MouseEvent arg0) {
+				if (dialog.rbKvecinos.isSelected()) {
+					dialog.lblKSigma.setText("N\u00BA de vecinos (k)");
+					int max = (Integer)dialog.spTam.getValue() * (Integer)dialog.spTam.getValue() - 1;
+					spKModel.setMaximum(max);
+					spKModel.setValue(max / 2);
+					dialog.spK.setEnabled(true);
+				}
+				else if (dialog.rbDifEstadstica.isSelected()) {
+					dialog.lblKSigma.setText("Contraste nuevo");
+					spKModel.setMaximum(255);
+					spKModel.setValue(im.getInfo().contraste);
+					dialog.spK.setEnabled(true);
+				}
+				else {
+					dialog.spK.setEnabled(false);
+				}
+			}
+		};
+		
+		dialog.rbMedia.addMouseListener(changeTipo);
+		dialog.rbMediana.addMouseListener(changeTipo);
+		dialog.rbModa.addMouseListener(changeTipo);
+		dialog.rbKvecinos.addMouseListener(changeTipo);
+		dialog.rbDifEstadstica.addMouseListener(changeTipo);
+		
+		dialog.spTam.addChangeListener(new ChangeListener() {
+			
+			@Override
+			public void stateChanged(ChangeEvent arg0) {
+				if (dialog.rbKvecinos.isSelected()) {
+					int max = (Integer)dialog.spTam.getValue() * (Integer)dialog.spTam.getValue() - 1;
+					spKModel.setMaximum(max);
+					spKModel.setValue(max / 2);
+				}
+			}
+		});
 		
 		dialog.cancelButton.addActionListener(new ActionListener() {
 			
@@ -59,6 +124,9 @@ public class Filtrado {
 				}
 				else if (dialog.rbKvecinos.isSelected()) {
 					new FiltroKVec().ventanaMovil(im, newIm, (Integer)dialog.spTam.getValue(), (Integer)dialog.spK.getValue());
+				}
+				else if (dialog.rbDifEstadstica.isSelected()) {
+					new FiltroDifEst().ventanaMovil(im, newIm, (Integer)dialog.spTam.getValue(), (Integer)dialog.spK.getValue());
 				}
 				newIm.resetInfo();
 				newIm.panel.repaint();

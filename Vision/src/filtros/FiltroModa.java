@@ -1,14 +1,11 @@
 package filtros;
 
-import java.util.Arrays;
-
 import vision.Image;
 import vision.ImageInfo;
 
 public class FiltroModa extends Filtro {
 
 	public int evaluar(Image im, int x, int y, int w, int h) {
-		int nPix = w * h;
 		int[] listR = new int[ImageInfo.NIVELES];
 		int[] listG = new int[ImageInfo.NIVELES];
 		int[] listB = new int[ImageInfo.NIVELES];
@@ -40,5 +37,11 @@ public class FiltroModa extends Filtro {
 			}
 		}
 		return moda;
+	}
+
+
+	@Override
+	public int evaluar(Image im, int x, int y, int w, int h, int k, int v) {
+		return 0;
 	}
 }
