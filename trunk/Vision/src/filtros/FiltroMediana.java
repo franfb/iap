@@ -15,7 +15,7 @@ public class FiltroMediana extends Filtro {
 		int count = 0;
 		for (int i = x; i < x + w; i++) {
 			for (int j = y; j < y + h; j++) {
-				value = im.img.getRGB(i, j);
+				value = im.img.getRGB(src.x + i, src.y + j);
 				listR[count] = Image.red(value);
 				listG[count] = Image.green(value);
 				listB[count] = Image.blue(value);

@@ -12,6 +12,7 @@ import javax.swing.event.ChangeListener;
 
 import dialogs.FiltradoDialog;
 import filtros.FiltroDifEst;
+import filtros.FiltroGaussiano;
 import filtros.FiltroKVec;
 import filtros.FiltroMedia;
 import filtros.FiltroMediana;
@@ -39,9 +40,11 @@ public class Filtrado {
 		groupTipo.add(dialog.rbModa);
 		groupTipo.add(dialog.rbKvecinos);
 		groupTipo.add(dialog.rbDifEstadstica);
+		groupTipo.add(dialog.rbGaussiano);
 		
 		dialog.rbMedia.setSelected(true);
 		dialog.spK.setEnabled(false);
+		dialog.spSigma.setEnabled(false);
 		
 		MouseListener changeTipo = new MouseListener() {
 			
@@ -76,8 +79,12 @@ public class Filtrado {
 					spKModel.setValue(im.getInfo().contraste);
 					dialog.spK.setEnabled(true);
 				}
+				else if (dialog.rbGaussiano.isSelected()) {
+					dialog.spSigma.setEnabled(true);
+				}
 				else {
 					dialog.spK.setEnabled(false);
+					dialog.spSigma.setEnabled(false);
 				}
 			}
 		};
@@ -87,6 +94,7 @@ public class Filtrado {
 		dialog.rbModa.addMouseListener(changeTipo);
 		dialog.rbKvecinos.addMouseListener(changeTipo);
 		dialog.rbDifEstadstica.addMouseListener(changeTipo);
+		dialog.rbGaussiano.addMouseListener(changeTipo);
 		
 		dialog.spTam.addChangeListener(new ChangeListener() {
 			
@@ -127,6 +135,9 @@ public class Filtrado {
 				}
 				else if (dialog.rbDifEstadstica.isSelected()) {
 					new FiltroDifEst().ventanaMovil(im, newIm, (Integer)dialog.spTam.getValue(), (Integer)dialog.spK.getValue());
+				}
+				else if (dialog.rbGaussiano.isSelected()) {
+					new FiltroGaussiano().convolucion(im, newIm, (Double)dialog.spSigma.getValue());
 				}
 				newIm.resetInfo();
 				newIm.panel.repaint();
