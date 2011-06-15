@@ -24,9 +24,13 @@ public class EspecificarHistograma {
 		dialog = new EspecificarHistogramaDialog();
 		dialog.lbNombreIm1.setText(image1.getFileCompleto().getName());
 		dialog.scrollBar.setValues(currentIndex, 1, 0, MainWindow.getImageCount());
-		
-		final DisplayHistogram hist1 = new DisplayHistogram(info.hist, "Histograma Actual");
-		final DisplayHistogram hist2 = new DisplayHistogram(info.hist, "Histograma Deseado");
+		final int[][] phist1 = new int[1][];
+		phist1[0] = info.hist;
+		final int[][] phist2 = new int[1][];
+		phist2[0] = info.hist;
+		String[] names = { "V" };
+		final DisplayHistogram hist1 = new DisplayHistogram(phist1, "Histograma Actual", names);
+		final DisplayHistogram hist2 = new DisplayHistogram(phist2, "Histograma Deseado", names);
 		dialog.panelHistAnterior.add(hist1);
 		dialog.panelHistDeseado.add(hist2);
 		
@@ -37,7 +41,7 @@ public class EspecificarHistograma {
 				MainWindow.tabbedPane.setSelectedIndex(dialog.scrollBar.getValue());
 				image2 = MainWindow.getCurrentImage();
 				ImageInfo info2 = image2.getInfo();
-				hist2.setHistogram(info2.hist);
+				hist2.setHistogram(info2.hist, 0);
 				hist2.repaint();
 			}
 		});

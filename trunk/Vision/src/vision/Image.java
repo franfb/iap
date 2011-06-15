@@ -64,6 +64,9 @@ public class Image {
 //					inf.histAcB[b]++;
 					// Brillo
 					inf.brillo += greyLevel;
+					inf.brilloR += r;
+					inf.brilloG += g;
+					inf.brilloB += b;
 					// Contraste
 					// Entropía
 				}
@@ -89,14 +92,23 @@ public class Image {
 			inf.histAcG[255] += inf.histG[255];
 			inf.histAcB[255] += inf.histB[255];
 			
-			// Hallamos la media de los valores de gris (brillo)
+			// Hallamos la media de los valores de gris (brillo) y de color
 			inf.brillo /= numPixels;
+			inf.brilloR /= numPixels;
+			inf.brilloG /= numPixels;
+			inf.brilloB /= numPixels;
 
 			// Hallamos la desviación típica de la imagen (contraste) a partir del histograma
 	        for (int i = 0; i < inf.hist.length; i++) {
 	            inf.contraste += inf.hist[i] * Math.pow((double)(i - inf.brillo), 2);
+	            inf.contR += inf.histR[i] * Math.pow((double)(i - inf.brilloR), 2);
+	            inf.contG += inf.histG[i] * Math.pow((double)(i - inf.brilloG), 2);
+	            inf.contB += inf.histB[i] * Math.pow((double)(i - inf.brilloB), 2);
 	        }
 	        inf.contraste = Math.round((float)Math.sqrt((1/(double)numPixels) * inf.contraste));
+	        inf.contR = Math.round((float)Math.sqrt((1/(double)numPixels) * inf.contR));
+	        inf.contG = Math.round((float)Math.sqrt((1/(double)numPixels) * inf.contG));
+	        inf.contB = Math.round((float)Math.sqrt((1/(double)numPixels) * inf.contB));
 	        
 	        // Calculamos la entropía de la imagen a partir del histograma
 	        inf.entropia = 0;
@@ -105,6 +117,21 @@ public class Image {
 	                double prob = ((double)inf.hist[i] / (double)numPixels);
 	                double logProb = Math.log10(prob)/Math.log10(2);
 	                inf.entropia = inf.entropia - (prob*logProb);
+	            }
+	            if (inf.histR[i] > 0) {
+	                double prob = ((double)inf.histR[i] / (double)numPixels);
+	                double logProb = Math.log10(prob)/Math.log10(2);
+	                inf.entR = inf.entR - (prob*logProb);
+	            }
+	            if (inf.histG[i] > 0) {
+	                double prob = ((double)inf.histG[i] / (double)numPixels);
+	                double logProb = Math.log10(prob)/Math.log10(2);
+	                inf.entG = inf.entG - (prob*logProb);
+	            }
+	            if (inf.histB[i] > 0) {
+	                double prob = ((double)inf.histB[i] / (double)numPixels);
+	                double logProb = Math.log10(prob)/Math.log10(2);
+	                inf.entB = inf.entB - (prob*logProb);
 	            }
 	        }
 			
