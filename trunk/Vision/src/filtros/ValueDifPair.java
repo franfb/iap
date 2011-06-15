@@ -18,7 +18,7 @@ public class ValueDifPair implements Comparable<ValueDifPair> {
 			return false;
 		}
 		else {
-			return (this.dif == ((ValueDifPair)obj).getDif());
+			return (this.dif == ((ValueDifPair)obj).getGrey());
 		}
 	}
 	
@@ -27,7 +27,7 @@ public class ValueDifPair implements Comparable<ValueDifPair> {
 //			return 0;
 //		}
 //		else {
-			return this.dif - vdp.getDif();
+			return this.dif - vdp.getGrey();
 //		}
 	}
 
@@ -48,7 +48,7 @@ public class ValueDifPair implements Comparable<ValueDifPair> {
 	/**
 	 * @return the dif
 	 */
-	public int getDif() {
+	public int getGrey() {
 		return dif;
 	}
 

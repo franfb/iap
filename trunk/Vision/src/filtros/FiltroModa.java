@@ -4,7 +4,7 @@ import vision.Image;
 import vision.ImageInfo;
 
 public class FiltroModa extends Filtro {
-
+	
 	public int evaluar(Image im, int x, int y, int w, int h) {
 		int[] listR = new int[ImageInfo.NIVELES];
 		int[] listG = new int[ImageInfo.NIVELES];

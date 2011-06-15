@@ -74,7 +74,8 @@ public class MainWindow {
 	public static DisplayHistogram hist;
 	public static DisplayHistogram histAc;
 	
-	private static int[] histCero = new int[256];
+	private static int[][] histCero = new int[4][256];
+	private static int[][] histCero2 = new int[4][256];
 
 	public static JComboBox cbTipoHist;
 
@@ -206,7 +207,7 @@ public class MainWindow {
 				showInfo();
 			}
 		});
-		cbTipoHist.setModel(new DefaultComboBoxModel(new String[] {"Escala de Grises", "Rojo", "Verde", "Azul"}));
+		cbTipoHist.setModel(new DefaultComboBoxModel(new String[] {"Escala de Grises", "Rojo", "Verde", "Azul", "RGB"}));
 		cbTipoHist.setSelectedIndex(0);
 		InfoLabels.listaEtiquetas.add(cbTipoHist);
 		
@@ -572,11 +573,21 @@ public class MainWindow {
 	}
 	
 	private static void inicializaHistogramas() {
-		for (int i = 0; i < histCero.length; i++) {
-			histCero[i] = 0;
+		for (int h = 0; h < histCero.length; h++) {
+			for (int i = 0; i < histCero[h].length; i++) {
+				histCero[h][i] = 0;
+				histCero2[h][i] = 0;
+			}
 		}
-		hist = new DisplayHistogram(histCero, "Histograma");
-		histAc = new DisplayHistogram(histCero, "Histograma Acumulado");
+		String[] names = { "Gris", "R", "G", "B" };
+		Color[] color1 = new Color[4];
+		Color[] color2 = new Color[4];
+		hist = new DisplayHistogram(histCero, "Histograma", names);
+		hist.setHistRange(0, 1);
+		hist.setBarColor(color1);
+		histAc = new DisplayHistogram(histCero2, "Histograma Acumulado", names);
+		histAc.setHistRange(0, 1);
+		histAc.setBarColor(color2);
 		panelHistograma.add(hist);
 		panelHistograma.add(histAc);
 	}
@@ -595,20 +606,30 @@ public class MainWindow {
 		//panelHistograma.removeAll();
 		//panelHistograma.add(image.getHistogram());
 		if (cbTipoHist.getSelectedIndex() == 0) { // Escala de grises
-			hist.setHistogram(info.hist, Color.DARK_GRAY);
-			histAc.setHistogram(info.histAc, Color.DARK_GRAY);
+			hist.setHistogram(info.hist, 0, Color.DARK_GRAY);
+			histAc.setHistogram(info.histAc, 0, Color.DARK_GRAY);
 		}
 		else if (cbTipoHist.getSelectedIndex() == 1) { // Rojo
-			hist.setHistogram(info.histR, new Color(192, 0, 0));
-			histAc.setHistogram(info.histAcR, new Color(192, 0, 0));
+			hist.setHistogram(info.histR, 1, new Color(192, 0, 0, 128));
+			histAc.setHistogram(info.histAcR, 1, new Color(192, 0, 0, 128));
 		}
 		else if (cbTipoHist.getSelectedIndex() == 2) { // Verde
-			hist.setHistogram(info.histG, new Color(0, 192, 0));
-			histAc.setHistogram(info.histAcG, new Color(0, 192, 0));
+			hist.setHistogram(info.histG, 2, new Color(0, 192, 0, 128));
+			histAc.setHistogram(info.histAcG, 2, new Color(0, 192, 0, 128));
 		}
 		else if (cbTipoHist.getSelectedIndex() == 3) { // Azul
-			hist.setHistogram(info.histB, new Color(0, 0, 192));
-			histAc.setHistogram(info.histAcB, new Color(0, 0, 192));
+			hist.setHistogram(info.histB, 3, new Color(0, 0, 255, 128));
+			histAc.setHistogram(info.histAcB, 3, new Color(0, 0, 255, 128));
+		}
+		else if (cbTipoHist.getSelectedIndex() == 4) {
+			hist.setHistogram(info.histR, 1, new Color(192, 0, 0, 128));
+			histAc.setHistogram(info.histAcR, 1, new Color(192, 0, 0, 128));
+			hist.setHistogram(info.histG, 2, new Color(0, 192, 0, 128));
+			histAc.setHistogram(info.histAcG, 2, new Color(0, 192, 0, 128));
+			hist.setHistogram(info.histB, 3, new Color(0, 0, 192, 128));
+			histAc.setHistogram(info.histAcB, 3, new Color(0, 0, 192, 128));
+			hist.setHistRange(1, 4);
+			histAc.setHistRange(1, 4);
 		}
 		panelHistograma.repaint();
 	}

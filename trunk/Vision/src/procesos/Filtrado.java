@@ -16,6 +16,7 @@ import filtros.FiltroGaussiano;
 import filtros.FiltroKVec;
 import filtros.FiltroMedia;
 import filtros.FiltroMediana;
+import filtros.FiltroMedianaV6;
 import filtros.FiltroModa;
 import filtros.FiltroOp;
 
@@ -37,6 +38,7 @@ public class Filtrado {
 		ButtonGroup groupTipo = new ButtonGroup();
 		groupTipo.add(dialog.rbMedia);
 		groupTipo.add(dialog.rbMediana);
+		groupTipo.add(dialog.rbMedianaV);
 		groupTipo.add(dialog.rbModa);
 		groupTipo.add(dialog.rbKvecinos);
 		groupTipo.add(dialog.rbDifEstadstica);
@@ -72,17 +74,24 @@ public class Filtrado {
 					spKModel.setMaximum(max);
 					spKModel.setValue(max / 2);
 					dialog.spK.setEnabled(true);
+					dialog.spTam.setEnabled(true);
+					dialog.spSigma.setEnabled(false);
 				}
 				else if (dialog.rbDifEstadstica.isSelected()) {
 					dialog.lblKSigma.setText("Contraste nuevo");
 					spKModel.setMaximum(255);
 					spKModel.setValue(im.getInfo().contraste);
 					dialog.spK.setEnabled(true);
+					dialog.spTam.setEnabled(true);
+					dialog.spSigma.setEnabled(false);
 				}
 				else if (dialog.rbGaussiano.isSelected()) {
+					dialog.spTam.setEnabled(false);
+					dialog.spK.setEnabled(false);
 					dialog.spSigma.setEnabled(true);
 				}
 				else {
+					dialog.spTam.setEnabled(true);
 					dialog.spK.setEnabled(false);
 					dialog.spSigma.setEnabled(false);
 				}
@@ -91,6 +100,7 @@ public class Filtrado {
 		
 		dialog.rbMedia.addMouseListener(changeTipo);
 		dialog.rbMediana.addMouseListener(changeTipo);
+		dialog.rbMedianaV.addMouseListener(changeTipo);
 		dialog.rbModa.addMouseListener(changeTipo);
 		dialog.rbKvecinos.addMouseListener(changeTipo);
 		dialog.rbDifEstadstica.addMouseListener(changeTipo);
@@ -126,6 +136,9 @@ public class Filtrado {
 				}
 				else if (dialog.rbMediana.isSelected()) {
 					new FiltroMediana().ventanaMovil(im, newIm, (Integer)dialog.spTam.getValue());
+				}
+				else if (dialog.rbMedianaV.isSelected()) {
+					new FiltroMedianaV6().ventanaMovil(im, newIm, (Integer)dialog.spTam.getValue());
 				}
 				else if (dialog.rbModa.isSelected()) {
 					new FiltroModa().ventanaMovil(im, newIm, (Integer)dialog.spTam.getValue());
