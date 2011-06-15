@@ -31,6 +31,7 @@ public class FiltradoDialog extends JDialog {
 	public JRadioButton rbDifEstadstica;
 	public JSpinner spSigma;
 	public JRadioButton rbGaussiano;
+	public JRadioButton rbMedianaV;
 
 	/**
 	 * Launch the application.
@@ -121,6 +122,8 @@ public class FiltradoDialog extends JDialog {
 		rbDifEstadstica = new JRadioButton("Dif. Estad\u00EDstica");
 		
 		rbGaussiano = new JRadioButton("Gaussiano");
+		
+		rbMedianaV = new JRadioButton("Mediana V6");
 		GroupLayout gl_panel = new GroupLayout(panel);
 		gl_panel.setHorizontalGroup(
 			gl_panel.createParallelGroup(Alignment.LEADING)
@@ -132,8 +135,9 @@ public class FiltradoDialog extends JDialog {
 						.addComponent(rbModa)
 						.addComponent(rbKvecinos)
 						.addComponent(rbDifEstadstica)
-						.addComponent(rbGaussiano))
-					.addContainerGap(75, Short.MAX_VALUE))
+						.addComponent(rbGaussiano)
+						.addComponent(rbMedianaV))
+					.addContainerGap(53, Short.MAX_VALUE))
 		);
 		gl_panel.setVerticalGroup(
 			gl_panel.createParallelGroup(Alignment.LEADING)
@@ -141,6 +145,8 @@ public class FiltradoDialog extends JDialog {
 					.addComponent(rbMedia)
 					.addPreferredGap(ComponentPlacement.RELATED)
 					.addComponent(rbMediana)
+					.addPreferredGap(ComponentPlacement.RELATED)
+					.addComponent(rbMedianaV)
 					.addPreferredGap(ComponentPlacement.RELATED)
 					.addComponent(rbModa)
 					.addPreferredGap(ComponentPlacement.RELATED)

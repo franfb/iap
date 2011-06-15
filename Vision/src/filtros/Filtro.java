@@ -7,6 +7,10 @@ import vision.Image;
 public abstract class Filtro {
 	
 	protected Point src;
+//	protected int nPix;
+//	protected int[] listR;
+//	protected int[] listG;
+//	protected int[] listB;
 
 	public abstract int evaluar(Image im, int x, int y, int w, int h);
 	

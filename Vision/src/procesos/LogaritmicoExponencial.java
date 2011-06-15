@@ -27,12 +27,15 @@ public class LogaritmicoExponencial {
 		final LogaritmicoExponencialDialog dialog = new LogaritmicoExponencialDialog();
 		final byte[] lut = new byte[ImageInfo.NIVELES];
 		final int[] points = new int[lut.length];
+		final int[][] ppoints = new int[1][];
+		ppoints[0] = points;
 		final byte[] lutNegarImagen = new byte[lut.length];
 		for (int i = 0; i < lutNegarImagen.length; i++) {
 			lutNegarImagen[i] = (byte)(lutNegarImagen.length - 1 - i);
 		}
 		generarLut(dialog, im, info, lut, points);
-		final DisplayHistogram grafica = new DisplayHistogram(points, "Gráfica");
+		String[] names = { "V" };
+		final DisplayHistogram grafica = new DisplayHistogram(ppoints, "Gráfica", names);
 		grafica.setHeight(256);
 		dialog.panelGrafica.add(grafica);
 		im.img = Lut.aplicarLut(oldBufIm, newBufIm, lut);
@@ -44,7 +47,7 @@ public class LogaritmicoExponencial {
 			
 			@Override
 			public void stateChanged(ChangeEvent arg0) {
-				aplicarTransformacion(dialog, im, info, lut, points, grafica, oldBufIm, newBufIm, lutNegarImagen);
+				aplicarTransformacion(dialog, im, info, lut, ppoints, grafica, oldBufIm, newBufIm, lutNegarImagen);
 			}
 		};
 		
@@ -68,7 +71,7 @@ public class LogaritmicoExponencial {
 			
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
-				aplicarTransformacion(dialog, im, info, lut, points, grafica, oldBufIm, newBufIm, lutNegarImagen);
+				aplicarTransformacion(dialog, im, info, lut, ppoints, grafica, oldBufIm, newBufIm, lutNegarImagen);
 			}
 		};
 		
@@ -99,14 +102,14 @@ public class LogaritmicoExponencial {
 		dialog.setVisible(true);
 	}
 	
-	private static void aplicarTransformacion(LogaritmicoExponencialDialog dialog, Image im, ImageInfo info, byte[] lut, int[] points, DisplayHistogram grafica, BufferedImage oldBufIm, BufferedImage newBufIm, byte[] lutNegarImagen) {
+	private static void aplicarTransformacion(LogaritmicoExponencialDialog dialog, Image im, ImageInfo info, byte[] lut, int[][] points, DisplayHistogram grafica, BufferedImage oldBufIm, BufferedImage newBufIm, byte[] lutNegarImagen) {
 		if (dialog.rbTipo2.isSelected() || dialog.rbTipo3.isSelected()) {
 			dialog.spValorK.setEnabled(true);
 		}
 		else {
 			dialog.spValorK.setEnabled(false);
 		}
-		generarLut(dialog, im, info, lut, points);
+		generarLut(dialog, im, info, lut, points[0]);
 		grafica.setHistogram(points);
 		grafica.repaint();
 		if (dialog.rbExponencial.isSelected()) {

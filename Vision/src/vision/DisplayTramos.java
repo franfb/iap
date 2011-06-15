@@ -15,11 +15,12 @@ public class DisplayTramos extends DisplayHistogram implements MouseListener, Ke
 	
 //	protected int height = 256;
 
-	public DisplayTramos(int[] histogram, String title) {
-		super(histogram, title);
+	public DisplayTramos(int[][] histogram, String title, String[] names) {
+		super(histogram, title, names);
 		super.height = 256;
+		setHistRange(0, 1);
 		
-		tramos = new boolean[histogram.length];
+		tramos = new boolean[histogram[0].length];
 		for (int i = 0; i < tramos.length; i++) {
 			tramos[i] = false;
 		}
@@ -32,10 +33,10 @@ public class DisplayTramos extends DisplayHistogram implements MouseListener, Ke
 	
 	public byte[] getLut() {
 		if (lut == null) {
-			lut = new byte[histogram.length];
+			lut = new byte[histogram[0].length];
 		}
-		for (int i = 0; i < histogram.length; i++) {
-			lut[i] = (byte)histogram[i];
+		for (int i = 0; i < histogram[0].length; i++) {
+			lut[i] = (byte)histogram[0][i];
 		}
 		return lut;
 	}
@@ -49,7 +50,7 @@ public class DisplayTramos extends DisplayHistogram implements MouseListener, Ke
 		for(int bin=0;bin<histogram.length; bin++) {
 			if (tramos[bin]) {
 				int x = border.left + bin * binWidth;
-				double offset = counts[bin];
+				double offset = counts[0][bin];
 				if (offset < 0) {
 					offset = 0;
 				}
@@ -58,7 +59,7 @@ public class DisplayTramos extends DisplayHistogram implements MouseListener, Ke
 						/ (1. * (maxCount - minCount));
 //				if (counts[bin] < -30)
 //					System.out.println("hullla");
-				double barEnds = Math.ceil(height * Math.abs(counts[bin])
+				double barEnds = Math.ceil(height * Math.abs(counts[0][bin])
 						/ (1. * (maxCount - minCount)));
 				g2d.drawRect(x, (int) barStarts, binWidth - 1, (int) barEnds);
 			}
@@ -88,7 +89,7 @@ public class DisplayTramos extends DisplayHistogram implements MouseListener, Ke
                 tramos[x] = !tramos[x];
             }
             if (tramos[x]) {
-                histogram[x] = (int)y;
+                histogram[0][x] = (int)y;
             }
             int x1 = 0;
             int x2;
@@ -96,9 +97,9 @@ public class DisplayTramos extends DisplayHistogram implements MouseListener, Ke
             for (int i = 1; i < tramos.length; i++) {
                 if (tramos[i]) {
                     x2 = i;
-                    pendiente = ((float)(counts[x2] - counts[x1]))/((float)(x2 - x1));
+                    pendiente = ((float)(counts[0][x2] - counts[0][x1]))/((float)(x2 - x1));
                     for (int j = (x1 + 1); j < x2; j++) {
-                        counts[j] = (int)((j - x1) * pendiente + counts[x1]);
+                        counts[0][j] = (int)((j - x1) * pendiente + counts[0][x1]);
                     }
                     x1 = x2;
                 }

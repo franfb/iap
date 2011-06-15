@@ -25,7 +25,10 @@ public class LinealTramos {
 		for (int i = 0; i < tramosLineal.length; i++) {
 			tramosLineal[i] = i;
 		}
-		final DisplayTramos display = new DisplayTramos(tramosLineal, "Tramos");
+		int[][] ptrTramos = new int[1][];
+		ptrTramos[0] = tramosLineal;
+		String[] names = { "V" };
+		final DisplayTramos display = new DisplayTramos(ptrTramos, "Tramos", names);
 		final LinealTramosDialog dialog = new LinealTramosDialog();
 		dialog.contentPanel.add(display);
 		// TODO arreglar el keyListener del DisplayTramos

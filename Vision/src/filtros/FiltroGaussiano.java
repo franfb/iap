@@ -8,13 +8,11 @@ public class FiltroGaussiano extends Filtro {
 
 	@Override
 	public int evaluar(Image im, int x, int y, int w, int h) {
-		// TODO Auto-generated method stub
 		return 0;
 	}
 
 	@Override
 	public int evaluar(Image im, int x, int y, int w, int h, int k, int v) {
-		// TODO Auto-generated method stub
 		return 0;
 	}
 	
@@ -24,9 +22,6 @@ public class FiltroGaussiano extends Filtro {
 		for (int i = h.getColIni(); i < h.getColMax(); i++) {
 			value = (1 / (Math.sqrt(2 * Math.PI) * sigma)) * Math.exp(-(i * i) / (2 * sigma * sigma));
 			h.set(0, i, value);
-			System.out.println("x = " + i);
-			System.out.println("v = " + value);
-			System.out.println("h = " + h.get(0, i));
 		}
 		Image imTemp = Image.crearImagenSinPrefijo(im.widthRoi(), im.heightRoi(), im, "Imagen temporal");
 		src = im.topLeftRoi();
@@ -37,10 +32,6 @@ public class FiltroGaussiano extends Filtro {
 		}
 		convolucion(im, imTemp, h);
 		h.trasponer();
-		for (int i = h.getFilIni(); i < h.getFilMax(); i++) {
-			System.out.println("x = " + i);
-			System.out.println("h = " + h.get(i, 0));
-		}
 		convolucion(imTemp, newIm, h);
 	}
 }
