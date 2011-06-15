@@ -2,12 +2,16 @@ package procesos;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 
+import javax.swing.JFileChooser;
 import javax.swing.JTable;
 import javax.swing.SpinnerNumberModel;
 import javax.swing.event.ChangeEvent;
@@ -16,6 +20,7 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 
 import vision.Image;
+import vision.KernelFileFilter;
 import vision.MainWindow;
 
 import dialogs.DefinirKernelDialog;
@@ -43,7 +48,7 @@ public class DefinirKernel {
 			
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				
+				abrir(dialog.tKernel, dialog);
 			}
 		});
 		
@@ -51,7 +56,7 @@ public class DefinirKernel {
 			
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				
+				guardar(dialog.tKernel, dialog.tfNormalizacion.getText(), (Integer)dialog.spTam.getValue());
 			}
 		});
 		
@@ -67,7 +72,9 @@ public class DefinirKernel {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				Kernel h = tableToKernel(dialog.tKernel, (Integer)dialog.spTam.getValue(), 1.0/9.0);
+				Kernel h = tableToKernel(dialog.tKernel,
+						(Integer) dialog.spTam.getValue(),
+						parseFactor(dialog.tfNormalizacion.getText()));
 				Image im = MainWindow.getCurrentImage();
 				Copiar.run("Convolución de ");
 				Image newIm = MainWindow.getCurrentImage();
@@ -85,11 +92,38 @@ public class DefinirKernel {
 		dialog.setVisible(true);
 	}
 	
-	public static void tableToFile(JTable table, int tam, double factor, String nombre) {
+	public static double parseFactor(String factorText) {
+		String[] numeros = factorText.split("/");
+		double res = Double.parseDouble(numeros[0]);
+		for (int i = 1; i < numeros.length; i++) {
+			res /= Double.parseDouble(numeros[i]);
+		}
+		return res;
+	}
+	
+	public static void abrir(JTable table, DefinirKernelDialog dialog) {
+		MainWindow.chooser.setFileFilter(new KernelFileFilter());
+		int returnValue = MainWindow.chooser.showOpenDialog(MainWindow.frame);
+		if (returnValue == JFileChooser.APPROVE_OPTION) {
+			File file = MainWindow.chooser.getSelectedFile();
+			fileToTable(table, file, dialog);
+		}
+	}
+	
+	public static void guardar(JTable table, String factor, Integer tam) {
+		MainWindow.chooser.setFileFilter(new KernelFileFilter());
+		int returnValue = MainWindow.chooser.showSaveDialog(MainWindow.frame);
+		if (returnValue == JFileChooser.APPROVE_OPTION) {
+			File file = MainWindow.chooser.getSelectedFile();
+			tableToFile(table, tam, factor, file);
+		}
+	}
+	
+	public static void tableToFile(JTable table, int tam, String factor, File file) {
 		BufferedWriter out;
 		try {
-			out = new BufferedWriter(new FileWriter("outfilename"));
-		    out.write(Double.toString(factor));
+			out = new BufferedWriter(new FileWriter(file));
+		    out.write(factor);
 		    out.newLine();
 		    out.write(Integer.toString(tam));
 		    out.newLine();
@@ -102,6 +136,31 @@ public class DefinirKernel {
 			}
 		    
 		    out.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public static void fileToTable(JTable table, File file, DefinirKernelDialog dialog) {
+		BufferedReader in;
+		try {
+			in = new BufferedReader(new FileReader(file));
+			String line = in.readLine();
+			dialog.tfNormalizacion.setText(line);
+			line = in.readLine();
+			Integer tam = Integer.parseInt(line);
+			dialog.spTam.setValue(tam);
+			crearTabla(table, tam);
+			for (int i = 0; i < tam; i++) {
+				for (int j = 0; j < tam; j++) {
+					line = in.readLine();
+					table.setValueAt(Integer.parseInt(line), i, j);
+				}
+			}
+			in.close();
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
