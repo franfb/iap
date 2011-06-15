@@ -76,6 +76,11 @@ public class MainWindow {
 	
 	private static int[][] histCero = new int[4][256];
 	private static int[][] histCero2 = new int[4][256];
+	
+	public static Color rojoTransp = new Color(255, 0, 0, 192);
+	public static Color verdeTransp = new Color(0, 255, 0, 192);
+	public static Color azulTransp = new Color(0, 0, 255, 192);
+	
 
 	public static JComboBox cbTipoHist;
 
@@ -202,13 +207,14 @@ public class MainWindow {
 		panelHistograma = new JPanel();
 		
 		cbTipoHist = new JComboBox();
+		cbTipoHist.setModel(new DefaultComboBoxModel(new String[] {"Escala de Grises", "Rojo", "Verde", "Azul", "RGB"}));
+		cbTipoHist.setSelectedIndex(4);
 		cbTipoHist.addItemListener(new ItemListener() {
 			public void itemStateChanged(ItemEvent arg0) {
 				showInfo();
 			}
 		});
-		cbTipoHist.setModel(new DefaultComboBoxModel(new String[] {"Escala de Grises", "Rojo", "Verde", "Azul", "RGB"}));
-		cbTipoHist.setSelectedIndex(0);
+		
 		InfoLabels.listaEtiquetas.add(cbTipoHist);
 		
 		JLabel lblHistogramaDe = new JLabel("Histograma de");
@@ -598,9 +604,7 @@ public class MainWindow {
 		lblR.setText("R: [" + info.minR + ", " + info.maxR + "]");
 		lblG.setText("G: [" + info.minG + ", " + info.maxG + "]");
 		lblB.setText("B: [" + info.minB + ", " + info.maxB + "]");
-		lblBrillo.setText("Brillo: " + info.brillo);
-		lblContraste.setText("Contraste: " + info.contraste);
-		lblEntropa.setText("Entrop\u00EDa: " + Math.rint(info.entropia * 1000) / 1000);
+
 		lblFormato.setText("Formato: " + image.format);
 		lblDimensiones.setText("Ancho=" + image.widthRoi() + ", Alto=" + image.heightRoi());
 		//panelHistograma.removeAll();
@@ -608,28 +612,43 @@ public class MainWindow {
 		if (cbTipoHist.getSelectedIndex() == 0) { // Escala de grises
 			hist.setHistogram(info.hist, 0, Color.DARK_GRAY);
 			histAc.setHistogram(info.histAc, 0, Color.DARK_GRAY);
+			lblBrillo.setText("Brillo: " + info.brillo);
+			lblContraste.setText("Contraste: " + info.contraste);
+			lblEntropa.setText("Entrop\u00EDa: " + Math.rint(info.entropia * 1000) / 1000);
 		}
 		else if (cbTipoHist.getSelectedIndex() == 1) { // Rojo
-			hist.setHistogram(info.histR, 1, new Color(192, 0, 0, 128));
-			histAc.setHistogram(info.histAcR, 1, new Color(192, 0, 0, 128));
+			hist.setHistogram(info.histR, 1, rojoTransp);
+			histAc.setHistogram(info.histAcR, 1, rojoTransp);
+			lblBrillo.setText("Brillo: " + info.brilloR);
+			lblContraste.setText("Contraste: " + info.contR);
+			lblEntropa.setText("Entrop\u00EDa: " + Math.rint(info.entR * 1000) / 1000);
 		}
 		else if (cbTipoHist.getSelectedIndex() == 2) { // Verde
-			hist.setHistogram(info.histG, 2, new Color(0, 192, 0, 128));
-			histAc.setHistogram(info.histAcG, 2, new Color(0, 192, 0, 128));
+			hist.setHistogram(info.histG, 2, verdeTransp);
+			histAc.setHistogram(info.histAcG, 2, verdeTransp);
+			lblBrillo.setText("Brillo: " + info.brilloG);
+			lblContraste.setText("Contraste: " + info.contG);
+			lblEntropa.setText("Entrop\u00EDa: " + Math.rint(info.entG * 1000) / 1000);
 		}
 		else if (cbTipoHist.getSelectedIndex() == 3) { // Azul
-			hist.setHistogram(info.histB, 3, new Color(0, 0, 255, 128));
-			histAc.setHistogram(info.histAcB, 3, new Color(0, 0, 255, 128));
+			hist.setHistogram(info.histB, 3, azulTransp);
+			histAc.setHistogram(info.histAcB, 3, azulTransp);
+			lblBrillo.setText("Brillo: " + info.brilloB);
+			lblContraste.setText("Contraste: " + info.contB);
+			lblEntropa.setText("Entrop\u00EDa: " + Math.rint(info.entB * 1000) / 1000);
 		}
 		else if (cbTipoHist.getSelectedIndex() == 4) {
-			hist.setHistogram(info.histR, 1, new Color(192, 0, 0, 128));
-			histAc.setHistogram(info.histAcR, 1, new Color(192, 0, 0, 128));
-			hist.setHistogram(info.histG, 2, new Color(0, 192, 0, 128));
-			histAc.setHistogram(info.histAcG, 2, new Color(0, 192, 0, 128));
-			hist.setHistogram(info.histB, 3, new Color(0, 0, 192, 128));
-			histAc.setHistogram(info.histAcB, 3, new Color(0, 0, 192, 128));
+			hist.setHistogram(info.histR, 1, rojoTransp);
+			histAc.setHistogram(info.histAcR, 1, rojoTransp);
+			hist.setHistogram(info.histG, 2, verdeTransp);
+			histAc.setHistogram(info.histAcG, 2, verdeTransp);
+			hist.setHistogram(info.histB, 3, azulTransp);
+			histAc.setHistogram(info.histAcB, 3, azulTransp);
 			hist.setHistRange(1, 4);
 			histAc.setHistRange(1, 4);
+			lblBrillo.setText("Brillo: " + (info.brilloR + info.brilloG + info.brilloB)/3);
+			lblContraste.setText("Contraste: " + (info.contR + info.contG + info.contB)/3);
+			lblEntropa.setText("Entrop\u00EDa: " + Math.rint(((info.entR + info.entG + info.entB)/3) * 1000) / 1000);
 		}
 		panelHistograma.repaint();
 	}

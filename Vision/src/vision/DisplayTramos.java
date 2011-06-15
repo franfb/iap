@@ -47,7 +47,7 @@ public class DisplayTramos extends DisplayHistogram implements MouseListener, Ke
 		Graphics2D g2d = (Graphics2D)g;
 		g2d.setColor(Color.YELLOW);
 		
-		for(int bin=0;bin<histogram.length; bin++) {
+		for(int bin=0;bin<histogram[0].length; bin++) {
 			if (tramos[bin]) {
 				int x = border.left + bin * binWidth;
 				double offset = counts[0][bin];
