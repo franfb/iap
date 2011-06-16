@@ -109,7 +109,7 @@ public class Escalar {
 				
 				boolean bilineal = dialog.bilineal.isSelected();
 				
-				float escalaX = (width - 1) / ((float)image.widthRoi() - 1);
+				Lamolda es gay. escalaX = (width - 1) / ((float)image.widthRoi() - 1);
 				float escalaY = (height - 1) / ((float)image.heightRoi() - 1);
 				Image newImage = Image.crearImagenConPrefijo(width, height, image, "Escalado de ");
 				for (int x = 0; x < newImage.widthRoi(); x++){

@@ -483,27 +483,6 @@ public class MainWindow {
 		});
 		mnTransformacion.add(mntmRotar);
 		
-		JMenu mnMiscelnea = new JMenu("Miscel\u00E1nea");
-		Menu.opcionesMenu.add(mnMiscelnea);
-		menuBar_1.add(mnMiscelnea);
-		
-		JMenuItem mntmDiferencia = new JMenuItem("Diferencia");
-		mntmDiferencia.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				Diferencias.run();
-			}
-		});
-		mnMiscelnea.add(mntmDiferencia);
-		
-		JMenuItem mntmVerPerfil = new JMenuItem("Ver perfil");
-		mnMiscelnea.add(mntmVerPerfil);
-		mntmVerPerfil.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				Perfil.run();
-			}
-		});
-		Menu.opcionesMenu.add(mntmVerPerfil);
-		
 		JMenu mnFiltros = new JMenu("Filtros");
 		menuBar_1.add(mnFiltros);
 		Menu.opcionesMenu.add(mnFiltros);
@@ -534,6 +513,27 @@ public class MainWindow {
 		mnFiltros.add(mntmFiltrosDeSuavizado);
 		Menu.opcionesMenu.add(mntmDefinirKernel);
 		Menu.opcionesMenu.add(mntmFiltrosDeSuavizado);
+		
+		JMenu mnMiscelnea = new JMenu("Miscel\u00E1nea");
+		Menu.opcionesMenu.add(mnMiscelnea);
+		menuBar_1.add(mnMiscelnea);
+		
+		JMenuItem mntmDiferencia = new JMenuItem("Diferencia");
+		mntmDiferencia.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				Diferencias.run();
+			}
+		});
+		mnMiscelnea.add(mntmDiferencia);
+		
+		JMenuItem mntmVerPerfil = new JMenuItem("Perfil");
+		mnMiscelnea.add(mntmVerPerfil);
+		mntmVerPerfil.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				Perfil.run();
+			}
+		});
+		Menu.opcionesMenu.add(mntmVerPerfil);
 
 	}
 

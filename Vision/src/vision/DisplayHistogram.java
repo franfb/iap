@@ -99,6 +99,21 @@ public class DisplayHistogram extends JComponent implements MouseMotionListener,
         this.addMouseListener(this);
     }
     
+    public DisplayHistogram(int histogram[], String title, String name) {
+        ToolTipManager.sharedInstance().setInitialDelay(100);
+    	this.histogram = new int[1][];
+    	this.histogram[0] = histogram;
+        this.title = title;
+        this.names = new String[1]; 
+        this.names[0] = name;
+        setHistRange(0, this.histogram.length);
+        
+        scale();
+        
+        this.addMouseMotionListener(this);
+        this.addMouseListener(this);
+    }
+    
     public void setHistRange(int init, int end) {
     	this.initHist = init; // inclusive
     	this.endHist = end; // exclusive
