@@ -137,7 +137,7 @@ public class MainWindow {
 					Menu.desactivaOpcionesMenu();
 					InfoLabels.desactivaEtiquetas();
 					hist.setHistogram(histCero);
-					histAc.setHistogram(histCero);
+					histAc.setHistogram(histCero2);
 					panelHistograma.repaint();
 				}
 				if (tabbedPane.getTabCount() > 0) {

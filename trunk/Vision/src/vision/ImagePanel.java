@@ -174,6 +174,7 @@ public class ImagePanel extends JComponent implements MouseListener, MouseMotion
 			if (listener == Listener.PERFIL){
 				mouseReleasedPerfil(e);
 			}
+			repaint();
 		}
 
 		@Override
