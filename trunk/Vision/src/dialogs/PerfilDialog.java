@@ -14,6 +14,9 @@ import javax.swing.JLabel;
 import javax.swing.JRadioButton;
 import javax.swing.LayoutStyle.ComponentPlacement;
 import javax.swing.JTextField;
+import java.awt.GridLayout;
+import javax.swing.JScrollPane;
+import java.awt.Font;
 
 public class PerfilDialog extends JDialog {
 
@@ -21,8 +24,8 @@ public class PerfilDialog extends JDialog {
 
 	private final JPanel contentPanel = new JPanel();
 	public JButton cancelButton;
-	public JTextField textoX;
-	public JTextField textoY;
+	public JPanel panel;
+	public JScrollPane scrollPane;
 	
 	/**
 	 * Launch the application.
@@ -42,27 +45,20 @@ public class PerfilDialog extends JDialog {
 	 */
 	public PerfilDialog() {
 		setAlwaysOnTop(true);
-		setBounds(100, 100, 425, 453);
+		setBounds(100, 100, 665, 493);
 		getContentPane().setLayout(new BorderLayout());
 		contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
 		
 		getContentPane().add(contentPanel, BorderLayout.CENTER);
 		
 		JLabel lblNiveles = new JLabel("Define una recta con el rat\u00F3n");
+		lblNiveles.setFont(new Font("Tahoma", Font.PLAIN, 16));
 		
 		ButtonGroup niveles = new ButtonGroup();
 		
 		ButtonGroup tipo = new ButtonGroup();
 		
-		textoX = new JTextField();
-		textoX.setColumns(10);
-		
-		JLabel lblX = new JLabel("x:");
-		
-		JLabel lblY = new JLabel("y:");
-		
-		textoY = new JTextField();
-		textoY.setColumns(10);
+		scrollPane = new JScrollPane();
 		
 		
 		GroupLayout gl_contentPanel = new GroupLayout(contentPanel);
@@ -71,32 +67,23 @@ public class PerfilDialog extends JDialog {
 				.addGroup(gl_contentPanel.createSequentialGroup()
 					.addContainerGap()
 					.addGroup(gl_contentPanel.createParallelGroup(Alignment.LEADING)
-						.addComponent(lblNiveles)
-						.addGroup(gl_contentPanel.createSequentialGroup()
-							.addGroup(gl_contentPanel.createParallelGroup(Alignment.LEADING)
-								.addComponent(lblX)
-								.addComponent(lblY))
-							.addGap(40)
-							.addGroup(gl_contentPanel.createParallelGroup(Alignment.LEADING)
-								.addComponent(textoY, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-								.addComponent(textoX, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))))
-					.addContainerGap(247, Short.MAX_VALUE))
+						.addComponent(scrollPane, GroupLayout.DEFAULT_SIZE, 617, Short.MAX_VALUE)
+						.addComponent(lblNiveles))
+					.addContainerGap())
 		);
 		gl_contentPanel.setVerticalGroup(
 			gl_contentPanel.createParallelGroup(Alignment.LEADING)
 				.addGroup(gl_contentPanel.createSequentialGroup()
 					.addContainerGap()
 					.addComponent(lblNiveles)
-					.addGap(32)
-					.addGroup(gl_contentPanel.createParallelGroup(Alignment.BASELINE)
-						.addComponent(textoX, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-						.addComponent(lblX))
 					.addGap(18)
-					.addGroup(gl_contentPanel.createParallelGroup(Alignment.BASELINE)
-						.addComponent(lblY)
-						.addComponent(textoY, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
-					.addContainerGap(97, Short.MAX_VALUE))
+					.addComponent(scrollPane, GroupLayout.DEFAULT_SIZE, 347, Short.MAX_VALUE)
+					.addContainerGap())
 		);
+		
+		panel = new JPanel();
+		scrollPane.setViewportView(panel);
+		panel.setLayout(new GridLayout(2, 2, 0, 0));
 		contentPanel.setLayout(gl_contentPanel);
 		{
 			JPanel buttonPane = new JPanel();

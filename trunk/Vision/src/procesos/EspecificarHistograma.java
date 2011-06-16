@@ -80,18 +80,18 @@ public class EspecificarHistograma {
 		double nPixIn = imIn.widthRoi() * imIn.heightRoi();
 		double nPixOut = imOut.widthRoi() * imOut.heightRoi();
 		byte[] lut = new byte[infoIn.histAc.length];
-		for (int i = 0; i < infoOut.histAc.length; i++) {
+		for (int i = 0; i < infoIn.histAc.length; i++) {
 			int nivelIzq = -1;
 			int nivelDer = -1;
 			double c1;
 			double c0;
-			for (int j = 0; j < infoIn.histAc.length; j++) {
-				c1 = (double)infoOut.histAc[i] / nPixOut;
-				c0 = (double)infoIn.histAc[j] / nPixIn;
-				if (c0 < c1) {
+			for (int j = 0; j < infoOut.histAc.length; j++) {
+				c1 = (double)infoOut.histAc[j] / nPixOut;
+				c0 = (double)infoIn.histAc[i] / nPixIn;
+				if (c0 > c1) {
 					nivelIzq = j;
 				}
-				else if (c0 > c1) {
+				else if (c0 < c1) {
 					nivelDer = j;
 					break;
 				}

@@ -10,10 +10,11 @@ import java.awt.event.MouseMotionListener;
 import java.awt.image.BufferedImage;
 import javax.swing.JComponent;
 
-public class ImagePanel extends JComponent /*
-											 * implements MouseMotionListener,
-											 * MouseListener
-											 */{
+import procesos.Perfil;
+
+public class ImagePanel extends JComponent implements MouseListener, MouseMotionListener{
+	
+	
 	private static final long serialVersionUID = 1L;
 	Image image;
 	public BufferedImage img;
@@ -21,8 +22,12 @@ public class ImagePanel extends JComponent /*
 	Point offset;
 
 	int border = 9;
+	
+	Point begin = null;
+	Point end = null;
+	boolean roiPainted = false;
 
-	public static Listener listener;
+	public static Listener listener = Listener.ROI;
 	
 	private enum Listener{
 		ROI(), PERFIL();
@@ -45,7 +50,8 @@ public class ImagePanel extends JComponent /*
 		setMaximumSize(imgSize);
 		setSize(imgSize);
 		offset = new Point(0, 0);
-		resetMouseListener();
+		addMouseListener(this);
+		addMouseMotionListener(this);
 	}
 
 	public void paint(Graphics g) {
@@ -55,6 +61,7 @@ public class ImagePanel extends JComponent /*
 		offset.y = (size.height - imgSize.height) / 2;
 		g.drawImage(img, offset.x + border + 1, offset.y + border + 1, null);
 		g.drawRect(offset.x, offset.y, imgSize.width, imgSize.height);
+		roiPainted = false;
 		if (listener == Listener.ROI && validRoi()) {
 			roiPainted = true;
 			Point topLeft = getTopLeftRoi();
@@ -64,19 +71,11 @@ public class ImagePanel extends JComponent /*
 			g.setColor(new Color(0x66000000, true));
 			g.fillRect(topLeft.x + 1, topLeft.y + 1, bottomRight.x - topLeft.x - 1, bottomRight.y - topLeft.y - 1);
 		}
-		
-		if (listener == Listener.PERFIL && beginLine != null && endLine != null) {
+		if (listener == Listener.PERFIL && validRecta()) {
+			roiPainted = true;
 			g.setColor(Color.WHITE);
-			g.drawLine(beginLine.x, beginLine.y, endLine.x, endLine.y);
-			/*roiPainted = true;
-			Point topLeft = getTopLeftRoi();
-			Point bottomRight = getBottomRightRoi();
-			g.setColor(new Color(0xCCCCCC));
-			g.drawRect(topLeft.x, topLeft.y, bottomRight.x - topLeft.x, bottomRight.y - topLeft.y);
-			g.setColor(new Color(0x66000000, true));
-			g.fillRect(topLeft.x + 1, topLeft.y + 1, bottomRight.x - topLeft.x - 1, bottomRight.y - topLeft.y - 1);*/
+			g.drawLine(begin.x, begin.y, end.x, end.y);
 		}
-		
 		MainWindow.showInfo();
 	}
 
@@ -105,28 +104,6 @@ public class ImagePanel extends JComponent /*
 		return p;
 	}
 
-	/*public Point bringCloserPerfil(Point p) {
-		Point coord = new Point(p.x - offset.x - border - 1, p.y - offset.y - border - 1);
-		if (coord.x < 0) {
-			p.x -= coord.x;
-		}
-		if (coord.y < 0) {
-			p.y -= coord.y;
-		}
-		if (coord.x >= img.getWidth()) {
-			p.x -= coord.x - img.getWidth() + 1;
-		}
-		if (coord.y >= img.getHeight()) {
-			p.y -= coord.y - img.getHeight() + 1;
-		}
-		return p;
-	}*/
-	
-	Point begin = null;
-	Point end = null;
-	boolean movement;
-	boolean roiPainted = false;
-
 	public Point getTopLeftRoi() {
 		if (begin == null) {
 			return null;
@@ -154,65 +131,48 @@ public class ImagePanel extends JComponent /*
 		}
 		return bottomRight;
 	}
-
+	
 	public boolean validRoi() {
-		if (begin != null && begin.x != end.x && begin.y != end.y) {
+		if (listener == Listener.ROI && begin != null && begin.x != end.x && begin.y != end.y) {
 			return true;
 		}
 		return false;
 	}
 
-	public void resetMouseListener() {
-		for (MouseMotionListener m: getMouseMotionListeners()){
-			removeMouseMotionListener(m);
+	public boolean validRecta() {
+		if (listener == Listener.PERFIL && begin != null && !begin.equals(end)) {
+			return true;
 		}
-		for (MouseListener m: getMouseListeners()){
-			removeMouseListener(m);
-		}
-		if (listener == Listener.ROI) {
-			addMouseListener(roiListener);
-			addMouseMotionListener(roiMotionListener);
-			resetRoiListener();
-		}
-		if (listener == Listener.PERFIL) {
-			addMouseListener(perfilListener);
-			addMouseMotionListener(perfilMotionListener);
-			resetPerfilListener();
-		}
-	}
-
-	private void resetRoiListener(){	
+		return false;
 	}
 	
-	MouseMotionListener roiMotionListener = new MouseMotionListener() {
-
-		@Override
-		public void mouseDragged(MouseEvent e) {
-			movement = true;
-			end = bringCloser(e.getPoint());
-			if (validRoi() || roiPainted) {
-				repaint();
-			}
+	@Override
+	public void mouseDragged(MouseEvent e) {
+		if (listener == Listener.ROI){
+			mouseDraggedRoi(e);
 		}
-		
-		@Override
-		public void mouseMoved(MouseEvent e) {}
-	};
-
-	MouseListener roiListener = new MouseListener() {
+		if (listener == Listener.PERFIL){
+			mouseDraggedPerfil(e);
+		}
+	}
 
 		@Override
 		public void mousePressed(MouseEvent e) {
-			movement = false;
-			begin = bringCloser(e.getPoint());
-			end = begin;
+			if (listener == Listener.ROI){
+				mousePressedRoi(e);
+			}
+			if (listener == Listener.PERFIL){
+				mousePressedPerfil(e);
+			}
 		}
 
 		@Override
 		public void mouseReleased(MouseEvent e) {
-			if (!movement) {
-				begin = null;
-				repaint();
+			if (listener == Listener.ROI){
+				mouseReleasedRoi(e);
+			}
+			if (listener == Listener.PERFIL){
+				mouseReleasedPerfil(e);
 			}
 		}
 
@@ -224,88 +184,51 @@ public class ImagePanel extends JComponent /*
 
 		@Override
 		public void mouseExited(MouseEvent e) {}
-	};
 	
-	boolean creatingLine;
-	Point beginLine;
-	Point endLine;
-	
-	private void resetPerfilListener(){	
-		creatingLine = false;
-		beginLine = null;
-		endLine = null;
+		@Override
+		public void mouseMoved(MouseEvent e) {}
+
+		
+	public void mousePressedPerfil(MouseEvent e) {
+		if (getCoordinate(e.getX(), e.getY()) != null){
+			begin = e.getPoint();
+			end = begin;
+		}
 	}
 	
-	MouseMotionListener perfilMotionListener = new MouseMotionListener() {
-
-		@Override
-		public void mouseDragged(MouseEvent e) {
-			/*movement = true;
-			end = bringCloser(e.getPoint());
-			if (validRoi() || roiPainted) {
-				repaint();
-			}*/
+	public void mouseReleasedPerfil(MouseEvent e) {
+		if (!validRecta()) {
+			begin = null;
 		}
-		
-		@Override
-		public void mouseMoved(MouseEvent e) {
-			if (getCoordinate(e.getX(), e.getY()) != null && creatingLine){
-				endLine = e.getPoint();
-				repaint();
-			}
+		else{
+			Perfil.nuevaRecta(image, getCoordinate(begin.x, begin.y), getCoordinate(end.x, end.y));
 		}
-	};
-
-	MouseListener perfilListener = new MouseListener() {
-
-		@Override
-		public void mousePressed(MouseEvent e) {
-			/*movement = false;
-			begin = bringCloser(e.getPoint());
-			end = begin;*/
+	}
+	
+	public void mouseDraggedPerfil(MouseEvent e) {
+		end = bringCloser(e.getPoint());
+		if (validRecta() || roiPainted) {
+			repaint();
 		}
-
-		@Override
-		public void mouseReleased(MouseEvent e) {
-			/*if (!movement) {
-				begin = null;
-				repaint();
-			}*/
+	}
+	
+	
+	public void mouseDraggedRoi(MouseEvent e) {
+		end = bringCloser(e.getPoint());
+		if (validRoi() || roiPainted) {
+			repaint();
 		}
+	}
+	
+	public void mousePressedRoi(MouseEvent e) {
+		begin = bringCloser(e.getPoint());
+		end = begin;
+	}
 
-		@Override
-		public void mouseClicked(MouseEvent e) {
-			if (getCoordinate(e.getX(), e.getY()) == null){
-				return;
-			}
-			/*creatingLine = !creatingLine;
-			if (creatingLine){
-				beginLine = e.getPoint();
-				endLine = null;
-			}*/
-			
-			if (creatingLine){
-				creatingLine = false;
-			}
-			else{
-				if (beginLine == null){
-					beginLine = e.getPoint();
-					endLine = null;
-					creatingLine = true;
-				}
-				else{
-					beginLine = null;
-					repaint();
-				}
-			}
+	public void mouseReleasedRoi(MouseEvent e) {
+		if(!validRoi()) {
+			begin = null;
 		}
-		
-
-		@Override
-		public void mouseEntered(MouseEvent e) {}
-
-		@Override
-		public void mouseExited(MouseEvent e) {}
-	};
-
+	}
+	
 }
